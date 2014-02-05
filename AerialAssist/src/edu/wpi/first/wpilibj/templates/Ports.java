@@ -23,10 +23,15 @@ public class Ports {
             setHighRPM = 5,
             setLowRPM = 6,
             autoOrient = 7,
+            //axes
+            gamepadLeftXAxis=1,
+            gamepadLeftYAxis=2,
+            gamepadRightXAxis=3,
+            gamepadRightYAxis=4,
             //motors
             leftDrive = 1,
             rightDrive = 2,
-            cageServo = 3,
+            cageRelay = 3,
             cameraServo = 4,
             catcherServo = 5,
             feeder = 6,
@@ -45,6 +50,9 @@ public class Ports {
             rightUltrasonic = 2,
             leftUltrasonic = 3,
             //Digital Outputs
-            ultrasonicSignal=5;
+            ultrasonicSignal=5,
+            //limits
+            shieldUpperLimit=6,
+            shieldLowerLimit=7;
 
 }

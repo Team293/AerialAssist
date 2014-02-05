@@ -18,6 +18,13 @@ public class ShooterRack {
     private static final Shooter shooter2 = new Shooter(Ports.shooter2, Ports.shooter2EncA, Ports.shooter2EncB);
     private static final Talon shooter3 = new Talon(Ports.shooter3);
 
+    public static void startEncoders() {
+        shooter1.enc.start();
+        shooter1.enc.reset();
+        shooter2.enc.start();
+        shooter2.enc.reset();
+    }
+
     public static void setHighRPM() {
         if (!shooter1.pid.isEnable()) {
             shooter1.pid.enable();
@@ -40,6 +47,18 @@ public class ShooterRack {
         shooter1.pid.setSetpoint(1200);
         shooter2.pid.setSetpoint(800);
         shooter3.set(0.5);
+    }
+
+    public static void setReverseRPM() {
+        if (!shooter1.pid.isEnable()) {
+            shooter1.pid.enable();
+        }
+        if (!shooter2.pid.isEnable()) {
+            shooter2.pid.enable();
+        }
+        shooter1.pid.setSetpoint(-400);
+        shooter2.pid.setSetpoint(-60);
+        shooter3.set(0.0);
     }
 
     public static void stop() {

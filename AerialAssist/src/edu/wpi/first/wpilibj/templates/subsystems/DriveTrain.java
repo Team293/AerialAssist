@@ -25,6 +25,8 @@ public class DriveTrain {
     private static final AnalogChannel rightUltrasonic = new AnalogChannel(Ports.rightUltrasonic);
     private static final AnalogChannel leftUltrasonic = new AnalogChannel(Ports.leftUltrasonic);
     private static final DigitalOutput ultrasonicSignal = new DigitalOutput(Ports.ultrasonicSignal);
+    private static double kP = 0;
+    private static Timer timer = new Timer();
 
     private static final RobotDrive drive = new RobotDrive(leftMotor,
             rightMotor);
@@ -32,9 +34,10 @@ public class DriveTrain {
     public static void tankDrive(double leftMotor, double rightMotor) {
         drive.tankDrive(-leftMotor, -rightMotor);
     }
-
-    static double kP = 0;
-    static Timer timer = new Timer();
+    
+    public static void resetGyro(){
+        gyro.reset();
+    }
 
     /**
      *
@@ -67,6 +70,6 @@ public class DriveTrain {
     }
 
     public static void autoOrient() {
-
+        
     }
 }
