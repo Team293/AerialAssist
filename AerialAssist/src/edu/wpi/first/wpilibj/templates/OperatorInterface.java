@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.templates.subsystems.Vision;
 
 /**
  *
- * @author Peter
+ * @author Noam
  */
 public class OperatorInterface {
 
