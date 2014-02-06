@@ -7,7 +7,7 @@ package edu.wpi.first.wpilibj.templates;
 
 /**
  *
- * @author Peter
+ * @author Noam
  */
 public class Ports {
 
