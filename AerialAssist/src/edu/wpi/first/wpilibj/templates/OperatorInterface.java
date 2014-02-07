@@ -27,7 +27,7 @@ public class OperatorInterface {
             setHighRPM = new SpikeButton(gamepad, Ports.setHighRPM),
             setLowRPM = new SpikeButton(gamepad, Ports.setLowRPM),
             stopShooter = new SpikeButton(gamepad, Ports.stopShooter),
-            autoOrient = new SpikeButton(gamepad, Ports.autoOrient);
+            autoAlign = new SpikeButton(gamepad, Ports.autoOrient);
 
     public static void controlDriveTrain() {
         DriveTrain.tankDrive(leftJoystick.getY(), rightJoystick.getY());
@@ -50,9 +50,9 @@ public class OperatorInterface {
         }
     }
 
-    public static void controlAuto() {
-        if (autoOrient.get()) {
-            DriveTrain.autoOrient();
+    public static void controlAutoAlign() {
+        if (autoAlign.get()) {
+            DriveTrain.autoAlign();
         }
     }
 

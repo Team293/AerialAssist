@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.Ports;
 
@@ -26,7 +25,6 @@ public class DriveTrain {
     private static final AnalogChannel leftUltrasonic = new AnalogChannel(Ports.leftUltrasonic);
     private static final DigitalOutput ultrasonicSignal = new DigitalOutput(Ports.ultrasonicSignal);
     private static double kP = 0;
-    private static Timer timer = new Timer();
 
     private static final RobotDrive drive = new RobotDrive(leftMotor,
             rightMotor);
@@ -49,32 +47,30 @@ public class DriveTrain {
 
     /**
      *
-     * @param time
      * @param speed
      */
-    public static void driveStraight(double time, double speed) {
-        if (timer.get() < time) {
-            //read the gyro
-            double angle = gyro.getAngle();
-            //calculate motor output
-            kP = SmartDashboard.getNumber("kP", 0.1);
-            double rightMotorOutput = speed + kP * angle;
-            double leftMotorOutput = speed - kP * angle;
-            if (rightMotorOutput > 1) {
-                rightMotorOutput = 1;
-            }
-            if (leftMotorOutput > 1) {
-                leftMotorOutput = 1;
-            }
-            if (rightMotorOutput < -1) {
-                rightMotorOutput = - 1;
-            }
-            if (leftMotorOutput < -1) {
-                leftMotorOutput = -1;
-            }
-            //set motor output
-            drive.tankDrive(-leftMotorOutput, -rightMotorOutput);
+    public static void driveStraight(double speed) {
+        //read the gyro
+        double angle = gyro.getAngle();
+        //calculate motor output
+        kP = SmartDashboard.getNumber("kP", 0.1);
+        double rightMotorOutput = speed + kP * angle;
+        double leftMotorOutput = speed - kP * angle;
+        if (rightMotorOutput > 1) {
+            rightMotorOutput = 1;
         }
+        if (leftMotorOutput > 1) {
+            leftMotorOutput = 1;
+        }
+        if (rightMotorOutput < -1) {
+            rightMotorOutput = - 1;
+        }
+        if (leftMotorOutput < -1) {
+            leftMotorOutput = -1;
+        }
+        //set motor output
+        drive.tankDrive(-leftMotorOutput, -rightMotorOutput);
+   
     }
 
     public static double convertToDistance(double rawVoltage) {
@@ -99,7 +95,7 @@ public class DriveTrain {
             DriveTrain.arcadeDrive(0, rotateSpeed);
         }
         else {
-            DriveTrain.stop();
+            stop();
         }
     }
     
