@@ -10,7 +10,7 @@ package edu.wpi.first.wpilibj.templates;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
- * @author NoamMiller
+ * @author FERMER LA BOUCHE
 =======
 >>>>>>> 90416743978d314ada11f7f8f98cfe77394a2c97
 =======
