@@ -11,7 +11,7 @@ package edu.wpi.first.wpilibj.templates;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
- * @author FERMER LA BOUCHE
+ * @author POOP LA BOUCHE
 =======
  * @author Quokka
 >>>>>>> afe42d374bac73d8bdf141b562e2722a7b78ab3b
