@@ -8,7 +8,10 @@ package edu.wpi.first.wpilibj.templates;
 /**
  *
 <<<<<<< HEAD
+<<<<<<< HEAD
  * @author NoamMiller
+=======
+>>>>>>> 90416743978d314ada11f7f8f98cfe77394a2c97
 =======
 >>>>>>> 90416743978d314ada11f7f8f98cfe77394a2c97
  * @author Noam
