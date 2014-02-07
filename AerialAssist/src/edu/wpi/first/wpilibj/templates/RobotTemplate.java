@@ -35,8 +35,24 @@ public class RobotTemplate extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-
-    }
+        AutoAlign.autoAlign();
+        gyro.reset();
+        shoot();
+        if (ballSetting)
+        {
+            DriveTrain.timer.reset();
+            DriveTrain.driveStraight(gyro, 2.25 , -0.70);//Made up Time
+            pickUpBallUsingFeeder();
+            DriveTrain.driveStraight(gyro, 2.25 , 0.70);//Made up Time
+            AutoAlign.autoAlign();
+            shoot();
+        }
+        DriveTrain.timer.reset();
+        DriveTrain.driveStraight(gyro, 2.25 , 0.70);//Made up Time
+        
+        //shooting loop
+        
+        }
 
     /**
      * This function is called periodically during operator control
