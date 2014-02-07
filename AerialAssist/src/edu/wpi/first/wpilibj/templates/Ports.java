@@ -13,7 +13,7 @@ package edu.wpi.first.wpilibj.templates;
 <<<<<<< HEAD
  * @author POOP LA BOUCHE
 =======
- * @author Quokka
+ * @author CACA
 >>>>>>> afe42d374bac73d8bdf141b562e2722a7b78ab3b
 =======
 >>>>>>> 90416743978d314ada11f7f8f98cfe77394a2c97
