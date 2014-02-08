@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.templates.subsystems.Cage;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
+import edu.wpi.first.wpilibj.templates.subsystems.LEDs;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
 import edu.wpi.first.wpilibj.templates.subsystems.Vision;
 
@@ -90,6 +91,7 @@ public class SPIKE extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+        LEDs.indicatedSituation();
         OperatorInterface.controlDriveTrain();
         OperatorInterface.controlFeeder();
         OperatorInterface.controlShooter();

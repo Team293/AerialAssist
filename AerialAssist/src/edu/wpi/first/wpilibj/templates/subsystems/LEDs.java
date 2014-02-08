@@ -5,23 +5,25 @@
  */
 package edu.wpi.first.wpilibj.templates.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.templates.Ports;
 
 /**
  *
- * @author Peter
+ * @author Noam
  */
 public class LEDs {
 
-    DigitalOutput led1 = new DigitalOutput(Ports.led1);
-    DigitalOutput led2 = new DigitalOutput(Ports.led2);
-    DigitalOutput led3 = new DigitalOutput(Ports.led3);
-    DigitalOutput led4 = new DigitalOutput(Ports.led4);
+    public static final DigitalOutput led1 = new DigitalOutput(Ports.led1);
+    public static final DigitalOutput led2 = new DigitalOutput(Ports.led2);
+    public static final DigitalOutput led3 = new DigitalOutput(Ports.led3);
+    public static final DigitalOutput led4 = new DigitalOutput(Ports.led4);
+    public static final DigitalInput ballLimit = new DigitalInput(Ports.ballLimit);
 
-    public void indicatedSituation(boolean ballLimit) {
-        if (ballLimit) {
+    public static void indicatedSituation() {
+        if (ballLimit.get()) {
             led1.set(true);
             led2.set(true);
             led3.set(true);
