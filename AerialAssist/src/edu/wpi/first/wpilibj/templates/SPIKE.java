@@ -28,6 +28,7 @@ public class SPIKE extends IterativeRobot {
     Timer t = new Timer();
     DigitalInput ballLimit = new DigitalInput(Ports.ballLimit);
     DigitalInput ballSetting = new DigitalInput(Ports.ballSetting);
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -41,22 +42,20 @@ public class SPIKE extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-        
+
         boolean secondaryBall = ballSetting.get();
         double shootTime = 5; //Amount of time needed to shoot and move forward
         double maxBackDistance = 6;
         ShooterRack.setHighRPM();
         ShooterRack.setToFiring();
-        
 
         //if running two ball autonomous
-        if (secondaryBall) 
-        {
-            while (!DriveTrain.autoDistance(ShooterRack.shooterDistance)) {}
+        if (secondaryBall) {
+            while (!DriveTrain.autoDistance(ShooterRack.shooterDistance)) {
+            }
             //shoot first ball
-            while (ShooterRack.isFiring())
-            {
-            ShooterRack.controlFiring();
+            while (ShooterRack.isFiring()) {
+                ShooterRack.controlFiring();
             }
             //pick up second ball
             while (!ballLimit.get() && DriveTrain.getDistance() < maxBackDistance) {
@@ -65,26 +64,22 @@ public class SPIKE extends IterativeRobot {
             }
             ShooterRack.setToFiring();
         }
-        while (!DriveTrain.autoDistance(ShooterRack.shooterDistance)) {}
-        while (ballLimit.get()&&DriverStation.getInstance().getMatchTime()>shootTime) 
-        {
-             if (Vision.getBlobCount() == 2) 
-             {
-              while (ShooterRack.isFiring())
-              {
-                ShooterRack.controlFiring();
-              }
-             }
+        while (!DriveTrain.autoDistance(ShooterRack.shooterDistance)) {
+        }
+        while (ballLimit.get() && DriverStation.getInstance().getMatchTime() > shootTime) {
+            if (Vision.getBlobCount() == 2) {
+                while (ShooterRack.isFiring()) {
+                    ShooterRack.controlFiring();
+                }
+            }
         }
         ShooterRack.setToFiring();
-        if (ballLimit.get())
-        {
-            while (ShooterRack.isFiring())
-            {
+        if (ballLimit.get()) {
+            while (ShooterRack.isFiring()) {
                 ShooterRack.controlFiring();
             }
         }
-        while(DriveTrain.getDistance()>5)//Close enough to the wall to count as being within our zone
+        while (DriveTrain.getDistance() > 5)//Close enough to the wall to count as being within our zone
         {
             DriveTrain.driveStraight(0.7);
         }

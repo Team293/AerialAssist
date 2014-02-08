@@ -130,6 +130,21 @@ public class DriveTrain {
         return alignedState;
     }
 
+    public static boolean autoAligned() {
+        boolean alignedState = false;
+
+        double leftDistance = convertToDistance(leftUltrasonic.getVoltage());
+        double rightDistance = convertToDistance(rightUltrasonic.getVoltage());
+
+        double difference = leftDistance - rightDistance;
+
+        double rotateSpeed = difference / 20;
+
+        if (Math.abs(rotateSpeed) < .05) {
+            alignedState = true;
+        }
+        return alignedState;
+    }
     public static double getDistance() {
         double distance = convertToDistance((leftUltrasonic.getAverageVoltage() + rightUltrasonic.getAverageVoltage()) / 2);
         return distance;
@@ -152,7 +167,7 @@ public class DriveTrain {
             driveStraight(speed);
         } else {
             stop();
-            returnValue=true;
+            returnValue = true;
         }
         return returnValue;
 
