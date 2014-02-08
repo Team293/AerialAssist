@@ -21,6 +21,7 @@ public class Shooter {
     PIDController pid;
     double kP = 0, kI = 0, kD = 0,setpoint=0;
     
+    public static final double shootDistance = 14;
     /**
      * 
      * @param motorPort

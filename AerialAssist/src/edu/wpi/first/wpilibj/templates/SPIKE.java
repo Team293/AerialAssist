@@ -9,6 +9,8 @@ package edu.wpi.first.wpilibj.templates;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.templates.subsystems.Cage;
+import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj.templates.subsystems.Shooter;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
 
 /**
@@ -18,7 +20,7 @@ import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class RobotTemplate extends IterativeRobot {
+public class SPIKE extends IterativeRobot {
 
     Timer t = new Timer();
 
@@ -35,20 +37,21 @@ public class RobotTemplate extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-        AutoAlign.autoAlign();
-        gyro.reset();
-        shoot();
+        DriveTrain.autoAlign();
+        DriveTrain.resetGyro();
+        Shooter.shoot();
+        //true means there is a second ball
         if (ballSetting)
         {
             DriveTrain.timer.reset();
-            DriveTrain.driveStraight(gyro, 2.25 , -0.70);//Made up Time
+            DriveTrain.driveStraight(2.25 , -0.70);//Made up Time
             pickUpBallUsingFeeder();
-            DriveTrain.driveStraight(gyro, 2.25 , 0.70);//Made up Time
+            DriveTrain.driveStraight(2.25 , 0.70);//Made up Time
             AutoAlign.autoAlign();
             shoot();
         }
         DriveTrain.timer.reset();
-        DriveTrain.driveStraight(gyro, 2.25 , 0.70);//Made up Time
+        DriveTrain.driveStraight(2.25 , 0.70);//Made up Time  
         
         //shooting loop
         

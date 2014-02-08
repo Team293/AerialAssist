@@ -41,8 +41,13 @@ public class DriveTrain {
         drive.tankDrive(0, 0);
     }
     
-    public static void resetGyro(){
+    public static void resetGyro() {
         gyro.reset();
+    }
+    
+    public static double getAngle() {
+        double angle = gyro.getAngle();
+        return angle;
     }
 
     /**
@@ -72,12 +77,37 @@ public class DriveTrain {
         drive.tankDrive(-leftMotorOutput, -rightMotorOutput);
    
     }
+    
+    public static boolean turn(double targetAngle) {
+        boolean state = false;
+        
+        double current = gyro.getAngle();
+        
+        double difference = targetAngle - current;
+        
+        double speed = 0;
+        
+        if (Math.abs(difference) > 5) {
+            speed = difference / 180;
+        } else {
+            speed = 0;
+        }
+        
+        arcadeDrive(0, speed);
+        if (targetAngle == current) {
+            state = true;
+        }
+        return state;
+    }
 
     public static double convertToDistance(double rawVoltage) {
         return (rawVoltage + 0.0056) / 0.1141;
     }
     
-    public static void autoAlign(){
+    
+    public static boolean autoAlign(){
+        boolean alignedState = false;
+        
         double leftDistance = convertToDistance(leftUltrasonic.getVoltage());
         double rightDistance = convertToDistance(rightUltrasonic.getVoltage());
         
@@ -93,10 +123,16 @@ public class DriveTrain {
         
         if (Math.abs(rotateSpeed)>.05){
             DriveTrain.arcadeDrive(0, rotateSpeed);
-        }
-        else {
+        } else {
             stop();
+            alignedState = true;
         }
+        return alignedState;
+    }
+    
+    public static double getDistance() {
+        double distance = convertToDistance((leftUltrasonic.getAverageVoltage() + rightUltrasonic.getAverageVoltage())/2);
+        return distance;
     }
     
     public static void autoDistance(double targetDistance) {
