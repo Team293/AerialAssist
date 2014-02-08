@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.Ports;
 
 /**
@@ -136,9 +135,9 @@ public class DriveTrain {
         return distance;
     }
 
-    public static void autoDistance(double targetDistance) {
+    public static boolean autoDistance(double targetDistance) {
         autoAlign();
-
+        boolean returnValue = false;
         double actualDistance = convertToDistance((leftUltrasonic.getAverageVoltage() + rightUltrasonic.getAverageVoltage()) / 2);
         double difference = targetDistance - actualDistance;
 
@@ -153,7 +152,9 @@ public class DriveTrain {
             driveStraight(speed);
         } else {
             stop();
+            returnValue=true;
         }
+        return returnValue;
 
     }
 }

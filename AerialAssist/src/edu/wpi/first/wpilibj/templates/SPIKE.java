@@ -6,10 +6,15 @@
 /*----------------------------------------------------------------------------*/
 package edu.wpi.first.wpilibj.templates;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.templates.subsystems.Cage;
+import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
+import edu.wpi.first.wpilibj.templates.subsystems.Vision;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -21,7 +26,8 @@ import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
 public class SPIKE extends IterativeRobot {
 
     Timer t = new Timer();
-
+    DigitalInput ballLimit = new DigitalInput(Ports.ballLimit);
+    DigitalInput ballSetting = new DigitalInput(Ports.ballSetting);
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -35,6 +41,54 @@ public class SPIKE extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
+        
+        boolean secondaryBall = ballSetting.get();
+        double shootTime = 5; //Amount of time needed to shoot and move forward
+        double maxBackDistance = 6;
+        ShooterRack.setHighRPM();
+        ShooterRack.setToFiring();
+        
+
+        //if running two ball autonomous
+        if (secondaryBall) 
+        {
+            while (!DriveTrain.autoDistance(ShooterRack.shooterDistance)) {}
+            //shoot first ball
+            while (ShooterRack.isFiring())
+            {
+            ShooterRack.controlFiring();
+            }
+            //pick up second ball
+            while (!ballLimit.get() && DriveTrain.getDistance() < maxBackDistance) {
+                DriveTrain.driveStraight(-0.7);
+                Feeder.feed();
+            }
+            ShooterRack.setToFiring();
+        }
+        while (!DriveTrain.autoDistance(ShooterRack.shooterDistance)) {}
+        while (ballLimit.get()&&DriverStation.getInstance().getMatchTime()>shootTime) 
+        {
+             if (Vision.getBlobCount() == 2) 
+             {
+              while (ShooterRack.isFiring())
+              {
+                ShooterRack.controlFiring();
+              }
+             }
+        }
+        ShooterRack.setToFiring();
+        if (ballLimit.get())
+        {
+            while (ShooterRack.isFiring())
+            {
+                ShooterRack.controlFiring();
+            }
+        }
+        while(DriveTrain.getDistance()>5)//Close enough to the wall to count as being within our zone
+        {
+            DriveTrain.driveStraight(0.7);
+        }
+        DriveTrain.stop();
     }
 
     /**

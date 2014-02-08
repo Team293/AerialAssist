@@ -20,7 +20,7 @@ public class Feeder {
     private static final DigitalInput ballLimit = new DigitalInput(Ports.ballLimit);
 
     public static void feed() {
-        raiseShield();
+        triggerDisabled();
         if (!ballLimit.get()) {
             feeder.set(Relay.Value.kForward);
         } else {
@@ -40,13 +40,13 @@ public class Feeder {
         feeder.set(Relay.Value.kOff);
     }
 
-    public static void raiseShield() {
+    public static void triggerDisabled() {
         if (!ShooterRack.isFiring()) {
             trigger.set(Relay.Value.kForward);
         }
     }
 
-    public static void lowerShield() {
+    public static void triggerEnabled() {
         trigger.set(Relay.Value.kOff);
     }
 

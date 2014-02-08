@@ -56,6 +56,7 @@ public class Ports {
             //Digital Outputs
             ultrasonicSignal = 7,
             //optical limtis
-            ballLimit = 8;
+            ballLimit = 8,
+            ballSetting = 9;
 
 }

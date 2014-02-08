@@ -17,6 +17,7 @@ public class ShooterRack {
     private static final Shooter shooter2 = new Shooter(Ports.shooter2, Ports.shooter2EncA, Ports.shooter2EncB);
     private static final Shooter shooter3 = new Shooter(Ports.shooter3, Ports.shooter3EncA, Ports.shooter3EncB);
     private static boolean firing = false;
+    public static final double shooterDistance = 10; //Random optimum distance from the wall
 
     public static void initShooter() {
         shooter1.enc.start();
@@ -25,16 +26,15 @@ public class ShooterRack {
         shooter2.enc.reset();
         shooter1.pid.setPercentTolerance(5);
     }
-
     public static void controlFiring() {
         if (firing) {
             if (atRPM()) {
-                Feeder.lowerShield();
+                Feeder.triggerEnabled();
                 Feeder.feed();
             }
             if (!Feeder.possessing()) {
                 firing=false;
-                Feeder.raiseShield();
+                Feeder.triggerDisabled();
                 Feeder.stopFeed();
             }
         }
