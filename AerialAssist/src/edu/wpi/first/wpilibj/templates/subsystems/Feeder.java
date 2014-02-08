@@ -7,7 +7,6 @@ package edu.wpi.first.wpilibj.templates.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.templates.Ports;
 
 /**
@@ -22,11 +21,19 @@ public class Feeder {
 
     public static void feed() {
         raiseShield();
-        feeder.set(Relay.Value.kForward);
+        if (!ballLimit.get()) {
+            feeder.set(Relay.Value.kForward);
+        } else {
+            stopFeed();
+        }
     }
 
     public static void pass() {
-        feeder.set(Relay.Value.kReverse);
+        if (ballLimit.get()) {
+            feeder.set(Relay.Value.kReverse);
+        } else {
+            stopFeed();
+        }
     }
 
     public static void stopFeed() {
@@ -34,7 +41,9 @@ public class Feeder {
     }
 
     public static void raiseShield() {
-        trigger.set(Relay.Value.kForward);
+        if (!ShooterRack.isFiring()) {
+            trigger.set(Relay.Value.kForward);
+        }
     }
 
     public static void lowerShield() {

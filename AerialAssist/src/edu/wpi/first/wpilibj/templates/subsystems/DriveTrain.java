@@ -26,7 +26,7 @@ public class DriveTrain {
     private static final AnalogChannel rightUltrasonic = new AnalogChannel(Ports.rightUltrasonic);
     private static final AnalogChannel leftUltrasonic = new AnalogChannel(Ports.leftUltrasonic);
     private static final DigitalOutput ultrasonicSignal = new DigitalOutput(Ports.ultrasonicSignal);
-    private static double kP = 0;
+    private static final double kStright = 0.13, kTurn = 180;
 
     private static final RobotDrive drive = new RobotDrive(leftMotor1, leftMotor2,
             rightMotor1, rightMotor2);
@@ -56,13 +56,13 @@ public class DriveTrain {
      *
      * @param speed
      */
+    //DONT FORGET TO RESET GYRO BEFORE YOU USE THIS
     public static void driveStraight(double speed) {
         //read the gyro
         double angle = gyro.getAngle();
         //calculate motor output
-        kP = SmartDashboard.getNumber("kP", 0.1);
-        double rightMotorOutput = speed + kP * angle;
-        double leftMotorOutput = speed - kP * angle;
+        double rightMotorOutput = speed + kStright * angle;
+        double leftMotorOutput = speed - kStright * angle;
         if (rightMotorOutput > 1) {
             rightMotorOutput = 1;
         }
@@ -85,12 +85,12 @@ public class DriveTrain {
 
         double current = gyro.getAngle();
 
-        double difference = targetAngle - current;
+        double error = targetAngle - current;
 
         double speed = 0;
 
-        if (Math.abs(difference) > 5) {
-            speed = difference / 180;
+        if (Math.abs(error) > 5) {
+            speed = error / kTurn;
         } else {
             speed = 0;
         }

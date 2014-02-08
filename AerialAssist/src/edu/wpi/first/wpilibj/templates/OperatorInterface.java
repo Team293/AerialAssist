@@ -7,8 +7,8 @@ package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.SpikeButton;
-import edu.wpi.first.wpilibj.templates.subsystems.Catcher;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
 import edu.wpi.first.wpilibj.templates.subsystems.Vision;
 
@@ -34,7 +34,13 @@ public class OperatorInterface {
     }
 
     public static void controlFeeder() {
-        
+        if (!ShooterRack.isFiring()) {
+            if (toggleFeeder.getState()) {
+                Feeder.feed();
+            } else {
+                Feeder.pass();
+            }
+        }
     }
 
     public static void controlCatcher() {
@@ -47,7 +53,7 @@ public class OperatorInterface {
             ShooterRack.setLowRPM();
         } else if (stopShooter.get()) {
             ShooterRack.stop();
-        } else if (fire.getClick()){
+        } else if (fire.getClick()) {
             ShooterRack.setToFiring();
         }
         ShooterRack.controlFiring();

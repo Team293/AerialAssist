@@ -5,7 +5,6 @@
  */
 package edu.wpi.first.wpilibj.templates.subsystems;
 
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.templates.Ports;
 
 /**
@@ -89,5 +88,9 @@ public class ShooterRack {
 
     public static void setToFiring() {
         firing = true;
+    }
+    
+    public static boolean isFiring() {
+        return firing;
     }
 }
