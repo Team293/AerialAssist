@@ -37,25 +37,7 @@ public class SPIKE extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-        DriveTrain.autoAlign();
-        DriveTrain.resetGyro();
-        Shooter.shoot();
-        //true means there is a second ball
-        if (ballSetting)
-        {
-            DriveTrain.timer.reset();
-            DriveTrain.driveStraight(2.25 , -0.70);//Made up Time
-            pickUpBallUsingFeeder();
-            DriveTrain.driveStraight(2.25 , 0.70);//Made up Time
-            AutoAlign.autoAlign();
-            shoot();
-        }
-        DriveTrain.timer.reset();
-        DriveTrain.driveStraight(2.25 , 0.70);//Made up Time  
-        
-        //shooting loop
-        
-        }
+    }
 
     /**
      * This function is called periodically during operator control
@@ -64,7 +46,7 @@ public class SPIKE extends IterativeRobot {
         OperatorInterface.controlDriveTrain();
         OperatorInterface.controlFeeder();
         OperatorInterface.controlShooter();
-        OperatorInterface.controlAuto();
+        OperatorInterface.controlAutoAlign();
         OperatorInterface.controlCatcher();
         OperatorInterface.controlCamera();
 
