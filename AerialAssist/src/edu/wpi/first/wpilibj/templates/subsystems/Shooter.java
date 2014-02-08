@@ -39,4 +39,9 @@ public class Shooter {
         pid.setPID(kP, kI, kD);
         pid.setSetpoint(setpoint);
     }
+    
+    public void stop(){
+        pid.disable();
+        motor.set(0.0);
+    }
 }

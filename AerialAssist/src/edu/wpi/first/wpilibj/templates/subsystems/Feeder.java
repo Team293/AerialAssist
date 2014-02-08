@@ -6,6 +6,7 @@
 package edu.wpi.first.wpilibj.templates.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.templates.Ports;
 
@@ -15,35 +16,32 @@ import edu.wpi.first.wpilibj.templates.Ports;
  */
 public class Feeder {
 
-    private static final Talon feeder = new Talon(Ports.feeder),
-            shield = new Talon(Ports.sheild);
-    private static final DigitalInput shieldUpperLimit = new DigitalInput(Ports.shieldUpperLimit),
-            shieldLowerLimit = new DigitalInput(Ports.shieldLowerLimit);
+    private static final Relay feeder = new Relay(Ports.feeder);
+    private static final Relay trigger = new Relay(Ports.trigger);
+    private static final DigitalInput ballLimit = new DigitalInput(Ports.ballLimit);
 
     public static void feed() {
         raiseShield();
-        feeder.set(1);
+        feeder.set(Relay.Value.kForward);
     }
 
     public static void pass() {
-        lowerShield();
-        feeder.set(-1);
+        feeder.set(Relay.Value.kReverse);
+    }
+
+    public static void stopFeed() {
+        feeder.set(Relay.Value.kOff);
     }
 
     public static void raiseShield() {
-        if (!shieldUpperLimit.get()) {
-            shield.set(1);
-        } else {
-            shield.set(0);
-        }
+        trigger.set(Relay.Value.kForward);
     }
 
     public static void lowerShield() {
-        if (!shieldLowerLimit.get()) {
-            shield.set(-1);
-        } else {
-            shield.set(0);
-        }
+        trigger.set(Relay.Value.kOff);
     }
 
+    public static boolean possessing() {
+        return ballLimit.get();
+    }
 }

@@ -14,11 +14,13 @@ import edu.wpi.first.wpilibj.templates.Ports;
  */
 public class Cage {
 
-    private static final Relay pinRelease = new Relay(Ports.cageRelay);
+    private static final Relay pinRelease1 = new Relay(Ports.cageRelease1);
+    private static final Relay pinRelease2 = new Relay(Ports.cageRelease2);
 
     public static void release() {
         //turns on solenoid and pulls out the pin
-        pinRelease.set(Relay.Value.kForward);
+        pinRelease1.set(Relay.Value.kForward);
+        pinRelease2.set(Relay.Value.kForward);
     }
 
 }

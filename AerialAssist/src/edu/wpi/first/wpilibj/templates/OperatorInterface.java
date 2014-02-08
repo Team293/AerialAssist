@@ -27,17 +27,17 @@ public class OperatorInterface {
             setHighRPM = new SpikeButton(gamepad, Ports.setHighRPM),
             setLowRPM = new SpikeButton(gamepad, Ports.setLowRPM),
             stopShooter = new SpikeButton(gamepad, Ports.stopShooter),
-            autoAlign = new SpikeButton(gamepad, Ports.autoOrient);
+            autoAlign = new SpikeButton(gamepad, Ports.autoAngle);
 
     public static void controlDriveTrain() {
         DriveTrain.tankDrive(leftJoystick.getY(), rightJoystick.getY());
     }
 
     public static void controlFeeder() {
+        
     }
 
     public static void controlCatcher() {
-        Catcher.setCatcher(catcher.getState());
     }
 
     public static void controlShooter() {
@@ -47,7 +47,10 @@ public class OperatorInterface {
             ShooterRack.setLowRPM();
         } else if (stopShooter.get()) {
             ShooterRack.stop();
+        } else if (fire.getClick()){
+            ShooterRack.setToFiring();
         }
+        ShooterRack.controlFiring();
     }
 
     public static void controlAutoAlign() {

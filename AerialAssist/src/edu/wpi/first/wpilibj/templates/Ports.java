@@ -6,22 +6,7 @@
 package edu.wpi.first.wpilibj.templates;
 
 /**
- *
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
- * @author POOP LA BOUCHE
-=======
- * @author CACA
->>>>>>> afe42d374bac73d8bdf141b562e2722a7b78ab3b
-=======
->>>>>>> 90416743978d314ada11f7f8f98cfe77394a2c97
-=======
->>>>>>> 90416743978d314ada11f7f8f98cfe77394a2c97
-=======
->>>>>>> 90416743978d314ada11f7f8f98cfe77394a2c97
- * @author Noam
+ * @author Peter
  */
 public class Ports {
 
@@ -36,37 +21,41 @@ public class Ports {
             stopShooter = 4,
             setHighRPM = 5,
             setLowRPM = 6,
-            autoOrient = 7,
+            autoAngle = 7,
             //axes
-            gamepadLeftXAxis=1,
-            gamepadLeftYAxis=2,
-            gamepadRightXAxis=3,
-            gamepadRightYAxis=4,
+            gamepadLeftXAxis = 1,
+            gamepadLeftYAxis = 2,
+            gamepadRightXAxis = 3,
+            gamepadRightYAxis = 4,
             //motors
-            leftDrive = 1,
-            rightDrive = 2,
-            cageRelay = 3,
-            cameraServo = 4,
-            catcherServo = 5,
-            feeder = 6,
-            sheild = 7,
-            shooter1 = 8,
-            shooter2 = 9,
-            shooter3 = 10,
+            leftDrive1 = 1,
+            leftDrive2 = 2,
+            rightDrive1 = 3,
+            rightDrive2 = 4,
+            cageRelease1 = 5,
+            cageRelease2 = 6,
+            feeder = 7,
+            trigger = 8,
+            shooter1 = 9,
+            shooter2 = 10,
+            shooter3 = 11,
+            cameraServo = 12,
+            catcherActuator = 13,
             //encoders
             shooter1EncA = 1,
             shooter1EncB = 2,
             shooter2EncA = 3,
             shooter2EncB = 4,
+            shooter3EncA = 5,
+            shooter3EncB = 6,            
             //gyros
             gyro = 1,
             //Ultrasonics
             rightUltrasonic = 2,
             leftUltrasonic = 3,
             //Digital Outputs
-            ultrasonicSignal=5,
-            //limits
-            shieldUpperLimit=6,
-            shieldLowerLimit=7;
+            ultrasonicSignal = 7,
+            //optical limtis
+            ballLimit = 8;
 
 }

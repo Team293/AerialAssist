@@ -16,13 +16,29 @@ public class ShooterRack {
 
     private static final Shooter shooter1 = new Shooter(Ports.shooter1, Ports.shooter1EncA, Ports.shooter1EncB);
     private static final Shooter shooter2 = new Shooter(Ports.shooter2, Ports.shooter2EncA, Ports.shooter2EncB);
-    private static final Talon shooter3 = new Talon(Ports.shooter3);
+    private static final Shooter shooter3 = new Shooter(Ports.shooter3, Ports.shooter3EncA, Ports.shooter3EncB);
+    private static boolean firing = false;
 
-    public static void startEncoders() {
+    public static void initShooter() {
         shooter1.enc.start();
         shooter1.enc.reset();
         shooter2.enc.start();
         shooter2.enc.reset();
+        shooter1.pid.setPercentTolerance(5);
+    }
+
+    public static void controlFiring() {
+        if (firing) {
+            if (atRPM()) {
+                Feeder.lowerShield();
+                Feeder.feed();
+            }
+            if (!Feeder.possessing()) {
+                firing=false;
+                Feeder.raiseShield();
+                Feeder.stopFeed();
+            }
+        }
     }
 
     public static void setHighRPM() {
@@ -34,7 +50,7 @@ public class ShooterRack {
         }
         shooter1.pid.setSetpoint(2400);
         shooter2.pid.setSetpoint(1600);
-        shooter3.set(0.8);
+        shooter2.pid.setSetpoint(800);
     }
 
     public static void setLowRPM() {
@@ -46,7 +62,7 @@ public class ShooterRack {
         }
         shooter1.pid.setSetpoint(1200);
         shooter2.pid.setSetpoint(800);
-        shooter3.set(0.5);
+        shooter2.pid.setSetpoint(400);
     }
 
     public static void setReverseRPM() {
@@ -58,14 +74,20 @@ public class ShooterRack {
         }
         shooter1.pid.setSetpoint(-400);
         shooter2.pid.setSetpoint(-60);
-        shooter3.set(0.0);
+        shooter3.pid.setSetpoint(0);
+    }
+
+    public static boolean atRPM() {
+        return shooter1.pid.onTarget() && shooter2.pid.onTarget() && shooter3.pid.onTarget();
     }
 
     public static void stop() {
-        shooter1.pid.disable();
-        shooter1.motor.set(0.0);
-        shooter2.pid.disable();
-        shooter2.motor.set(0.0);
-        shooter3.set(0.0);
+        shooter1.stop();
+        shooter2.stop();
+        shooter3.stop();
+    }
+
+    public static void setToFiring() {
+        firing = true;
     }
 }

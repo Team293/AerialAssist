@@ -18,33 +18,35 @@ import edu.wpi.first.wpilibj.templates.Ports;
  */
 public class DriveTrain {
 
-    private static final Talon leftMotor = new Talon(Ports.leftDrive);
-    private static final Talon rightMotor = new Talon(Ports.rightDrive);
+    private static final Talon leftMotor1 = new Talon(Ports.leftDrive1);
+    private static final Talon leftMotor2 = new Talon(Ports.leftDrive2);
+    private static final Talon rightMotor1 = new Talon(Ports.rightDrive1);
+    private static final Talon rightMotor2 = new Talon(Ports.rightDrive2);
     private static final Gyro gyro = new Gyro(Ports.gyro);
     private static final AnalogChannel rightUltrasonic = new AnalogChannel(Ports.rightUltrasonic);
     private static final AnalogChannel leftUltrasonic = new AnalogChannel(Ports.leftUltrasonic);
     private static final DigitalOutput ultrasonicSignal = new DigitalOutput(Ports.ultrasonicSignal);
     private static double kP = 0;
 
-    private static final RobotDrive drive = new RobotDrive(leftMotor,
-            rightMotor);
+    private static final RobotDrive drive = new RobotDrive(leftMotor1, leftMotor2,
+            rightMotor1, rightMotor2);
 
     public static void tankDrive(double leftMotor, double rightMotor) {
         drive.tankDrive(-leftMotor, -rightMotor);
     }
-    
+
     public static void arcadeDrive(double speed, double rotate) {
         drive.arcadeDrive(-speed, rotate);
     }
-    
+
     public static void stop() {
         drive.tankDrive(0, 0);
     }
-    
+
     public static void resetGyro() {
         gyro.reset();
     }
-    
+
     public static double getAngle() {
         double angle = gyro.getAngle();
         return angle;
@@ -75,24 +77,24 @@ public class DriveTrain {
         }
         //set motor output
         drive.tankDrive(-leftMotorOutput, -rightMotorOutput);
-   
+
     }
-    
+
     public static boolean turn(double targetAngle) {
         boolean state = false;
-        
+
         double current = gyro.getAngle();
-        
+
         double difference = targetAngle - current;
-        
+
         double speed = 0;
-        
+
         if (Math.abs(difference) > 5) {
             speed = difference / 180;
         } else {
             speed = 0;
         }
-        
+
         arcadeDrive(0, speed);
         if (targetAngle == current) {
             state = true;
@@ -103,25 +105,24 @@ public class DriveTrain {
     public static double convertToDistance(double rawVoltage) {
         return (rawVoltage + 0.0056) / 0.1141;
     }
-    
-    
-    public static boolean autoAlign(){
+
+    public static boolean autoAlign() {
         boolean alignedState = false;
-        
+
         double leftDistance = convertToDistance(leftUltrasonic.getVoltage());
         double rightDistance = convertToDistance(rightUltrasonic.getVoltage());
-        
+
         double difference = leftDistance - rightDistance;
-        
-        double rotateSpeed = difference/20;
-        
+
+        double rotateSpeed = difference / 20;
+
         if (rotateSpeed > 1) {
             rotateSpeed = 1;
         } else if (rotateSpeed < -1) {
             rotateSpeed = -1;
         }
-        
-        if (Math.abs(rotateSpeed)>.05){
+
+        if (Math.abs(rotateSpeed) > .05) {
             DriveTrain.arcadeDrive(0, rotateSpeed);
         } else {
             stop();
@@ -129,20 +130,20 @@ public class DriveTrain {
         }
         return alignedState;
     }
-    
+
     public static double getDistance() {
-        double distance = convertToDistance((leftUltrasonic.getAverageVoltage() + rightUltrasonic.getAverageVoltage())/2);
+        double distance = convertToDistance((leftUltrasonic.getAverageVoltage() + rightUltrasonic.getAverageVoltage()) / 2);
         return distance;
     }
-    
+
     public static void autoDistance(double targetDistance) {
         autoAlign();
-        
-        double actualDistance = convertToDistance((leftUltrasonic.getAverageVoltage() + rightUltrasonic.getAverageVoltage())/2);
+
+        double actualDistance = convertToDistance((leftUltrasonic.getAverageVoltage() + rightUltrasonic.getAverageVoltage()) / 2);
         double difference = targetDistance - actualDistance;
-        
-        double speed = difference/4;
-        
+
+        double speed = difference / 4;
+
         if (speed > 1) {
             speed = 1;
         } else if (speed < -1) {

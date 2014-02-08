@@ -30,7 +30,7 @@ public class SPIKE extends IterativeRobot {
      */
     public void robotInit() {
         Cage.release();
-        ShooterRack.startEncoders();
+        ShooterRack.initShooter();
     }
 
     /**
