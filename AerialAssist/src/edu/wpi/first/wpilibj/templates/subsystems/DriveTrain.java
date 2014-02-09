@@ -105,9 +105,7 @@ public class DriveTrain {
         return (rawVoltage + 0.0056) / 0.1141;
     }
 
-    public static boolean autoAlign() {
-        boolean alignedState = false;
-
+    public static double getAutoAlignSpeed() {
         double leftDistance = convertToDistance(leftUltrasonic.getVoltage());
         double rightDistance = convertToDistance(rightUltrasonic.getVoltage());
 
@@ -121,30 +119,28 @@ public class DriveTrain {
             rotateSpeed = -1;
         }
 
+        return rotateSpeed;
+    }
+
+    public static boolean autoAlign() {
+        double rotateSpeed = getAutoAlignSpeed();
         if (Math.abs(rotateSpeed) > .05) {
             DriveTrain.arcadeDrive(0, rotateSpeed);
         } else {
             stop();
-            alignedState = true;
+            return true;
         }
-        return alignedState;
+        return false;
     }
 
     public static boolean autoAligned() {
-        boolean alignedState = false;
-
-        double leftDistance = convertToDistance(leftUltrasonic.getVoltage());
-        double rightDistance = convertToDistance(rightUltrasonic.getVoltage());
-
-        double difference = leftDistance - rightDistance;
-
-        double rotateSpeed = difference / 20;
-
-        if (Math.abs(rotateSpeed) < .05) {
-            alignedState = true;
+        double rotateSpeed = getAutoAlignSpeed();
+        if (Math.abs(rotateSpeed) < 0.05) {
+            return true;
         }
-        return alignedState;
+        return false;
     }
+
     public static double getDistance() {
         double distance = convertToDistance((leftUltrasonic.getAverageVoltage() + rightUltrasonic.getAverageVoltage()) / 2);
         return distance;
