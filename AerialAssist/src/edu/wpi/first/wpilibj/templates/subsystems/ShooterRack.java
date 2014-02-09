@@ -13,19 +13,12 @@ import edu.wpi.first.wpilibj.templates.Ports;
  */
 public class ShooterRack {
 
-    private static final Shooter shooter1 = new Shooter(Ports.shooter1, Ports.shooter1EncA, Ports.shooter1EncB);
-    private static final Shooter shooter2 = new Shooter(Ports.shooter2, Ports.shooter2EncA, Ports.shooter2EncB);
-    private static final Shooter shooter3 = new Shooter(Ports.shooter3, Ports.shooter3EncA, Ports.shooter3EncB);
-    private static boolean firing = false;
+    static final Shooter shooter1 = new Shooter(Ports.shooter1, Ports.shooter1EncA, Ports.shooter1EncB);
+    static final Shooter shooter2 = new Shooter(Ports.shooter2, Ports.shooter2EncA, Ports.shooter2EncB);
+    static final Shooter shooter3 = new Shooter(Ports.shooter3, Ports.shooter3EncA, Ports.shooter3EncB);
+    static boolean firing = false;
     public static final double shooterDistance = 10; //Random optimum distance from the wall
 
-    public static void initShooter() {
-        shooter1.enc.start();
-        shooter1.enc.reset();
-        shooter2.enc.start();
-        shooter2.enc.reset();
-        shooter1.pid.setPercentTolerance(5);
-    }
     public static void controlFiring() {
         if (firing) {
             if (atRPM()) {
@@ -33,7 +26,7 @@ public class ShooterRack {
                 Feeder.feed();
             }
             if (!Feeder.possessing()) {
-                firing=false;
+                firing = false;
                 Feeder.triggerDisabled();
                 Feeder.stopFeed();
             }
@@ -89,7 +82,7 @@ public class ShooterRack {
     public static void setToFiring() {
         firing = true;
     }
-    
+
     public static boolean isFiring() {
         return firing;
     }

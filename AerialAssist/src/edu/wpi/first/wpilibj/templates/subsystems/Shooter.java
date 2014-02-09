@@ -15,32 +15,36 @@ import edu.wpi.first.wpilibj.Talon;
  * @author Peter
  */
 public class Shooter {
-    
+
     Talon motor;
     Encoder enc;
     PIDController pid;
-    double kP = 0, kI = 0, kD = 0,setpoint=0;
-    
+    double kP = 0, kI = 0, kD = 0, kF, setpoint = 0;
+
     public static final double shootDistance = 14;
+
     /**
-     * 
+     *
      * @param motorPort
      * @param encAPort
-     * @param encBPort 
+     * @param encBPort
      */
     public Shooter(int motorPort, int encAPort, int encBPort) {
         motor = new Talon(motorPort);
         enc = new Encoder(encAPort, encBPort, true, CounterBase.EncodingType.k4X);
-        pid = new PIDController(kP, kI, kD, enc, motor);
-        
+        enc.start();
+        enc.setDistancePerPulse(1 / 256);
+        pid = new PIDController(kP, kI, kD, kF, enc, motor);
+        pid.setPercentTolerance(5);
+
     }
-    
+
     public void refresh() {
-        pid.setPID(kP, kI, kD);
+        pid.setPID(kP, kI, kD, kF);
         pid.setSetpoint(setpoint);
     }
-    
-    public void stop(){
+
+    public void stop() {
         pid.disable();
         motor.set(0.0);
     }

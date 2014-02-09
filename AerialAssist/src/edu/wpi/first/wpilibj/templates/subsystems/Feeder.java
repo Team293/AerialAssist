@@ -15,9 +15,9 @@ import edu.wpi.first.wpilibj.templates.Ports;
  */
 public class Feeder {
 
-    private static final Relay feeder = new Relay(Ports.feeder);
-    private static final Relay trigger = new Relay(Ports.trigger);
-    private static final DigitalInput ballLimit = new DigitalInput(Ports.ballLimit);
+    static final Relay feeder = new Relay(Ports.feeder);
+    static final Relay trigger = new Relay(Ports.trigger);
+    static final DigitalInput ballLimit = new DigitalInput(Ports.ballLimit);
 
     public static void feed() {
         triggerDisabled();
