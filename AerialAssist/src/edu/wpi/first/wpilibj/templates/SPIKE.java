@@ -53,7 +53,7 @@ public class SPIKE extends IterativeRobot {
 
         //if running two ball autonomous
         if (secondaryBall) {
-            while (!DriveTrain.autoDistance(ShooterRack.shooterDistance)) {
+            while (!DriveTrain.autoDistance(ShooterRack.shooterDistance, 0.7)) {
             }
             //shoot first ball
             while (ShooterRack.isFiring()) {
@@ -66,7 +66,7 @@ public class SPIKE extends IterativeRobot {
             }
             ShooterRack.setToFiring();
         }
-        while (!DriveTrain.autoDistance(ShooterRack.shooterDistance)) {
+        while (!DriveTrain.autoDistance(ShooterRack.shooterDistance, 0.7)) {
         }
         while (Feeder.ballLimit.get() && DriverStation.getInstance().getMatchTime() > shootTime) {
             if (Vision.getBlobCount() == 2) {
@@ -81,9 +81,9 @@ public class SPIKE extends IterativeRobot {
                 ShooterRack.controlFiring();
             }
         }
-        while (DriveTrain.getDistance() > 5)//Close enough to the wall to count as being within our zone
+
+        while (!DriveTrain.autoDistance(5, 0.7))//Close enough to the wall to count as being within our zone
         {
-            DriveTrain.driveStraight(0.7);
         }
         DriveTrain.stop();
     }
