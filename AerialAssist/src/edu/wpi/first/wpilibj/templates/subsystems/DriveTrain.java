@@ -17,18 +17,16 @@ import edu.wpi.first.wpilibj.templates.Ports;
  */
 public class DriveTrain {
 
-    private static final Talon leftMotor1 = new Talon(Ports.leftDrive1);
-    private static final Talon leftMotor2 = new Talon(Ports.leftDrive2);
-    private static final Talon rightMotor1 = new Talon(Ports.rightDrive1);
-    private static final Talon rightMotor2 = new Talon(Ports.rightDrive2);
-    private static final Gyro gyro = new Gyro(Ports.gyro);
-    private static final AnalogChannel rightUltrasonic = new AnalogChannel(Ports.rightUltrasonic);
-    private static final AnalogChannel leftUltrasonic = new AnalogChannel(Ports.leftUltrasonic);
-    private static final DigitalOutput ultrasonicSignal = new DigitalOutput(Ports.ultrasonicSignal);
-    private static final double kStright = 0.13, kTurn = 180;
+    static final Talon leftMotor = new Talon(Ports.leftDrive);
+    static final Talon rightMotor = new Talon(Ports.rightDrive);
+    static final Gyro gyro = new Gyro(Ports.gyro);
+    static final AnalogChannel rightUltrasonic = new AnalogChannel(Ports.rightUltrasonic);
+    static final AnalogChannel leftUltrasonic = new AnalogChannel(Ports.leftUltrasonic);
+    static final DigitalOutput ultrasonicSignal = new DigitalOutput(Ports.ultrasonicSignal);
+    static final double kStright = 0.13, kTurn = 180;
 
-    private static final RobotDrive drive = new RobotDrive(leftMotor1, leftMotor2,
-            rightMotor1, rightMotor2);
+    private static final RobotDrive drive = new RobotDrive(leftMotor,
+            rightMotor);
 
     public static void tankDrive(double leftMotor, double rightMotor) {
         drive.tankDrive(-leftMotor, -rightMotor);
@@ -105,9 +103,7 @@ public class DriveTrain {
         return (rawVoltage + 0.0056) / 0.1141;
     }
 
-    public static boolean autoAlign() {
-        boolean alignedState = false;
-
+    public static double getAutoAlignSpeed() {
         double leftDistance = convertToDistance(leftUltrasonic.getVoltage());
         double rightDistance = convertToDistance(rightUltrasonic.getVoltage());
 
@@ -121,30 +117,28 @@ public class DriveTrain {
             rotateSpeed = -1;
         }
 
+        return rotateSpeed;
+    }
+
+    public static boolean autoAlign() {
+        double rotateSpeed = getAutoAlignSpeed();
         if (Math.abs(rotateSpeed) > .05) {
             DriveTrain.arcadeDrive(0, rotateSpeed);
         } else {
             stop();
-            alignedState = true;
+            return true;
         }
-        return alignedState;
+        return false;
     }
 
     public static boolean autoAligned() {
-        boolean alignedState = false;
-
-        double leftDistance = convertToDistance(leftUltrasonic.getVoltage());
-        double rightDistance = convertToDistance(rightUltrasonic.getVoltage());
-
-        double difference = leftDistance - rightDistance;
-
-        double rotateSpeed = difference / 20;
-
-        if (Math.abs(rotateSpeed) < .05) {
-            alignedState = true;
+        double rotateSpeed = getAutoAlignSpeed();
+        if (Math.abs(rotateSpeed) < 0.05) {
+            return true;
         }
-        return alignedState;
+        return false;
     }
+
     public static double getDistance() {
         double distance = convertToDistance((leftUltrasonic.getAverageVoltage() + rightUltrasonic.getAverageVoltage()) / 2);
         return distance;

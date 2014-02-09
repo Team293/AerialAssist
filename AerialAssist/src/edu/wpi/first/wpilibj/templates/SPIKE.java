@@ -10,11 +10,13 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.templates.subsystems.Cage;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
 import edu.wpi.first.wpilibj.templates.subsystems.LEDs;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
+import edu.wpi.first.wpilibj.templates.subsystems.Test;
 import edu.wpi.first.wpilibj.templates.subsystems.Vision;
 
 /**
@@ -35,8 +37,8 @@ public class SPIKE extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
+        Test.addComponents();
         Cage.release();
-        ShooterRack.initShooter();
     }
 
     /**
@@ -105,7 +107,7 @@ public class SPIKE extends IterativeRobot {
      * This function is called periodically during test mode
      */
     public void testPeriodic() {
-
+        LiveWindow.run();
     }
 
 }
