@@ -17,7 +17,7 @@ public class Feeder {
 
     static final Relay feeder = new Relay(Ports.feeder);
     static final Relay trigger = new Relay(Ports.trigger);
-    static final DigitalInput ballLimit = new DigitalInput(Ports.ballLimit);
+    public static final DigitalInput ballLimit = new DigitalInput(Ports.ballLimit);
 
     public static void feed() {
         triggerDisabled();

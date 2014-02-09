@@ -66,6 +66,8 @@ public class OperatorInterface {
     }
 
     public static void controlCamera() {
-        Vision.setServo(gamepad.getRawAxis(Ports.gamepadLeftYAxis));
+        double pos = gamepad.getRawAxis(Ports.gamepadLeftYAxis);
+        pos = pos / 4 + 0.5;
+        Vision.setServo(pos);
     }
 }
