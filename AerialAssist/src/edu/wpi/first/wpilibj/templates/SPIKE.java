@@ -29,7 +29,6 @@ import edu.wpi.first.wpilibj.templates.subsystems.Vision;
 public class SPIKE extends IterativeRobot {
 
     Timer t = new Timer();
-    DigitalInput ballLimit = new DigitalInput(Ports.ballLimit);
     DigitalInput ballSetting = new DigitalInput(Ports.ballSetting);
 
     /**
@@ -37,8 +36,8 @@ public class SPIKE extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-        Test.addComponents();
-        Cage.release();
+        //Test.addComponents();
+        //Cage.release();
     }
 
     /**
@@ -54,22 +53,22 @@ public class SPIKE extends IterativeRobot {
 
         //if running two ball autonomous
         if (secondaryBall) {
-            while (!DriveTrain.autoDistance(ShooterRack.shooterDistance)) {
+            while (!DriveTrain.autoDistance(ShooterRack.shooterDistance, 0.7)) {
             }
             //shoot first ball
             while (ShooterRack.isFiring()) {
                 ShooterRack.controlFiring();
             }
             //pick up second ball
-            while (!ballLimit.get() && DriveTrain.getDistance() < maxBackDistance) {
+            while (!Feeder.ballLimit.get() && DriveTrain.getDistance() < maxBackDistance) {
                 DriveTrain.driveStraight(-0.7);
                 Feeder.feed();
             }
             ShooterRack.setToFiring();
         }
-        while (!DriveTrain.autoDistance(ShooterRack.shooterDistance)) {
+        while (!DriveTrain.autoDistance(ShooterRack.shooterDistance, 0.7)) {
         }
-        while (ballLimit.get() && DriverStation.getInstance().getMatchTime() > shootTime) {
+        while (Feeder.ballLimit.get() && DriverStation.getInstance().getMatchTime() > shootTime) {
             if (Vision.getBlobCount() == 2) {
                 while (ShooterRack.isFiring()) {
                     ShooterRack.controlFiring();
@@ -77,14 +76,14 @@ public class SPIKE extends IterativeRobot {
             }
         }
         ShooterRack.setToFiring();
-        if (ballLimit.get()) {
+        if (Feeder.ballLimit.get()) {
             while (ShooterRack.isFiring()) {
                 ShooterRack.controlFiring();
             }
         }
-        while (DriveTrain.getDistance() > 5)//Close enough to the wall to count as being within our zone
+
+        while (!DriveTrain.autoDistance(5, 0.7))//Close enough to the wall to count as being within our zone
         {
-            DriveTrain.driveStraight(0.7);
         }
         DriveTrain.stop();
     }
@@ -93,12 +92,12 @@ public class SPIKE extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        LEDs.indicatedSituation();
+        //LEDs.indicatedSituation();
         OperatorInterface.controlDriveTrain();
         OperatorInterface.controlFeeder();
         OperatorInterface.controlShooter();
-        OperatorInterface.controlAutoAlign();
-        OperatorInterface.controlCatcher();
+        //OperatorInterface.controlAutoAlign();
+        //OperatorInterface.controlCatcher();
         OperatorInterface.controlCamera();
 
     }

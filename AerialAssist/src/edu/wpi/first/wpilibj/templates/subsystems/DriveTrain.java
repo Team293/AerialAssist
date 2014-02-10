@@ -144,26 +144,28 @@ public class DriveTrain {
         return distance;
     }
 
-    public static boolean autoDistance(double targetDistance) {
+    public static boolean autoDistance(double targetDistance, double speed) {
         autoAlign();
-        boolean returnValue = false;
         double actualDistance = convertToDistance((leftUltrasonic.getAverageVoltage() + rightUltrasonic.getAverageVoltage()) / 2);
         double difference = targetDistance - actualDistance;
 
-        double speed = difference / 4;
-
-        if (speed > 1) {
-            speed = 1;
-        } else if (speed < -1) {
-            speed = -1;
-        }
-        if (Math.abs(speed) > 0.125) {
+//        double speed = difference / 4;
+//        if (speed > 1) {
+//            speed = 1;
+//        } else if (speed < -1) {
+//            speed = -1;
+//        }
+//        if (Math.abs(speed) > 0.125) {
+//            driveStraight(speed);
+        if (difference > 0.5) {
             driveStraight(speed);
+        } else if (difference < -0.5) {
+            driveStraight(-speed);
         } else {
             stop();
-            returnValue = true;
+            return true;
         }
-        return returnValue;
+        return false;
 
     }
 }
