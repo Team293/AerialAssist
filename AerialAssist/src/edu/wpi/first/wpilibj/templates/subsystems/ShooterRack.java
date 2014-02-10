@@ -13,9 +13,9 @@ import edu.wpi.first.wpilibj.templates.Ports;
  */
 public class ShooterRack {
 
-    static final Shooter shooter1 = new Shooter(Ports.shooter1, Ports.shooter1EncA, Ports.shooter1EncB);
-    static final Shooter shooter2 = new Shooter(Ports.shooter2, Ports.shooter2EncA, Ports.shooter2EncB);
-    static final Shooter shooter3 = new Shooter(Ports.shooter3, Ports.shooter3EncA, Ports.shooter3EncB);
+    public static final Shooter shooter1 = new Shooter(Ports.shooter1, Ports.shooter1EncA, Ports.shooter1EncB);
+    public static final Shooter shooter2 = new Shooter(Ports.shooter2, Ports.shooter2EncA, Ports.shooter2EncB);
+    public static final Shooter shooter3 = new Shooter(Ports.shooter3, Ports.shooter3EncA, Ports.shooter3EncB);
     static boolean firing = false;
     public static final double shooterDistance = 10; //Random optimum distance from the wall
 

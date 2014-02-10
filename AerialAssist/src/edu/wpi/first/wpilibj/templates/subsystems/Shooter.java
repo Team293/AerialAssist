@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.Talon;
  */
 public class Shooter {
 
-    Talon motor;
+    public Talon motor;
     Encoder enc;
     PIDController pid;
     double kP = 0, kI = 0, kD = 0, kF, setpoint = 0;

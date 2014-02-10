@@ -7,6 +7,7 @@ package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.SpikeButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
@@ -44,6 +45,15 @@ public class OperatorInterface {
     }
 
     public static void controlCatcher() {
+    }
+
+    public static void manualControlShooter() {
+        double speed1 = SmartDashboard.getNumber("1", 0.0);
+        double speed2 = SmartDashboard.getNumber("2", 0.0);
+        double speed3 = SmartDashboard.getNumber("3", 0.0);
+        ShooterRack.shooter1.motor.set(speed1);
+        ShooterRack.shooter2.motor.set(speed2);
+        ShooterRack.shooter3.motor.set(speed3);
     }
 
     public static void controlShooter() {

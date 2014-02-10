@@ -11,12 +11,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.templates.subsystems.Cage;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
-import edu.wpi.first.wpilibj.templates.subsystems.LEDs;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
-import edu.wpi.first.wpilibj.templates.subsystems.Test;
 import edu.wpi.first.wpilibj.templates.subsystems.Vision;
 
 /**
@@ -38,6 +36,9 @@ public class SPIKE extends IterativeRobot {
     public void robotInit() {
         //Test.addComponents();
         //Cage.release();
+        SmartDashboard.putNumber("1", 0.0);
+        SmartDashboard.putNumber("2", 0.0);
+        SmartDashboard.putNumber("3", 0.0);
     }
 
     /**
@@ -95,10 +96,11 @@ public class SPIKE extends IterativeRobot {
         //LEDs.indicatedSituation();
         OperatorInterface.controlDriveTrain();
         OperatorInterface.controlFeeder();
-        OperatorInterface.controlShooter();
+        //OperatorInterface.controlShooter();
+        OperatorInterface.manualControlShooter();
         //OperatorInterface.controlAutoAlign();
         //OperatorInterface.controlCatcher();
-        OperatorInterface.controlCamera();
+        //OperatorInterface.controlCamera();
 
     }
 
