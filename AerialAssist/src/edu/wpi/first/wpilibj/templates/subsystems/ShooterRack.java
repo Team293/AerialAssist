@@ -86,4 +86,9 @@ public class ShooterRack {
     public static boolean isFiring() {
         return firing;
     }
+    public static void autonomousFiring(){
+        while (firing){
+            controlFiring();
+        }
+    }
 }
