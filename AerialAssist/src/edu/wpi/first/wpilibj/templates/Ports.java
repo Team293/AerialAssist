@@ -15,13 +15,17 @@ public class Ports {
             rightJoystick = 2,
             gamepad = 3,
             //buttons
-            AButton = 1,
-            triggerButton = 2,
-            BButton = 2,
-            XButton = 3,
-            leftTrigger = 6,
-            rightTrigger = 7,
-            YButton = 4,
+            //___right joystick
+            fire = 1,
+            toggleDriveDirection = 3,
+            //___gamepad
+            toggleFeeder = 1,
+            pass = 2,
+            catcher = 3,
+            stopShooter = 4,
+            setHighRPM = 5,
+            setLowRPM = 6,
+            autoAlign = 7,
             //axes
             gamepadLeftXAxis = 1,
             gamepadLeftYAxis = 2,
@@ -30,22 +34,22 @@ public class Ports {
             //motors
             leftDrive = 1,
             rightDrive = 2,
-            feeder = 3,
-            cageRelease = 4,
-            trigger = 8,
-            shooter1 = 5,
-            shooter2 = 6,
-            shooter3 = 7,
+            feeder = 1,
+            trigger = 2,
+            cageRelease = 3,
+            shooter1 = 3,
+            shooter2 = 4,
+            shooter3 = 5,
             cameraServo = 10,
             catcherActuator1 = 9,
             catcherActuator2 = 9,
             //encoders
-            shooter1EncA = 2,
-            shooter1EncB = 3,
-            shooter2EncA = 4,
-            shooter2EncB = 5,
-            shooter3EncA = 6,
-            shooter3EncB = 7,
+            shooter1EncA = 3,
+            shooter1EncB = 4,
+            shooter2EncA = 5,
+            shooter2EncB = 6,
+            shooter3EncA = 7,
+            shooter3EncB = 8,
             //gyros
             gyro = 1,
             //Ultrasonics
@@ -59,6 +63,6 @@ public class Ports {
             led4 = 13,
             //optical limtis
             ballLimit = 1,
-            ballSetting = 8;
+            ballSetting = 2;
 
 }

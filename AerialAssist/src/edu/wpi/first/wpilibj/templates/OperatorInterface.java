@@ -22,13 +22,14 @@ public class OperatorInterface {
     private static final Joystick leftJoystick = new Joystick(Ports.leftJoystick),
             rightJoystick = new Joystick(Ports.rightJoystick),
             gamepad = new Joystick(Ports.gamepad);
-    private static final SpikeButton toggleFeeder = new SpikeButton(gamepad, Ports.AButton),
-            fire = new SpikeButton(leftJoystick, Ports.triggerButton),
-            catcher = new SpikeButton(gamepad, Ports.leftTrigger),
-            setHighRPM = new SpikeButton(gamepad, Ports.XButton),
-            setLowRPM = new SpikeButton(gamepad, Ports.YButton),
-            stopShooter = new SpikeButton(gamepad, Ports.BButton),
-            autoAlign = new SpikeButton(gamepad, Ports.rightTrigger);
+    private static final SpikeButton toggleFeeder = new SpikeButton(gamepad, Ports.toggleFeeder),
+            fire = new SpikeButton(leftJoystick, Ports.fire),
+            pass = new SpikeButton(gamepad, Ports.pass),
+            //catcher = new SpikeButton(gamepad, Ports.leftTrigger),
+            setHighRPM = new SpikeButton(gamepad, Ports.setHighRPM),
+            setLowRPM = new SpikeButton(gamepad, Ports.setLowRPM),
+            stopShooter = new SpikeButton(gamepad, Ports.stopShooter),
+            autoAlign = new SpikeButton(gamepad, Ports.autoAlign);
 
     public static void controlDriveTrain() {
         DriveTrain.tankDrive(leftJoystick.getY(), rightJoystick.getY());
@@ -36,10 +37,12 @@ public class OperatorInterface {
 
     public static void controlFeeder() {
         if (!ShooterRack.isFiring()) {
-            if (toggleFeeder.getState()) {
+            if (pass.get()) {
+                Feeder.pass();
+            } else if (toggleFeeder.getState()) {
                 Feeder.feed();
             } else {
-                Feeder.pass();
+                Feeder.stopFeed();
             }
         }
     }
@@ -57,12 +60,13 @@ public class OperatorInterface {
     }
 
     public static void controlShooter() {
+        if (!stopShooter.getState()) {
+            ShooterRack.stop();
+        }
         if (setHighRPM.get()) {
             ShooterRack.setHighRPM();
         } else if (setLowRPM.get()) {
             ShooterRack.setLowRPM();
-        } else if (stopShooter.get()) {
-            ShooterRack.stop();
         } else if (fire.getClick()) {
             ShooterRack.setToFiring();
         }
