@@ -22,7 +22,7 @@ public class LEDs {
     public static final DigitalOutput led4 = new DigitalOutput(Ports.led4);
     public static final DigitalInput ballLimit = new DigitalInput(Ports.ballLimit);
 
-    public static void indicatedSituation() {
+    public static void indicateSituation() {
         if (ballLimit.get()) {
             led1.set(true);
             led2.set(true);
