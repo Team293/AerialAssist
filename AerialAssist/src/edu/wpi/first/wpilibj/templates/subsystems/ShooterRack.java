@@ -31,15 +31,28 @@ public class ShooterRack {
                 Feeder.stopFeed();
             }
         }
+        run();
+    }
+
+    private static void run() {
+        shooterLow.run();
+        shooterMiddle.run();
+        shooterHigh.run();
     }
 
     public static void setHighRPM() {
+        shooterLow.enable();
+        shooterMiddle.enable();
+        shooterHigh.enable();
         shooterLow.setSetpoint(800);
         shooterMiddle.setSetpoint(600);
         shooterHigh.setSetpoint(400);
     }
 
     public static void setLowRPM() {
+        shooterLow.enable();
+        shooterMiddle.enable();
+        shooterHigh.enable();
         shooterLow.setSetpoint(400);
         shooterMiddle.setSetpoint(600);
         shooterHigh.setSetpoint(200);

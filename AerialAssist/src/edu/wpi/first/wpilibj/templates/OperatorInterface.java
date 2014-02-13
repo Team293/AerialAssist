@@ -33,14 +33,19 @@ public class OperatorInterface {
             autoAlign = new SpikeButton(gamepad, Ports.autoAlign);
 
     public static void controlDriveTrain() {
-        if (toggleDriveDirection.getState()) {
-            DriveTrain.tankDrive(leftJoystick.getY(), rightJoystick.getY());
-        } else {
-            DriveTrain.tankDrive(-rightJoystick.getY(), -leftJoystick.getY());
+        //prevent from manually driving if autoaiming
+        if (!autoAlign.get()) {
+            //check which way is forward
+            if (toggleDriveDirection.getState()) {
+                DriveTrain.tankDrive(leftJoystick.getY(), rightJoystick.getY());
+            } else {
+                DriveTrain.tankDrive(-rightJoystick.getY(), -leftJoystick.getY());
+            }
         }
     }
 
     public static void controlFeeder() {
+        //no manula control on feeder if you're shooting
         if (!ShooterRack.isFiring()) {
             if (pass.get()) {
                 Feeder.pass();
@@ -52,16 +57,14 @@ public class OperatorInterface {
         }
     }
 
-    public static void controlCatcher() {
-    }
-
     public static void manualControlShooter() {
+        //read in setpoint from smart dashboard
         double speed1 = SmartDashboard.getNumber("1", 0.0);
         double speed2 = SmartDashboard.getNumber("2", 0.0);
         double speed3 = SmartDashboard.getNumber("3", 0.0);
-        ShooterRack.shooterLow.motor.set(speed1);
-        ShooterRack.shooterMiddle.motor.set(speed2);
-        ShooterRack.shooterHigh.motor.set(speed3);
+        ShooterRack.shooterLow.setSetpoint(speed1);
+        ShooterRack.shooterMiddle.setSetpoint(speed2);
+        ShooterRack.shooterHigh.setSetpoint(speed3);
     }
 
     public static void controlShooter() {
@@ -85,8 +88,9 @@ public class OperatorInterface {
     }
 
     public static void controlCamera() {
-        double pos = gamepad.getRawAxis(Ports.gamepadLeftYAxis);
-        pos = pos / 4 + 0.5;
+        //dividing by 4 decreases the range of the cameras motion
+        //0.75 centers that motion around a slightly upward angle
+        double pos = gamepad.getRawAxis(Ports.gamepadLeftYAxis) / 4 + 0.75;
         Vision.setServo(pos);
     }
 }

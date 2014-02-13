@@ -37,7 +37,7 @@ public class PShooter implements LiveWindowSendable {
     PShooter(int motorPort, int encoderA, int encoderB, double kP, double setpoint, boolean reversed) {
         motor = new Talon(motorPort);
         encoder = new SpikeEncoder(encoderA, encoderB);
-        this.kP = 0.004;
+        this.kP = 0.0015;
         this.setpoint = setpoint;
         this.id = ID;
         this.reversed = reversed;

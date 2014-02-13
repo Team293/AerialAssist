@@ -17,13 +17,15 @@ import edu.wpi.first.wpilibj.templates.Ports;
  */
 public class DriveTrain {
 
-    static final Talon leftMotor = new Talon(Ports.leftDrive);
-    static final Talon rightMotor = new Talon(Ports.rightDrive);
+    private static final Talon leftMotor = new Talon(Ports.leftDrive);
+    private static final Talon rightMotor = new Talon(Ports.rightDrive);
     static final Gyro gyro = new Gyro(Ports.gyro);
     static final AnalogChannel rightUltrasonic = new AnalogChannel(Ports.rightUltrasonic);
     static final AnalogChannel leftUltrasonic = new AnalogChannel(Ports.leftUltrasonic);
     static final DigitalOutput ultrasonicSignal = new DigitalOutput(Ports.ultrasonicSignal);
-    static final double kStright = 0.13, kTurn = 180;
+    private static final double kStright = 0.13, kTurn = 180;
+    private static double distanceToWall = 0;
+    private static int ping = 0;
 
     private static final RobotDrive drive = new RobotDrive(leftMotor,
             rightMotor);
@@ -99,10 +101,6 @@ public class DriveTrain {
         return state;
     }
 
-    public static double convertToDistance(double rawVoltage) {
-        return (rawVoltage + 0.0056) / 0.1141;
-    }
-
     public static double getAutoAlignSpeed() {
         double leftDistance = convertToDistance(leftUltrasonic.getVoltage());
         double rightDistance = convertToDistance(rightUltrasonic.getVoltage());
@@ -131,7 +129,7 @@ public class DriveTrain {
         return false;
     }
 
-    public static boolean autoAligned() {
+    public static boolean isAligned() {
         double rotateSpeed = getAutoAlignSpeed();
         if (Math.abs(rotateSpeed) < 0.05) {
             return true;
@@ -139,15 +137,21 @@ public class DriveTrain {
         return false;
     }
 
-    public static double getDistance() {
-        double distance = convertToDistance((leftUltrasonic.getAverageVoltage() + rightUltrasonic.getAverageVoltage()) / 2);
-        return distance;
+    public static double getDistanceToWall() {
+        ping++;
+        if (ping % 5 == 0) {
+            ultrasonicSignal.pulse(0.0001);
+        }
+        double leftDistance = convertToDistance(leftUltrasonic.getAverageVoltage());
+        double rightDistance = convertToDistance(rightUltrasonic.getAverageVoltage());
+        distanceToWall = (leftDistance + rightDistance) / 2.0;
+        return distanceToWall;
     }
 
     public static boolean autoDistance(double targetDistance, double speed) {
         autoAlign();
-        double actualDistance = convertToDistance((leftUltrasonic.getAverageVoltage() + rightUltrasonic.getAverageVoltage()) / 2);
-        double difference = targetDistance - actualDistance;
+
+        double difference = targetDistance - getDistanceToWall();
 
 //        double speed = difference / 4;
 //        if (speed > 1) {
@@ -166,6 +170,9 @@ public class DriveTrain {
             return true;
         }
         return false;
+    }
 
+    public static double convertToDistance(double rawVoltage) {
+        return (rawVoltage + 0.0056) / 0.1141;
     }
 }

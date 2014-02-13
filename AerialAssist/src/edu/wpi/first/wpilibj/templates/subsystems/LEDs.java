@@ -32,7 +32,7 @@ public class LEDs {
                 led1.set(Math.ceil(DriverStation.getInstance().getMatchTime() % 2) == 0);
                 led2.set(Math.ceil(DriverStation.getInstance().getMatchTime() % 2) == 0);
             }
-            if (DriveTrain.autoAligned()) {
+            if (DriveTrain.isAligned()) {
                 led1.set(Math.ceil(DriverStation.getInstance().getMatchTime() % 2) == 0);
                 led2.set(Math.ceil(DriverStation.getInstance().getMatchTime() % 2) == 0);
             }

@@ -21,18 +21,30 @@ public class Feeder {
 
     public static void feed() {
         triggerDisabled();
-        if (!ballLimit.get()) {
-            feeder.set(Relay.Value.kForward);
+        //check if reversed to prevent breaking stuff
+        //you dont want to go full reverse to full forward
+        if (feeder.get() == Relay.Value.kReverse) {
+            feeder.set(Relay.Value.kOff);
         } else {
-            stopFeed();
+            if (!ballLimit.get()) {
+                feeder.set(Relay.Value.kForward);
+            } else {
+                stopFeed();
+            }
         }
     }
 
     public static void pass() {
-        if (ballLimit.get()) {
-            feeder.set(Relay.Value.kReverse);
+        //check if forward to prevent breaking stuff
+        //you dont want to go full forward to full reverse
+        if (feeder.get() == Relay.Value.kForward) {
+            feeder.set(Relay.Value.kOff);
         } else {
-            stopFeed();
+            if (ballLimit.get()) {
+                feeder.set(Relay.Value.kReverse);
+            } else {
+                stopFeed();
+            }
         }
     }
 

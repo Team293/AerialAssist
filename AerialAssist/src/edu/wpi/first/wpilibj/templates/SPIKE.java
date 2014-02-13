@@ -65,7 +65,7 @@ public class SPIKE extends IterativeRobot {
             //shoot first ball
             ShooterRack.autonomousFiring();
             //pick up second ball
-            while (!Feeder.ballLimit.get() && DriveTrain.getDistance() < maxBackDistance) {
+            while (!Feeder.ballLimit.get() && DriveTrain.getDistanceToWall() < maxBackDistance) {
                 DriveTrain.driveStraight(-0.7);
                 Feeder.feed();
             }
@@ -96,7 +96,7 @@ public class SPIKE extends IterativeRobot {
         LEDs.indicateSituation();
         OperatorInterface.controlDriveTrain();
         OperatorInterface.controlFeeder();
-        OperatorInterface.controlShooter();
+        //OperatorInterface.controlShooter();
         OperatorInterface.manualControlShooter();
         //OperatorInterface.controlAutoAlign();
         OperatorInterface.controlCamera();

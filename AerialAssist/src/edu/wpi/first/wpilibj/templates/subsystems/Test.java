@@ -14,8 +14,6 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Test {
 
     public static void addComponents() {
-        LiveWindow.addActuator("Drive Train", "left drive", DriveTrain.leftMotor);
-        LiveWindow.addActuator("Drive Train", "right drive", DriveTrain.rightMotor);
         LiveWindow.addSensor("Drive Train", "gyro", DriveTrain.gyro);
         LiveWindow.addSensor("Drive Train", "left US", DriveTrain.leftUltrasonic);
         LiveWindow.addSensor("Drive Train", "right US", DriveTrain.rightUltrasonic);
@@ -32,8 +30,11 @@ public class Test {
         LiveWindow.addActuator("LEDs", "led3", LEDs.led3);
         LiveWindow.addActuator("LEDs", "led4", LEDs.led4);
 
-        LiveWindow.addSensor("ShooterRack", "enc1", ShooterRack.shooterLow);
-        LiveWindow.addSensor("ShooterRack", "enc2", ShooterRack.shooterMiddle);
-        LiveWindow.addSensor("ShooterRack", "enc3", ShooterRack.shooterHigh);
+        LiveWindow.addSensor("ShooterRack", "enc1", ShooterRack.shooterLow.encoder);
+        LiveWindow.addSensor("ShooterRack", "enc2", ShooterRack.shooterMiddle.encoder);
+        LiveWindow.addSensor("ShooterRack", "enc3", ShooterRack.shooterHigh.encoder);
+        LiveWindow.addSensor("ShooterRack", "enc1", ShooterRack.shooterLow.motor);
+        LiveWindow.addSensor("ShooterRack", "enc2", ShooterRack.shooterMiddle.motor);
+        LiveWindow.addSensor("ShooterRack", "enc3", ShooterRack.shooterHigh.motor);
     }
 }
