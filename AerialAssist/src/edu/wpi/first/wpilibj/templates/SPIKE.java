@@ -12,9 +12,12 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.templates.subsystems.Cage;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
+import edu.wpi.first.wpilibj.templates.subsystems.LEDs;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
+import edu.wpi.first.wpilibj.templates.subsystems.Test;
 import edu.wpi.first.wpilibj.templates.subsystems.Vision;
 
 /**
@@ -34,8 +37,11 @@ public class SPIKE extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-        //Test.addComponents();
-        //Cage.release();
+        Test.addComponents();
+    }
+
+    public void teleopInit() {
+        Cage.release();
         SmartDashboard.putNumber("1", 0.0);
         SmartDashboard.putNumber("2", 0.0);
         SmartDashboard.putNumber("3", 0.0);
@@ -73,7 +79,7 @@ public class SPIKE extends IterativeRobot {
             }
         }
         ShooterRack.setToFiring();
-        if (Feeder.ballLimit.get() && DriverStation.getInstance().getMatchTime()<8.0) {
+        if (Feeder.ballLimit.get() && DriverStation.getInstance().getMatchTime() < 8.0) {
             ShooterRack.autonomousFiring();
         }
 
@@ -87,15 +93,13 @@ public class SPIKE extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        //LEDs.indicateSituation();
+        LEDs.indicateSituation();
         OperatorInterface.controlDriveTrain();
         OperatorInterface.controlFeeder();
-        //OperatorInterface.controlShooter();
+        OperatorInterface.controlShooter();
         OperatorInterface.manualControlShooter();
         //OperatorInterface.controlAutoAlign();
-        //OperatorInterface.controlCatcher();
-        //OperatorInterface.controlCamera();
-
+        OperatorInterface.controlCamera();
     }
 
     /**

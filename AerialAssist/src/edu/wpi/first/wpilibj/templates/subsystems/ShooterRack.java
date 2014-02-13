@@ -13,70 +13,46 @@ import edu.wpi.first.wpilibj.templates.Ports;
  */
 public class ShooterRack {
 
-    public static final Shooter shooter1 = new Shooter(Ports.shooter1, Ports.shooter1EncA, Ports.shooter1EncB);
-    public static final Shooter shooter2 = new Shooter(Ports.shooter2, Ports.shooter2EncA, Ports.shooter2EncB);
-    public static final Shooter shooter3 = new Shooter(Ports.shooter3, Ports.shooter3EncA, Ports.shooter3EncB);
+    public static final PShooter shooterLow = new PShooter(Ports.shooterLow, Ports.shooterLowEncA, Ports.shooterLowEncB, 0, 0, true);
+    public static final PShooter shooterMiddle = new PShooter(Ports.shooterMiddle, Ports.shooterMiddleEncA, Ports.shooterMiddleEncB, 0, 0, false);
+    public static final PShooter shooterHigh = new PShooter(Ports.shooterHigh, Ports.shooterHighEncA, Ports.shooterHighEncB, 0, 0, false);
     static boolean firing = false;
     public static final double shooterDistance = 10; //Random optimum distance from the wall
 
     public static void controlFiring() {
         if (firing) {
             if (atRPM()) {
-                Feeder.triggerEnabled();
+                Feeder.triggerDisabled();
                 Feeder.feed();
             }
             if (!Feeder.possessing()) {
                 firing = false;
-                Feeder.triggerDisabled();
+                Feeder.triggerEnabled();
                 Feeder.stopFeed();
             }
         }
     }
 
     public static void setHighRPM() {
-        if (!shooter1.pid.isEnable()) {
-            shooter1.pid.enable();
-        }
-        if (!shooter2.pid.isEnable()) {
-            shooter2.pid.enable();
-        }
-        shooter1.pid.setSetpoint(2400);
-        shooter2.pid.setSetpoint(1600);
-        shooter2.pid.setSetpoint(800);
+        shooterLow.setSetpoint(800);
+        shooterMiddle.setSetpoint(600);
+        shooterHigh.setSetpoint(400);
     }
 
     public static void setLowRPM() {
-        if (!shooter1.pid.isEnable()) {
-            shooter1.pid.enable();
-        }
-        if (!shooter2.pid.isEnable()) {
-            shooter2.pid.enable();
-        }
-        shooter1.pid.setSetpoint(1200);
-        shooter2.pid.setSetpoint(800);
-        shooter2.pid.setSetpoint(400);
-    }
-
-    public static void setReverseRPM() {
-        if (!shooter1.pid.isEnable()) {
-            shooter1.pid.enable();
-        }
-        if (!shooter2.pid.isEnable()) {
-            shooter2.pid.enable();
-        }
-        shooter1.pid.setSetpoint(-400);
-        shooter2.pid.setSetpoint(-60);
-        shooter3.pid.setSetpoint(0);
+        shooterLow.setSetpoint(400);
+        shooterMiddle.setSetpoint(600);
+        shooterHigh.setSetpoint(200);
     }
 
     public static boolean atRPM() {
-        return shooter1.pid.onTarget() && shooter2.pid.onTarget() && shooter3.pid.onTarget();
+        return shooterLow.onTarget() && shooterMiddle.onTarget() && shooterHigh.onTarget();
     }
 
     public static void stop() {
-        shooter1.stop();
-        shooter2.stop();
-        shooter3.stop();
+        shooterLow.stop();
+        shooterMiddle.stop();
+        shooterHigh.stop();
     }
 
     public static void setToFiring() {
@@ -86,8 +62,9 @@ public class ShooterRack {
     public static boolean isFiring() {
         return firing;
     }
-    public static void autonomousFiring(){
-        while (firing){
+
+    public static void autonomousFiring() {
+        while (firing) {
             controlFiring();
         }
     }

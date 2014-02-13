@@ -32,14 +32,8 @@ public class Test {
         LiveWindow.addActuator("LEDs", "led3", LEDs.led3);
         LiveWindow.addActuator("LEDs", "led4", LEDs.led4);
 
-        LiveWindow.addSensor("ShooterRack", "enc1", ShooterRack.shooter1.enc);
-        LiveWindow.addSensor("ShooterRack", "enc2", ShooterRack.shooter2.enc);
-        LiveWindow.addSensor("ShooterRack", "enc3", ShooterRack.shooter3.enc);
-        LiveWindow.addActuator("ShooterRack", "motor1", ShooterRack.shooter1.motor);
-        LiveWindow.addActuator("ShooterRack", "motor2", ShooterRack.shooter2.motor);
-        LiveWindow.addActuator("ShooterRack", "motor3", ShooterRack.shooter3.motor);
-        LiveWindow.addActuator("ShooterRack", "pid1", ShooterRack.shooter1.pid);
-        LiveWindow.addActuator("ShooterRack", "pid2", ShooterRack.shooter2.pid);
-        LiveWindow.addActuator("ShooterRack", "pid3", ShooterRack.shooter3.pid);
+        LiveWindow.addSensor("ShooterRack", "enc1", ShooterRack.shooterLow);
+        LiveWindow.addSensor("ShooterRack", "enc2", ShooterRack.shooterMiddle);
+        LiveWindow.addSensor("ShooterRack", "enc3", ShooterRack.shooterHigh);
     }
 }

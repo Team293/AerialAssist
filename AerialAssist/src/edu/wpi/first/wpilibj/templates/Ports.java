@@ -37,19 +37,19 @@ public class Ports {
             feeder = 1,
             trigger = 2,
             cageRelease = 3,
-            shooter1 = 3,
-            shooter2 = 4,
-            shooter3 = 5,
+            shooterHigh = 3,
+            shooterMiddle = 4,
+            shooterLow = 5,
             cameraServo = 10,
             catcherActuator1 = 9,
             catcherActuator2 = 9,
             //encoders
-            shooter1EncA = 3,
-            shooter1EncB = 4,
-            shooter2EncA = 5,
-            shooter2EncB = 6,
-            shooter3EncA = 7,
-            shooter3EncB = 8,
+            shooterHighEncA = 2,
+            shooterHighEncB = 3,
+            shooterMiddleEncA = 4,
+            shooterMiddleEncB = 5,
+            shooterLowEncA = 6,
+            shooterLowEncB = 7,
             //gyros
             gyro = 1,
             //Ultrasonics
@@ -63,6 +63,8 @@ public class Ports {
             led4 = 13,
             //optical limtis
             ballLimit = 1,
-            ballSetting = 2;
+            //autonomous siwtch
+            ballSetting = 8;
+            
 
 }

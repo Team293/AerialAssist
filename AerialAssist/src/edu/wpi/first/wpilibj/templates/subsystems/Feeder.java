@@ -42,12 +42,12 @@ public class Feeder {
 
     public static void triggerDisabled() {
         if (!ShooterRack.isFiring()) {
-            trigger.set(Relay.Value.kForward);
+            trigger.set(Relay.Value.kOff);
         }
     }
 
     public static void triggerEnabled() {
-        trigger.set(Relay.Value.kOff);
+        trigger.set(Relay.Value.kForward);
     }
 
     public static boolean possessing() {

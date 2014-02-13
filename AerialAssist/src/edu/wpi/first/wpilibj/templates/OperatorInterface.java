@@ -29,10 +29,15 @@ public class OperatorInterface {
             setHighRPM = new SpikeButton(gamepad, Ports.setHighRPM),
             setLowRPM = new SpikeButton(gamepad, Ports.setLowRPM),
             stopShooter = new SpikeButton(gamepad, Ports.stopShooter),
+            toggleDriveDirection = new SpikeButton(rightJoystick, Ports.toggleDriveDirection),
             autoAlign = new SpikeButton(gamepad, Ports.autoAlign);
 
     public static void controlDriveTrain() {
-        DriveTrain.tankDrive(leftJoystick.getY(), rightJoystick.getY());
+        if (toggleDriveDirection.getState()) {
+            DriveTrain.tankDrive(leftJoystick.getY(), rightJoystick.getY());
+        } else {
+            DriveTrain.tankDrive(-rightJoystick.getY(), -leftJoystick.getY());
+        }
     }
 
     public static void controlFeeder() {
@@ -54,9 +59,9 @@ public class OperatorInterface {
         double speed1 = SmartDashboard.getNumber("1", 0.0);
         double speed2 = SmartDashboard.getNumber("2", 0.0);
         double speed3 = SmartDashboard.getNumber("3", 0.0);
-        ShooterRack.shooter1.motor.set(speed1);
-        ShooterRack.shooter2.motor.set(speed2);
-        ShooterRack.shooter3.motor.set(speed3);
+        ShooterRack.shooterLow.motor.set(speed1);
+        ShooterRack.shooterMiddle.motor.set(speed2);
+        ShooterRack.shooterHigh.motor.set(speed3);
     }
 
     public static void controlShooter() {
