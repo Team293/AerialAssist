@@ -94,13 +94,24 @@ public class DriveTrain {
         double difference = leftDistance - rightDistance;
         double average = (leftDistance + rightDistance) / 2.0;
         SmartDashboard.putNumber("aligned", difference);
-        SmartDashboard.putNumber("distanced", Math.abs(average - 12));
+        SmartDashboard.putNumber("distanced", average);
         SmartDashboard.putBoolean("aligned", difference < 0.4);
         SmartDashboard.putBoolean("distanced", Math.abs(average - 12) < 1);
         if (Math.abs(average - 12) < 1 && difference < 0.4) {
             return true;
         }
         return false;
+    }
+    
+    public static void moveToDistance() {
+        double difference = leftDistance - rightDistance;
+        double average = (leftDistance + rightDistance) / 2.0;
+        SmartDashboard.putNumber("average dstiance", average);
+        if (difference < 5) {
+            drive.tankDrive(0.4, 0.4);
+        } else {
+            drive.tankDrive(0, 0);
+        }
     }
 
     public static double convertToDistance(double rawVoltage) {

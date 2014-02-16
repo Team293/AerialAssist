@@ -6,7 +6,6 @@
 package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.buttons.SpikeButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
@@ -26,15 +25,18 @@ public class OperatorInterface {
     private static final SpikeButton pass = new SpikeButton(gamepad, Ports.pass),
             toggleFeeder = new SpikeButton(gamepad, Ports.toggleFeeder),
             fire = new SpikeButton(rightJoystick, Ports.fire),
-            autoAlign = new SpikeButton(leftJoystick, 1),
+            autoDistance = new SpikeButton(leftJoystick, 1),
             toggleDriveDirection = new SpikeButton(rightJoystick, Ports.toggleDriveDirection);
 
     public static void controlDriveTrain() {
-        //check which way is forward
-        if (toggleDriveDirection.getState()) {
-            DriveTrain.tankDrive(leftJoystick.getY(), rightJoystick.getY());
+        if (autoDistance.get()) {
+            DriveTrain.moveToDistance();
         } else {
-            DriveTrain.tankDrive(-rightJoystick.getY(), -leftJoystick.getY());
+            if (toggleDriveDirection.getState()) {
+                DriveTrain.tankDrive(leftJoystick.getY(), rightJoystick.getY());
+            } else {
+                DriveTrain.tankDrive(-rightJoystick.getY(), -leftJoystick.getY());
+            }
         }
     }
 
