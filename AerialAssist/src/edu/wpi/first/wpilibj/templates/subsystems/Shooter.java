@@ -61,6 +61,7 @@ public class Shooter {
 
         SmartDashboard.putNumber("rpm" + id, rpm);
         SmartDashboard.putNumber("setpoint" + id, setpoint);
+        SmartDashboard.putString("debuggin", "running "+id+" !!!");
         //SmartDashboard.putNumber("error" + id, error);
         //SmartDashboard.putNumber("output" + id, output);
 
