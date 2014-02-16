@@ -28,7 +28,7 @@ public class LEDs {
             led2.set(true);
             led3.set(true);
             led4.set(true);
-            if (ShooterRack.isFiring()) {
+            if (ShooterRack.isShooting()) {
                 led1.set(Math.ceil(DriverStation.getInstance().getMatchTime() % 2) == 0);
                 led2.set(Math.ceil(DriverStation.getInstance().getMatchTime() % 2) == 0);
             }

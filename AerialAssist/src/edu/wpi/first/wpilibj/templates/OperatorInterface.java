@@ -50,35 +50,33 @@ public class OperatorInterface {
         ShooterRack.shooterLow.run();
         ShooterRack.shooterMiddle.run();
         ShooterRack.shooterHigh.run();
-        
+
         if (fire.getClick()) {
-            ShooterRack.shooting = true;
+            ShooterRack.startShooting();
         }
-        
-        Relay.Value feederValue;
-        if (!ShooterRack.shooting) {
+
+        if (!ShooterRack.isShooting()) {
             if (pass.get()) {
-                feederValue = Relay.Value.kReverse;
+                Feeder.pass();
             } else if (toggleFeeder.getState()) {
                 //ball limit is wired in reverse!~~~
-                if (Feeder.ballLimit.get()) {
-                    feederValue = Relay.Value.kForward;
-                } else {                    
-                    feederValue = Relay.Value.kOff;
+                if (!Feeder.possessing()) {
+                    Feeder.feed();
+                } else {
+                    Feeder.stop();
                 }
             } else {
-                feederValue = Relay.Value.kOff;
+                Feeder.stop();
             }
         } else {
             Feeder.triggerDisabled();
-            feederValue = Relay.Value.kForward;
-            if (Feeder.ballLimit.get()) {
-                ShooterRack.shooting = false;
+            Feeder.feed();
+            if (!Feeder.possessing()) {
+                ShooterRack.finishedShooting();
+                toggleFeeder.setState(false);
                 Feeder.triggerEnabled();
             }
         }
-        Feeder.feeder.set(feederValue);
-        Feeder.feeder2.set(feederValue);
     }
 
     public static void controlAutoAlign() {
