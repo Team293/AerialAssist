@@ -23,18 +23,17 @@ public class Test {
 
         LiveWindow.addActuator("Feeder", "feeder motor", Feeder.feeder);
         LiveWindow.addActuator("Feeder", "trigger", Feeder.trigger);
-        LiveWindow.addSensor("Feeder", "ball limit", Feeder.ballLimit);
 
         LiveWindow.addActuator("LEDs", "led1", LEDs.led1);
         LiveWindow.addActuator("LEDs", "led2", LEDs.led2);
         LiveWindow.addActuator("LEDs", "led3", LEDs.led3);
         LiveWindow.addActuator("LEDs", "led4", LEDs.led4);
 
-        LiveWindow.addSensor("ShooterRack", "enc1", ShooterRack.shooterLow.encoder);
-        LiveWindow.addSensor("ShooterRack", "enc2", ShooterRack.shooterMiddle.encoder);
-        LiveWindow.addSensor("ShooterRack", "enc3", ShooterRack.shooterHigh.encoder);
-        LiveWindow.addSensor("ShooterRack", "enc1", ShooterRack.shooterLow.talon);
-        LiveWindow.addSensor("ShooterRack", "enc2", ShooterRack.shooterMiddle.talon);
-        LiveWindow.addSensor("ShooterRack", "enc3", ShooterRack.shooterHigh.talon);
+//        LiveWindow.addSensor("ShooterRack", "enc1", ShooterRack.shooterLow.encoder);
+//        LiveWindow.addSensor("ShooterRack", "enc2", ShooterRack.shooterMiddle.encoder);
+//        LiveWindow.addSensor("ShooterRack", "enc3", ShooterRack.shooterHigh.encoder);
+//        LiveWindow.addSensor("ShooterRack", "enc1", ShooterRack.shooterLow.talon);
+//        LiveWindow.addSensor("ShooterRack", "enc2", ShooterRack.shooterMiddle.talon);
+//        LiveWindow.addSensor("ShooterRack", "enc3", ShooterRack.shooterHigh.talon);
     }
 }

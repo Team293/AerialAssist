@@ -8,11 +8,9 @@ package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.subsystems.Cage;
 import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
-import edu.wpi.first.wpilibj.templates.subsystems.Test;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,18 +26,14 @@ public class SPIKE extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-        Test.addComponents();
-        ShooterRack.shooterLow.init();
-        ShooterRack.shooterMiddle.init();
-        ShooterRack.shooterHigh.init();
+//        Test.addComponents();
+        ShooterRack.init();
         Feeder.triggerEnabled();
     }
 
     public void teleopInit() {
         Cage.release();
-        SmartDashboard.putNumber("1", 0.0);
-        SmartDashboard.putNumber("2", 0.0);
-        SmartDashboard.putNumber("3", 0.0);
+        ShooterRack.setToShootingRPM();
     }
 
     /**
