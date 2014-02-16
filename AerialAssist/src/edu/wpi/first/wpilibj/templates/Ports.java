@@ -21,10 +21,7 @@ public class Ports {
             //___gamepad
             toggleFeeder = 1,
             pass = 2,
-            stopShooter = 4,
-            setHighRPM = 5,
-            setLowRPM = 6,
-            autoAlign = 7,
+            stopShooter=3,
             //axes
             gamepadLeftXAxis = 1,
             gamepadLeftYAxis = 2,
@@ -34,19 +31,20 @@ public class Ports {
             leftDrive = 1,
             rightDrive = 2,
             feeder = 1,
-            trigger = 2,
+            feeder2 = 2,
+            trigger = 3,
             shooterLow = 3,
             shooterMiddle = 4,
             shooterHigh = 5,
             cageRelease = 6,
             cameraServo = 10,
             //encoders
-            shooterHighEncA = 2,
-            shooterHighEncB = 3,
+            shooterLowEncA = 2,
+            shooterLowEncB = 3,
             shooterMiddleEncA = 4,
             shooterMiddleEncB = 5,
-            shooterLowEncA = 6,
-            shooterLowEncB = 7,
+            shooterHighEncA = 6,
+            shooterHighEncB = 7,
             //gyros
             gyro = 1,
             //Ultrasonics
@@ -59,7 +57,5 @@ public class Ports {
             led3 = 12,
             led4 = 13,
             //optical limtis
-            ballLimit = 1,
-            //autonomous siwtch
-            ballSetting = 9;
+            ballLimit = 1;
 }

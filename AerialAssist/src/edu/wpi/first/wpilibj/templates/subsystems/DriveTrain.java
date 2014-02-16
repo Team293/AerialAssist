@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.Ports;
 
 /**
@@ -24,7 +25,7 @@ public class DriveTrain {
     static final AnalogChannel leftUltrasonic = new AnalogChannel(Ports.leftUltrasonic);
     static final DigitalOutput ultrasonicSignal = new DigitalOutput(Ports.ultrasonicSignal);
     private static final double kStright = 0.13, kTurn = 180;
-    private static double distanceToWall = 0;
+    private static double rightDistance, leftDistance;
     private static int ping = 0;
 
     private static final RobotDrive drive = new RobotDrive(leftMotor,
@@ -79,94 +80,24 @@ public class DriveTrain {
 
     }
 
-    public static boolean turn(double targetAngle) {
-        boolean state = false;
-
-        double current = gyro.getAngle();
-
-        double error = targetAngle - current;
-
-        double speed = 0;
-
-        if (Math.abs(error) > 5) {
-            speed = error / kTurn;
-        } else {
-            speed = 0;
-        }
-
-        arcadeDrive(0, speed);
-        if (targetAngle == current) {
-            state = true;
-        }
-        return state;
-    }
-
-    public static double getAutoAlignSpeed() {
-        double leftDistance = convertToDistance(leftUltrasonic.getVoltage());
-        double rightDistance = convertToDistance(rightUltrasonic.getVoltage());
-
-        double difference = leftDistance - rightDistance;
-
-        double rotateSpeed = difference / 20;
-
-        if (rotateSpeed > 1) {
-            rotateSpeed = 1;
-        } else if (rotateSpeed < -1) {
-            rotateSpeed = -1;
-        }
-
-        return rotateSpeed;
-    }
-
-    public static boolean autoAlign() {
-        double rotateSpeed = getAutoAlignSpeed();
-        if (Math.abs(rotateSpeed) > .05) {
-            DriveTrain.arcadeDrive(0, rotateSpeed);
-        } else {
-            stop();
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean isAligned() {
-        double rotateSpeed = getAutoAlignSpeed();
-        if (Math.abs(rotateSpeed) < 0.05) {
-            return true;
-        }
-        return false;
-    }
-
-    public static double getDistanceToWall() {
+    public static void rangeUltrasonics() {
+        //ping ultrasonic sensors
         ping++;
         if (ping % 5 == 0) {
             ultrasonicSignal.pulse(0.0001);
         }
-        double leftDistance = convertToDistance(leftUltrasonic.getAverageVoltage());
-        double rightDistance = convertToDistance(rightUltrasonic.getAverageVoltage());
-        distanceToWall = (leftDistance + rightDistance) / 2.0;
-        return distanceToWall;
+        leftDistance = convertToDistance(leftUltrasonic.getAverageVoltage());
+        rightDistance = convertToDistance(rightUltrasonic.getAverageVoltage());
     }
 
-    public static boolean autoDistance(double targetDistance, double speed) {
-        autoAlign();
-
-        double difference = targetDistance - getDistanceToWall();
-
-//        double speed = difference / 4;
-//        if (speed > 1) {
-//            speed = 1;
-//        } else if (speed < -1) {
-//            speed = -1;
-//        }
-//        if (Math.abs(speed) > 0.125) {
-//            driveStraight(speed);
-        if (difference > 0.5) {
-            driveStraight(speed);
-        } else if (difference < -0.5) {
-            driveStraight(-speed);
-        } else {
-            stop();
+    public static boolean isAligned() {
+        double difference = leftDistance - rightDistance;
+        double average = (leftDistance + rightDistance) / 2.0;
+        SmartDashboard.putNumber("aligned", difference);
+        SmartDashboard.putNumber("distanced", Math.abs(average - 12));
+        SmartDashboard.putBoolean("aligned", difference < 0.4);
+        SmartDashboard.putBoolean("distanced", Math.abs(average - 12) < 1);
+        if (Math.abs(average - 12) < 1 && difference < 0.4) {
             return true;
         }
         return false;

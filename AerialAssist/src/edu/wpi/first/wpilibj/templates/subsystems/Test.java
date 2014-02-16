@@ -19,7 +19,7 @@ public class Test {
         LiveWindow.addSensor("Drive Train", "right US", DriveTrain.rightUltrasonic);
         LiveWindow.addActuator("Drive Train", "US signal", DriveTrain.ultrasonicSignal);
 
-        LiveWindow.addActuator("Cage", "pin release", Cage.pinRelease);
+        LiveWindow.addActuator("Cage", "pin release", Cage.release);
 
         LiveWindow.addActuator("Feeder", "feeder motor", Feeder.feeder);
         LiveWindow.addActuator("Feeder", "trigger", Feeder.trigger);
@@ -33,8 +33,8 @@ public class Test {
         LiveWindow.addSensor("ShooterRack", "enc1", ShooterRack.shooterLow.encoder);
         LiveWindow.addSensor("ShooterRack", "enc2", ShooterRack.shooterMiddle.encoder);
         LiveWindow.addSensor("ShooterRack", "enc3", ShooterRack.shooterHigh.encoder);
-        LiveWindow.addSensor("ShooterRack", "enc1", ShooterRack.shooterLow.motor);
-        LiveWindow.addSensor("ShooterRack", "enc2", ShooterRack.shooterMiddle.motor);
-        LiveWindow.addSensor("ShooterRack", "enc3", ShooterRack.shooterHigh.motor);
+        LiveWindow.addSensor("ShooterRack", "enc1", ShooterRack.shooterLow.talon);
+        LiveWindow.addSensor("ShooterRack", "enc2", ShooterRack.shooterMiddle.talon);
+        LiveWindow.addSensor("ShooterRack", "enc3", ShooterRack.shooterHigh.talon);
     }
 }

@@ -6,6 +6,7 @@
 package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.buttons.SpikeButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
@@ -22,38 +23,18 @@ public class OperatorInterface {
     private static final Joystick leftJoystick = new Joystick(Ports.leftJoystick),
             rightJoystick = new Joystick(Ports.rightJoystick),
             gamepad = new Joystick(Ports.gamepad);
-    private static final SpikeButton toggleFeeder = new SpikeButton(gamepad, Ports.toggleFeeder),
-            fire = new SpikeButton(leftJoystick, Ports.fire),
-            pass = new SpikeButton(gamepad, Ports.pass),
-            //catcher = new SpikeButton(gamepad, Ports.leftTrigger),
-            setHighRPM = new SpikeButton(gamepad, Ports.setHighRPM),
-            setLowRPM = new SpikeButton(gamepad, Ports.setLowRPM),
-            stopShooter = new SpikeButton(gamepad, Ports.stopShooter),
-            toggleDriveDirection = new SpikeButton(rightJoystick, Ports.toggleDriveDirection),
-            autoAlign = new SpikeButton(gamepad, Ports.autoAlign);
+    private static final SpikeButton pass = new SpikeButton(gamepad, Ports.pass),
+            toggleFeeder = new SpikeButton(gamepad, Ports.toggleFeeder),
+            fire = new SpikeButton(rightJoystick, Ports.fire),
+            autoAlign = new SpikeButton(leftJoystick, 1),
+            toggleDriveDirection = new SpikeButton(rightJoystick, Ports.toggleDriveDirection);
 
     public static void controlDriveTrain() {
-        //prevent from manually driving if autoaiming
-        if (!autoAlign.get()) {
-            //check which way is forward
-            if (toggleDriveDirection.getState()) {
-                DriveTrain.tankDrive(leftJoystick.getY(), rightJoystick.getY());
-            } else {
-                DriveTrain.tankDrive(-rightJoystick.getY(), -leftJoystick.getY());
-            }
-        }
-    }
-
-    public static void controlFeeder() {
-        //no manula control on feeder if you're shooting
-        if (!ShooterRack.isFiring()) {
-            if (pass.get()) {
-                Feeder.pass();
-            } else if (toggleFeeder.getState()) {
-                Feeder.feed();
-            } else {
-                Feeder.stopFeed();
-            }
+        //check which way is forward
+        if (toggleDriveDirection.getState()) {
+            DriveTrain.tankDrive(leftJoystick.getY(), rightJoystick.getY());
+        } else {
+            DriveTrain.tankDrive(-rightJoystick.getY(), -leftJoystick.getY());
         }
     }
 
@@ -62,29 +43,47 @@ public class OperatorInterface {
         double speed1 = SmartDashboard.getNumber("1", 0.0);
         double speed2 = SmartDashboard.getNumber("2", 0.0);
         double speed3 = SmartDashboard.getNumber("3", 0.0);
-        ShooterRack.shooterLow.setSetpoint(speed1);
+        ShooterRack.shooterLow.setSetpoint(-speed1);
         ShooterRack.shooterMiddle.setSetpoint(speed2);
         ShooterRack.shooterHigh.setSetpoint(speed3);
-    }
 
-    public static void controlShooter() {
-        if (!stopShooter.getState()) {
-            ShooterRack.stop();
+        ShooterRack.shooterLow.run();
+        ShooterRack.shooterMiddle.run();
+        ShooterRack.shooterHigh.run();
+        
+        if (fire.getClick()) {
+            ShooterRack.shooting = true;
         }
-        if (setHighRPM.get()) {
-            ShooterRack.setHighRPM();
-        } else if (setLowRPM.get()) {
-            ShooterRack.setLowRPM();
-        } else if (fire.getClick()) {
-            ShooterRack.setToFiring();
+        
+        Relay.Value feederValue;
+        if (!ShooterRack.shooting) {
+            if (pass.get()) {
+                feederValue = Relay.Value.kReverse;
+            } else if (toggleFeeder.getState()) {
+                //ball limit is wired in reverse!~~~
+                if (Feeder.ballLimit.get()) {
+                    feederValue = Relay.Value.kForward;
+                } else {                    
+                    feederValue = Relay.Value.kOff;
+                }
+            } else {
+                feederValue = Relay.Value.kOff;
+            }
+        } else {
+            Feeder.triggerDisabled();
+            feederValue = Relay.Value.kForward;
+            if (Feeder.ballLimit.get()) {
+                ShooterRack.shooting = false;
+                Feeder.triggerEnabled();
+            }
         }
-        ShooterRack.controlFiring();
+        Feeder.feeder.set(feederValue);
+        Feeder.feeder2.set(feederValue);
     }
 
     public static void controlAutoAlign() {
-        if (autoAlign.get()) {
-            DriveTrain.autoAlign();
-        }
+        DriveTrain.rangeUltrasonics();
+        DriveTrain.isAligned();
     }
 
     public static void controlCamera() {

@@ -15,42 +15,10 @@ import edu.wpi.first.wpilibj.templates.Ports;
  */
 public class Feeder {
 
-    static final Relay feeder = new Relay(Ports.feeder);
+    public static final Relay feeder = new Relay(Ports.feeder);
+    public static final Relay feeder2 = new Relay(Ports.feeder2);
     static final Relay trigger = new Relay(Ports.trigger);
     public static final DigitalInput ballLimit = new DigitalInput(Ports.ballLimit);
-
-    public static void feed() {
-        triggerDisabled();
-        //check if reversed to prevent breaking stuff
-        //you dont want to go full reverse to full forward
-        if (feeder.get() == Relay.Value.kReverse) {
-            feeder.set(Relay.Value.kOff);
-        } else {
-            if (!ballLimit.get()) {
-                feeder.set(Relay.Value.kForward);
-            } else {
-                stopFeed();
-            }
-        }
-    }
-
-    public static void pass() {
-        //check if forward to prevent breaking stuff
-        //you dont want to go full forward to full reverse
-        if (feeder.get() == Relay.Value.kForward) {
-            feeder.set(Relay.Value.kOff);
-        } else {
-            if (ballLimit.get()) {
-                feeder.set(Relay.Value.kReverse);
-            } else {
-                stopFeed();
-            }
-        }
-    }
-
-    public static void stopFeed() {
-        feeder.set(Relay.Value.kOff);
-    }
 
     public static void triggerDisabled() {
         if (!ShooterRack.isFiring()) {

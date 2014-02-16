@@ -5,7 +5,7 @@
  */
 package edu.wpi.first.wpilibj.templates.subsystems;
 
-import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.templates.Ports;
 
 /**
@@ -14,11 +14,10 @@ import edu.wpi.first.wpilibj.templates.Ports;
  */
 public class Cage {
 
-    static final Relay pinRelease = new Relay(Ports.cageRelease);
+    static final Servo release = new Servo(Ports.cageRelease);
 
     public static void release() {
-        //turns on solenoid and pulls out the pin
-        pinRelease.set(Relay.Value.kForward);
+        release.set(0);
     }
 
 }
