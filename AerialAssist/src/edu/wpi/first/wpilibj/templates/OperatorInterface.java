@@ -7,7 +7,6 @@ package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.SpikeButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
@@ -26,7 +25,9 @@ public class OperatorInterface {
             toggleFeeder = new SpikeButton(gamepad, Ports.toggleFeeder),
             fire = new SpikeButton(rightJoystick, Ports.fire),
             autoDistance = new SpikeButton(leftJoystick, 1),
-            toggleDriveDirection = new SpikeButton(rightJoystick, Ports.toggleDriveDirection);
+            toggleDriveDirection = new SpikeButton(rightJoystick, Ports.toggleDriveDirection),
+            setToHighRPM = new SpikeButton(gamepad, Ports.setToHighRPM),
+            setToLowRPM = new SpikeButton(gamepad, Ports.setToLowRPM);
 
     public static void controlDriveTrain() {
         if (autoDistance.get()) {
@@ -42,16 +43,13 @@ public class OperatorInterface {
 
     public static void manualControlShooter() {
         //read in setpoint from smart dashboard
-        double speed1 = SmartDashboard.getNumber("1", 0.0);
-        double speed2 = SmartDashboard.getNumber("2", 0.0);
-        double speed3 = SmartDashboard.getNumber("3", 0.0);
-        ShooterRack.shooterLow.setSetpoint(-speed1);
-        ShooterRack.shooterMiddle.setSetpoint(speed2);
-        ShooterRack.shooterHigh.setSetpoint(speed3);
+        if (setToHighRPM.get()) {
+            ShooterRack.setToShootingRPM();
+        } else if (setToLowRPM.get()) {
+            ShooterRack.setToLowGoalRPM();
+        }
 
-        ShooterRack.shooterLow.run();
-        ShooterRack.shooterMiddle.run();
-        ShooterRack.shooterHigh.run();
+        ShooterRack.run();
 
         if (fire.getClick()) {
             ShooterRack.startShooting();

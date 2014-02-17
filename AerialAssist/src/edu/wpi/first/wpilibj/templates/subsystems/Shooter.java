@@ -17,23 +17,29 @@ public class Shooter {
 
     SpikeEncoder encoder;
     Talon talon;
-    static int ID;
-    static double correction = 0.02, tolerance = 30;
-    double setpoint, output, rpm, error;
+    static int ID, tolerance = 30;
+    private double setpoint, output, rpm, error, kP;
     int id;
 
     Shooter(int talonPort, int encAPort, int encBPort) {
         talon = new Talon(talonPort);
+<<<<<<< HEAD
         encoder = new SpikeEncoder(encAPort, encBPort,SpikeEncoder.BLACK);
+=======
+        encoder = new SpikeEncoder(encAPort, encBPort, SpikeEncoder.BLACK);
+>>>>>>> 736a21356a1c7adf81d76cb2500da786b22ec1fc
         setpoint = 0;
         output = 0;
         rpm = 0;
         error = 0;
+        kP = -0.00001;
         this.id = ++ID;
     }
 
     public void init() {
         encoder.start();
+        //SmartDashboard.putNumber("kP" + id, setpoint);
+        //SmartDashboard.putNumber("setpoint" + id, setpoint);
     }
 
     public void stop() {
@@ -41,30 +47,32 @@ public class Shooter {
         output = 0;
     }
 
+    public void readSetpoint() {
+        this.setpoint = SmartDashboard.getNumber("setpoint" + id, 0);
+    }
+
     public void setSetpoint(double setpoint) {
         this.setpoint = setpoint;
     }
 
     public void run() {
-        rpm = encoder.getRPM();
-        error = rpm - setpoint;
-        //positive error is too fast
-        if (error > tolerance) {
-            output -= correction;
-        } else if (error < tolerance) {
-            output += correction;
-        }
-        SmartDashboard.putNumber("output" + id, output);
+        rpm = -encoder.getRPM();
+        error = setpoint - rpm;
+
+        kP = SmartDashboard.getNumber("kP" + id, kP);
+
+        output += error * kP;
+
         SmartDashboard.putNumber("rpm" + id, rpm);
         SmartDashboard.putNumber("setpoint" + id, setpoint);
-        SmartDashboard.putNumber("error" + id, error);
-        talon.set(output);
+        SmartDashboard.putString("debuggin", "running "+id+" !!!");
+        //SmartDashboard.putNumber("error" + id, error);
+        //SmartDashboard.putNumber("output" + id, output);
+
+        talon.set(-output);
     }
 
     public boolean atRPM() {
-        if (Math.abs(error) < tolerance) {
-            return true;
-        }
-        return false;
+        return Math.abs(error) < tolerance;
     }
 }

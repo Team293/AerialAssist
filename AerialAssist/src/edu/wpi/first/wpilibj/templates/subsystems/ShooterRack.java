@@ -13,9 +13,9 @@ import edu.wpi.first.wpilibj.templates.Ports;
  */
 public class ShooterRack {
 
-    public static final Shooter shooterLow = new Shooter(Ports.shooterLow, Ports.shooterLowEncA, Ports.shooterLowEncB);
-    public static final Shooter shooterMiddle = new Shooter(Ports.shooterMiddle, Ports.shooterMiddleEncA, Ports.shooterMiddleEncB);
-    public static final Shooter shooterHigh = new Shooter(Ports.shooterHigh, Ports.shooterHighEncA, Ports.shooterHighEncB);
+    private static final Shooter shooterLow = new Shooter(Ports.shooterLow, Ports.shooterLowEncA, Ports.shooterLowEncB);
+    private static final Shooter shooterMiddle = new Shooter(Ports.shooterMiddle, Ports.shooterMiddleEncA, Ports.shooterMiddleEncB);
+    private static final Shooter shooterHigh = new Shooter(Ports.shooterHigh, Ports.shooterHighEncA, Ports.shooterHighEncB);
     private static boolean shooting = false;
     public static final double shooterDistance = 10; //Random optimum distance from the wall
 
@@ -25,6 +25,30 @@ public class ShooterRack {
 
     public static void finishedShooting() {
         shooting = false;
+    }
+
+    public static void init() {
+        shooterLow.init();
+        shooterMiddle.init();
+        shooterHigh.init();
+    }
+
+    private static void readSetpoints() {
+        shooterLow.readSetpoint();
+        shooterMiddle.readSetpoint();
+        shooterHigh.readSetpoint();
+    }
+
+    public static void setToShootingRPM() {
+        shooterLow.setSetpoint(-900);
+        shooterMiddle.setSetpoint(2300);
+        shooterHigh.setSetpoint(1700);
+    }
+
+    public static void setToLowGoalRPM() {
+        shooterLow.setSetpoint(-700);
+        shooterMiddle.setSetpoint(1000);
+        shooterHigh.setSetpoint(800);
     }
 
     public static void run() {
