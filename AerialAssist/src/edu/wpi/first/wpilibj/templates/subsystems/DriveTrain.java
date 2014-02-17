@@ -23,10 +23,10 @@ public class DriveTrain {
     public static final Talon rightMotor = new Talon(Ports.rightDrive);
     public static RobotDrive drive = new RobotDrive(leftMotor,
             rightMotor);
-    static final Gyro gyro = new Gyro(Ports.gyro);
-//    static final AnalogChannel rightUltrasonic = new AnalogChannel(Ports.rightUltrasonic);
-//    static final AnalogChannel leftUltrasonic = new AnalogChannel(Ports.leftUltrasonic);
-//    static final DigitalOutput ultrasonicSignal = new DigitalOutput(Ports.ultrasonicSignal);
+    //static final Gyro gyro = new Gyro(Ports.gyro);
+    static final AnalogChannel rightUltrasonic = new AnalogChannel(Ports.rightUltrasonic);
+    static final AnalogChannel leftUltrasonic = new AnalogChannel(Ports.leftUltrasonic);
+    static final DigitalOutput ultrasonicSignal = new DigitalOutput(Ports.ultrasonicSignal);
     private static final Timer autonomousTimer = new Timer();
     private static final double kStraight = 0.1;
     private static double rightDistance, leftDistance;
@@ -44,12 +44,13 @@ public class DriveTrain {
     }
 
     public static void resetGyro() {
-        gyro.reset();
+        //gyro.reset();
     }
 
     public static double getAngle() {
-        double angle = gyro.getAngle();
-        return angle;
+//        double angle = gyro.getAngle();
+//        return angle;
+        return 0;
     }
 
     /**
@@ -59,7 +60,8 @@ public class DriveTrain {
     //DONT FORGET TO RESET GYRO BEFORE YOU USE THIS
     public static void driveStraight(double speed) {
         //read the gyro
-        double angle = gyro.getAngle();
+        //double angle = gyro.getAngle();
+        double angle = 0;
         //calculate motor output
         double rightMotorOutput = speed + kStraight * angle;
         double leftMotorOutput = speed - kStraight * angle;
@@ -84,10 +86,10 @@ public class DriveTrain {
         //ping ultrasonic sensors
         ping++;
         if (ping % 5 == 0) {
-           // ultrasonicSignal.pulse(0.0001);
+            ultrasonicSignal.pulse(0.0001);
         }
-//        leftDistance = convertToDistance(leftUltrasonic.getAverageVoltage());
-//        rightDistance = convertToDistance(rightUltrasonic.getAverageVoltage());
+        leftDistance = convertToDistance(leftUltrasonic.getAverageVoltage());
+        rightDistance = convertToDistance(rightUltrasonic.getAverageVoltage());
     }
 
     public static boolean isAligned() {
