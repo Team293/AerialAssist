@@ -19,8 +19,10 @@ import edu.wpi.first.wpilibj.templates.Ports;
  */
 public class DriveTrain {
 
-    private static final Talon leftMotor = new Talon(Ports.leftDrive);
-    private static final Talon rightMotor = new Talon(Ports.rightDrive);
+//    public static final Talon leftMotor = new Talon(Ports.leftDrive);
+//    public static final Talon rightMotor = new Talon(Ports.rightDrive);
+//    public static RobotDrive drive = new RobotDrive(leftMotor,
+//            rightMotor);
     static final Gyro gyro = new Gyro(Ports.gyro);
     static final AnalogChannel rightUltrasonic = new AnalogChannel(Ports.rightUltrasonic);
     static final AnalogChannel leftUltrasonic = new AnalogChannel(Ports.leftUltrasonic);
@@ -30,11 +32,11 @@ public class DriveTrain {
     private static double rightDistance, leftDistance;
     private static int ping = 0;
 
-    public static RobotDrive drive = new RobotDrive(leftMotor,
-            rightMotor);
-
     public static void tankDrive(double leftMotor, double rightMotor) {
-        //drive.tankDrive(-leftMotor, -rightMotor);
+        drive.tankDrive(-leftMotor, -rightMotor);
+    }
+
+    public static void emptyFunction() {
     }
 
     public static void stop() {
@@ -98,16 +100,17 @@ public class DriveTrain {
         return Math.abs(average - 12) < 1 && difference < 0.4;
     }
 
-//    public static void moveToDistance() {
-//        double difference = leftDistance - rightDistance;
-//        double average = (leftDistance + rightDistance) / 2.0;
-//        SmartDashboard.putNumber("average dstiance", average);
-//        if (difference < 5) {
-//            drive.tankDrive(0.4, 0.4);
-//        } else {
-//            drive.tankDrive(0, 0);
-//        }
-//    }
+    public static void moveToDistance() {
+        double difference = leftDistance - rightDistance;
+        double average = (leftDistance + rightDistance) / 2.0;
+        SmartDashboard.putNumber("average dstiance", average);
+        if (difference < 5) {
+            drive.tankDrive(0.4, 0.4);
+        } else {
+            drive.tankDrive(0, 0);
+        }
+    }
+
     public static double convertToDistance(double rawVoltage) {
         return (rawVoltage + 0.0056) / 0.1141;
     }

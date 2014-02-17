@@ -18,33 +18,16 @@ import edu.wpi.first.wpilibj.templates.subsystems.Vision;
  */
 public class OperatorInterface {
 
-    private static final Joystick leftJoystick = new Joystick(Ports.leftJoystick),
+    public static final Joystick leftJoystick = new Joystick(Ports.leftJoystick),
             rightJoystick = new Joystick(Ports.rightJoystick),
             gamepad = new Joystick(Ports.gamepad);
     private static final SpikeButton pass = new SpikeButton(gamepad, Ports.pass),
             toggleFeeder = new SpikeButton(gamepad, Ports.toggleFeeder),
             fire = new SpikeButton(rightJoystick, Ports.fire),
-            autoDistance = new SpikeButton(leftJoystick, 1),
             toggleDriveDirection = new SpikeButton(rightJoystick, Ports.toggleDriveDirection),
             setToHighRPM = new SpikeButton(gamepad, Ports.setToHighRPM),
             toggleShooters = new SpikeButton(gamepad, Ports.toggleShooter),
             setToLowRPM = new SpikeButton(gamepad, Ports.setToLowRPM);
-
-    public static void controlDriveTrain() {
-        if (autoDistance.get()) {
-            //DriveTrain.moveToDistance();
-        } else {
-            if (!ShooterRack.isShooting()) {
-                double leftY = leftJoystick.getY();
-                double rightY = rightJoystick.getY();
-                if (!toggleDriveDirection.getState()) {
-//                DriveTrain.tankDrive(leftY, rightY);
-                } else {
-//                DriveTrain.tankDrive(-rightY, -leftY);
-                }
-            }
-        }
-    }
 
     public static void controlShooter() {
         //read in setpoint from smart dashboard

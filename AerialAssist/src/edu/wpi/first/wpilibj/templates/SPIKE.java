@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.templates.subsystems.Vision;
 public class SPIKE extends IterativeRobot {
 
     boolean hasFired;
+    DriverStationLCD LCD = DriverStationLCD.getInstance();
 
     /**
      * This function is run when the robot is first started up and should be
@@ -92,9 +93,17 @@ public class SPIKE extends IterativeRobot {
     /**
      * This function is called periodically during operator control
      */
+    int i = 0;
+
     public void teleopPeriodic() {
+        i++;
         //LEDs.indicateSituation();
-        OperatorInterface.controlDriveTrain();
+        //OperatorInterface.controlDriveTrain();
+        LCD.println(DriverStationLCD.Line.kUser1, 1, "run count before"+i);
+        LCD.updateLCD();
+        
+        LCD.println(DriverStationLCD.Line.kUser1, 1, "run count after"+i);
+        LCD.updateLCD();
         OperatorInterface.controlShooter();
         OperatorInterface.controlFeeder();
         //OperatorInterface.controlAutoAlign();
