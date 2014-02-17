@@ -24,7 +24,7 @@ public class Shooter {
 
     Shooter(int talonPort, int encAPort, int encBPort) {
         talon = new Talon(talonPort);
-        encoder = new SpikeEncoder(encAPort, encBPort);
+        encoder = new SpikeEncoder(encAPort, encBPort,SpikeEncoder.BLACK);
         setpoint = 0;
         output = 0;
         rpm = 0;
