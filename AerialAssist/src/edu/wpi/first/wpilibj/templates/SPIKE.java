@@ -7,6 +7,7 @@
 package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.DriverStationLCD;
+import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,6 +28,8 @@ public class SPIKE extends IterativeRobot {
 
     boolean hasFired;
     DriverStationLCD LCD = DriverStationLCD.getInstance();
+    final Gyro gyro = new Gyro(Ports.gyro);
+    private static final double kStraight = 0.1;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -39,13 +42,13 @@ public class SPIKE extends IterativeRobot {
     }
 
     public void teleopInit() {
-        //Cage.release();
+        Cage.release();
     }
 
     public void autonomousInit() {
         Cage.release();
         //start pause
-        DriveTrain.resetGyro();
+        gyro.reset();
         hasFired = false;
     }
 
@@ -60,7 +63,7 @@ public class SPIKE extends IterativeRobot {
         SmartDashboard.putBoolean("possessing", Feeder.possessing());
         if (!Feeder.possessing() && !hasFired) {
             SmartDashboard.putString("debugging", "looking for ball...");
-            DriveTrain.driveStraight(0.4);
+            driveStraight(0.4);
             Feeder.triggerEnabled();
             Feeder.feed();
         } else {
@@ -78,7 +81,7 @@ public class SPIKE extends IterativeRobot {
 //            //driving loop
             if (DriveTrain.getTime() < 2 && !ShooterRack.isShooting()) {
                 SmartDashboard.putString("debugging", "moving forward");
-                DriveTrain.driveStraight(-0.55);
+                driveStraight(-0.55);
                 Feeder.triggerEnabled();
                 Feeder.stop();
             } else {
@@ -98,15 +101,10 @@ public class SPIKE extends IterativeRobot {
     public void teleopPeriodic() {
         i++;
         //LEDs.indicateSituation();
-        //OperatorInterface.controlDriveTrain();
-        LCD.println(DriverStationLCD.Line.kUser1, 1, "run count before"+i);
-        LCD.updateLCD();
-        DriveTrain.emptyFunction();
-        LCD.println(DriverStationLCD.Line.kUser1, 1, "run count after"+i);
-        LCD.updateLCD();
+        OperatorInterface.controlDriveTrain();
         OperatorInterface.controlShooter();
         OperatorInterface.controlFeeder();
-        //OperatorInterface.controlAutoAlign();
+        OperatorInterface.controlAutoAlign();
         OperatorInterface.controlCamera();
     }
 
@@ -115,6 +113,29 @@ public class SPIKE extends IterativeRobot {
      */
     public void testPeriodic() {
         LiveWindow.run();
+    }
+
+    public static void driveStraight(double speed) {
+        //read the gyro
+        //double angle = gyro.getAngle();
+        double angle = 0;
+        //calculate motor output
+        double rightMotorOutput = speed + kStraight * angle;
+        double leftMotorOutput = speed - kStraight * angle;
+        if (rightMotorOutput > 1) {
+            rightMotorOutput = 1;
+        }
+        if (leftMotorOutput > 1) {
+            leftMotorOutput = 1;
+        }
+        if (rightMotorOutput < -1) {
+            rightMotorOutput = - 1;
+        }
+        if (leftMotorOutput < -1) {
+            leftMotorOutput = -1;
+        }
+        //set motor output
+        DriveTrain.tankDrive(-leftMotorOutput, -rightMotorOutput);
     }
 
 }

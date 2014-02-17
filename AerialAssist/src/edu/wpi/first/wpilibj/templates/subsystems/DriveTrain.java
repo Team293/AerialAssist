@@ -6,7 +6,6 @@ package edu.wpi.first.wpilibj.templates.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.DigitalOutput;
-import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
@@ -23,12 +22,10 @@ public class DriveTrain {
     public static final Talon rightMotor = new Talon(Ports.rightDrive);
     public static RobotDrive drive = new RobotDrive(leftMotor,
             rightMotor);
-    //static final Gyro gyro = new Gyro(Ports.gyro);
     static final AnalogChannel rightUltrasonic = new AnalogChannel(Ports.rightUltrasonic);
     static final AnalogChannel leftUltrasonic = new AnalogChannel(Ports.leftUltrasonic);
     static final DigitalOutput ultrasonicSignal = new DigitalOutput(Ports.ultrasonicSignal);
     private static final Timer autonomousTimer = new Timer();
-    private static final double kStraight = 0.1;
     private static double rightDistance, leftDistance;
     private static int ping = 0;
 
@@ -41,45 +38,6 @@ public class DriveTrain {
 
     public static void stop() {
         drive.tankDrive(0, 0);
-    }
-
-    public static void resetGyro() {
-        //gyro.reset();
-    }
-
-    public static double getAngle() {
-//        double angle = gyro.getAngle();
-//        return angle;
-        return 0;
-    }
-
-    /**
-     *
-     * @param speed
-     */
-    //DONT FORGET TO RESET GYRO BEFORE YOU USE THIS
-    public static void driveStraight(double speed) {
-        //read the gyro
-        //double angle = gyro.getAngle();
-        double angle = 0;
-        //calculate motor output
-        double rightMotorOutput = speed + kStraight * angle;
-        double leftMotorOutput = speed - kStraight * angle;
-        if (rightMotorOutput > 1) {
-            rightMotorOutput = 1;
-        }
-        if (leftMotorOutput > 1) {
-            leftMotorOutput = 1;
-        }
-        if (rightMotorOutput < -1) {
-            rightMotorOutput = - 1;
-        }
-        if (leftMotorOutput < -1) {
-            leftMotorOutput = -1;
-        }
-        //set motor output
-        drive.tankDrive(-leftMotorOutput, -rightMotorOutput);
-
     }
 
     public static void rangeUltrasonics() {

@@ -29,6 +29,16 @@ public class OperatorInterface {
             toggleShooters = new SpikeButton(gamepad, Ports.toggleShooter),
             setToLowRPM = new SpikeButton(gamepad, Ports.setToLowRPM);
 
+    public static void controlDriveTrain() {
+        double leftY = leftJoystick.getY();
+        double rightY = rightJoystick.getY();
+        if (toggleDriveDirection.getState()) {
+            DriveTrain.tankDrive(leftY, rightY);
+        } else {
+            DriveTrain.tankDrive(-rightY, -leftY);
+        }
+    }
+
     public static void controlShooter() {
         //read in setpoint from smart dashboard
         if (setToHighRPM.get()) {
