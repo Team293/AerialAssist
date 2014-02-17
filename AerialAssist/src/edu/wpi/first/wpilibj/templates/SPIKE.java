@@ -43,7 +43,7 @@ public class SPIKE extends IterativeRobot {
 
     public void autonomousInit() {
         DriveTrain.resetGyro();
-        DriveTrain.startTimer();
+        Feeder.feed();
         hasFired = false;
     }
 
@@ -51,21 +51,27 @@ public class SPIKE extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-        double blobCount = Vision.getBlobCount();
-        SmartDashboard.putNumber("blobCountFromCode", blobCount);
-        SmartDashboard.putBoolean("blobCountFromCode", blobCount == 2);
-        //shooting loop 
-        if (blobCount == 2 && !hasFired) {
-            hasFired = true;
-            ShooterRack.startShooting();
-            DriveTrain.startTimer();
-        }
+        //make sure you have a ball
         ShooterRack.run();
-        //driving loop
-        if (DriveTrain.getTime() < 2 && !ShooterRack.isShooting()) {
-            DriveTrain.driveStraight(0.6);
+        if (!Feeder.possessing()&&!hasFired) {
+            DriveTrain.driveStraight(-0.4);
+            Feeder.triggerEnabled();
         } else {
-            DriveTrain.stop();
+            double blobCount = Vision.getBlobCount();
+            SmartDashboard.putNumber("blobCountFromCode", blobCount);
+            SmartDashboard.putBoolean("blobCountFromCode", blobCount == 2);
+            //shooting loop 
+            if (blobCount == 2 && !ShooterRack.atRPM() && !hasFired) {
+                hasFired = true;
+                ShooterRack.startShooting();
+                DriveTrain.startTimer();
+            }
+            //driving loop
+            if (DriveTrain.getTime() < 2 && !ShooterRack.isShooting()) {
+                DriveTrain.driveStraight(0.6);
+            } else {
+                DriveTrain.stop();
+            }
         }
     }
 
