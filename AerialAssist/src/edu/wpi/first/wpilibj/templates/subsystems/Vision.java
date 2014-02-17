@@ -19,10 +19,10 @@ public class Vision {
     private static final Servo servo = new Servo(Ports.cameraServo);
 
     public static double getBlobCount() {
-        return cameraTable.getNumber("BLOB_COUNT", 0);
+        return cameraTable.getNumber("BLOB_COUNT", -1);
     }
-    
-    public static void setServo(double position){
+
+    public static void setServo(double position) {
         servo.set(position);
     }
 

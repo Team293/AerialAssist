@@ -8,9 +8,12 @@ package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.subsystems.Cage;
+import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
+import edu.wpi.first.wpilibj.templates.subsystems.Vision;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -20,6 +23,8 @@ import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
  * directory.
  */
 public class SPIKE extends IterativeRobot {
+
+    boolean hasFired = false;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -36,10 +41,32 @@ public class SPIKE extends IterativeRobot {
         ShooterRack.setToShootingRPM();
     }
 
+    public void autonomousInit() {
+        DriveTrain.resetGyro();
+        DriveTrain.startTimer();
+        hasFired = false;
+    }
+
     /**
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
+        double blobCount = Vision.getBlobCount();
+        SmartDashboard.putNumber("blobCountFromCode", blobCount);
+        SmartDashboard.putBoolean("blobCountFromCode", blobCount == 2);
+        //shooting loop 
+        if (blobCount == 2 && !hasFired) {
+            hasFired = true;
+            ShooterRack.startShooting();
+            DriveTrain.startTimer();
+        }
+        ShooterRack.run();
+        //driving loop
+        if (DriveTrain.getTime() < 2 && !ShooterRack.isShooting()) {
+            DriveTrain.driveStraight(0.6);
+        } else {
+            DriveTrain.stop();
+        }
     }
 
     /**

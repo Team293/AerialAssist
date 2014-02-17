@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.Ports;
 
@@ -24,6 +25,7 @@ public class DriveTrain {
     static final AnalogChannel rightUltrasonic = new AnalogChannel(Ports.rightUltrasonic);
     static final AnalogChannel leftUltrasonic = new AnalogChannel(Ports.leftUltrasonic);
     static final DigitalOutput ultrasonicSignal = new DigitalOutput(Ports.ultrasonicSignal);
+    private static final Timer autonomousTimer = new Timer();
     private static final double kStright = 0.13, kTurn = 180;
     private static double rightDistance, leftDistance;
     private static int ping = 0;
@@ -97,12 +99,9 @@ public class DriveTrain {
         SmartDashboard.putNumber("distanced", average);
         SmartDashboard.putBoolean("aligned", difference < 0.4);
         SmartDashboard.putBoolean("distanced", Math.abs(average - 12) < 1);
-        if (Math.abs(average - 12) < 1 && difference < 0.4) {
-            return true;
-        }
-        return false;
+        return Math.abs(average - 12) < 1 && difference < 0.4;
     }
-    
+
     public static void moveToDistance() {
         double difference = leftDistance - rightDistance;
         double average = (leftDistance + rightDistance) / 2.0;
@@ -116,5 +115,25 @@ public class DriveTrain {
 
     public static double convertToDistance(double rawVoltage) {
         return (rawVoltage + 0.0056) / 0.1141;
+    }
+
+    /**
+     *
+     * @return time in seconds
+     */
+    public static double getTime() {
+        return autonomousTimer.get();
+    }
+
+    public static void startTimer() {
+        autonomousTimer.start();
+    }
+
+    public static void pauseTimer() {
+        autonomousTimer.stop();
+    }
+
+    public static void resetTimer() {
+        autonomousTimer.reset();
     }
 }

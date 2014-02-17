@@ -87,7 +87,7 @@ public class OperatorInterface {
     public static void controlCamera() {
         //dividing by 4 decreases the range of the cameras motion
         //0.75 centers that motion around a slightly upward angle
-        double pos = gamepad.getRawAxis(Ports.gamepadLeftYAxis) / 4 + 0.75;
+        double pos = gamepad.getRawAxis(Ports.gamepadLeftYAxis) / 5 + 0.65;
         Vision.setServo(pos);
     }
 }
