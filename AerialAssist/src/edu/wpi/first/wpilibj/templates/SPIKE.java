@@ -101,7 +101,7 @@ public class SPIKE extends IterativeRobot {
         //OperatorInterface.controlDriveTrain();
         LCD.println(DriverStationLCD.Line.kUser1, 1, "run count before"+i);
         LCD.updateLCD();
-        
+        DriveTrain.emptyFunction();
         LCD.println(DriverStationLCD.Line.kUser1, 1, "run count after"+i);
         LCD.updateLCD();
         OperatorInterface.controlShooter();
