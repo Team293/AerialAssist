@@ -32,13 +32,15 @@ public class OperatorInterface {
 
     public static void controlDriveTrain() {
         if (autoDistance.get()) {
-            DriveTrain.moveToDistance();
+            //DriveTrain.moveToDistance();
         } else {
-            if (ShooterRack.isShooting()) {
+            if (!ShooterRack.isShooting()) {
+                double leftY = leftJoystick.getY();
+                double rightY = rightJoystick.getY();
                 if (!toggleDriveDirection.getState()) {
-                    DriveTrain.tankDrive(leftJoystick.getY(), rightJoystick.getY());
+//                DriveTrain.tankDrive(leftY, rightY);
                 } else {
-                    DriveTrain.tankDrive(-rightJoystick.getY(), -leftJoystick.getY());
+//                DriveTrain.tankDrive(-rightY, -leftY);
                 }
             }
         }
@@ -54,6 +56,9 @@ public class OperatorInterface {
 
         if (toggleShooters.getState()) {
             ShooterRack.run();
+        } else {
+
+            ShooterRack.stop();
         }
     }
 
@@ -94,7 +99,7 @@ public class OperatorInterface {
     public static void controlCamera() {
         //dividing by 4 decreases the range of the cameras motion
         //0.75 centers that motion around a slightly upward angle
-        double pos = gamepad.getRawAxis(Ports.gamepadLeftYAxis) / 5 + 0.65;
+        double pos = gamepad.getRawAxis(Ports.gamepadLeftYAxis) / 5 + 0.5;
         Vision.setServo(pos);
     }
 }

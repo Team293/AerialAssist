@@ -26,19 +26,15 @@ public class DriveTrain {
     static final AnalogChannel leftUltrasonic = new AnalogChannel(Ports.leftUltrasonic);
     static final DigitalOutput ultrasonicSignal = new DigitalOutput(Ports.ultrasonicSignal);
     private static final Timer autonomousTimer = new Timer();
-    private static final double kStright = 0.13, kTurn = 180;
+    private static final double kStright = 0.1;
     private static double rightDistance, leftDistance;
     private static int ping = 0;
 
-    private static final RobotDrive drive = new RobotDrive(leftMotor,
+    public static RobotDrive drive = new RobotDrive(leftMotor,
             rightMotor);
 
     public static void tankDrive(double leftMotor, double rightMotor) {
-        drive.tankDrive(-leftMotor, -rightMotor);
-    }
-
-    public static void arcadeDrive(double speed, double rotate) {
-        drive.arcadeDrive(-speed, rotate);
+        //drive.tankDrive(-leftMotor, -rightMotor);
     }
 
     public static void stop() {
@@ -102,17 +98,16 @@ public class DriveTrain {
         return Math.abs(average - 12) < 1 && difference < 0.4;
     }
 
-    public static void moveToDistance() {
-        double difference = leftDistance - rightDistance;
-        double average = (leftDistance + rightDistance) / 2.0;
-        SmartDashboard.putNumber("average dstiance", average);
-        if (difference < 5) {
-            drive.tankDrive(0.4, 0.4);
-        } else {
-            drive.tankDrive(0, 0);
-        }
-    }
-
+//    public static void moveToDistance() {
+//        double difference = leftDistance - rightDistance;
+//        double average = (leftDistance + rightDistance) / 2.0;
+//        SmartDashboard.putNumber("average dstiance", average);
+//        if (difference < 5) {
+//            drive.tankDrive(0.4, 0.4);
+//        } else {
+//            drive.tankDrive(0, 0);
+//        }
+//    }
     public static double convertToDistance(double rawVoltage) {
         return (rawVoltage + 0.0056) / 0.1141;
     }

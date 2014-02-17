@@ -28,14 +28,12 @@ public class Shooter {
         output = 0;
         rpm = 0;
         error = 0;
-        kP = -0.00001;
+        kP = -0.000013;
         this.id = ++ID;
     }
 
     public void init() {
         encoder.start();
-        //SmartDashboard.putNumber("kP" + id, setpoint);
-        //SmartDashboard.putNumber("setpoint" + id, setpoint);
     }
 
     public void stop() {

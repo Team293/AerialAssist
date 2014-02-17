@@ -20,26 +20,23 @@ public class Feeder {
     static final Relay trigger = new Relay(Ports.trigger);
     public static final DigitalInput ballLimit = new DigitalInput(Ports.ballLimit);
 
-    
-    public static void pass(){
+    public static void pass() {
         feeder.set(Relay.Value.kReverse);
         feeder2.set(Relay.Value.kReverse);
     }
-    
-    public static void feed(){
+
+    public static void feed() {
         feeder.set(Relay.Value.kForward);
         feeder2.set(Relay.Value.kForward);
     }
-    
-    public static void stop(){
+
+    public static void stop() {
         feeder.set(Relay.Value.kOff);
         feeder2.set(Relay.Value.kOff);
     }
-    
+
     public static void triggerDisabled() {
-        if (!ShooterRack.isShooting()) {
-            trigger.set(Relay.Value.kOff);
-        }
+        trigger.set(Relay.Value.kOff);
     }
 
     public static void triggerEnabled() {

@@ -15,10 +15,10 @@ import edu.wpi.first.wpilibj.templates.Ports;
  */
 public class Vision {
 
-    private static final NetworkTable cameraTable = NetworkTable.getTable("SmartDashboard");
+    NetworkTable cameraTable = NetworkTable.getTable("SmartDashboard");
     private static final Servo servo = new Servo(Ports.cameraServo);
 
-    public static double getBlobCount() {
+    public double getBlobCount() {
         return cameraTable.getNumber("BLOB_COUNT", -1);
     }
 

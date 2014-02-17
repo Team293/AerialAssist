@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 package edu.wpi.first.wpilibj.templates;
 
+import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,30 +25,27 @@ import edu.wpi.first.wpilibj.templates.subsystems.Vision;
  */
 public class SPIKE extends IterativeRobot {
 
-    boolean hasFired = false;
+    boolean hasFired;
 
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
-//        Test.addComponents();
         ShooterRack.init();
         Feeder.triggerEnabled();
         ShooterRack.setToShootingRPM();
-        ShooterRack.run();
     }
 
     public void teleopInit() {
-        Cage.release();
-        ShooterRack.run();
+        //Cage.release();
     }
 
     public void autonomousInit() {
+        Cage.release();
+        //start pause
         DriveTrain.resetGyro();
-        Feeder.feed();
         hasFired = false;
-        ShooterRack.run();
     }
 
     /**
@@ -56,24 +54,37 @@ public class SPIKE extends IterativeRobot {
     public void autonomousPeriodic() {
         //make sure you have a ball
         ShooterRack.run();
-        if (!Feeder.possessing()&&!hasFired) {
-            DriveTrain.driveStraight(-0.4);
+        Vision.setServo(0.65);
+        SmartDashboard.putBoolean("hasFired", hasFired);
+        SmartDashboard.putBoolean("possessing", Feeder.possessing());
+        if (!Feeder.possessing() && !hasFired) {
+            SmartDashboard.putString("debugging", "looking for ball...");
+            DriveTrain.driveStraight(0.4);
             Feeder.triggerEnabled();
+            Feeder.feed();
         } else {
-            double blobCount = Vision.getBlobCount();
-            SmartDashboard.putNumber("blobCountFromCode", blobCount);
-            SmartDashboard.putBoolean("blobCountFromCode", blobCount == 2);
+            Feeder.stop();
+            double blobCount = SmartDashboard.getNumber("blobCount", 0);
             //shooting loop 
-            if (blobCount == 2 && !ShooterRack.atRPM() && !hasFired) {
+            if (blobCount == 2 && !hasFired) {
+                SmartDashboard.putString("debugging", "starting to fire");
                 hasFired = true;
                 ShooterRack.startShooting();
                 DriveTrain.startTimer();
+                Feeder.triggerDisabled();
+                Feeder.feed();
             }
-            //driving loop
+//            //driving loop
             if (DriveTrain.getTime() < 2 && !ShooterRack.isShooting()) {
-                DriveTrain.driveStraight(0.6);
+                SmartDashboard.putString("debugging", "moving forward");
+                DriveTrain.driveStraight(-0.55);
+                Feeder.triggerEnabled();
+                Feeder.stop();
             } else {
+                SmartDashboard.putString("debugging", "firing!!");
                 DriveTrain.stop();
+                Feeder.feed();
+                Feeder.triggerDisabled();
             }
         }
     }
@@ -86,7 +97,7 @@ public class SPIKE extends IterativeRobot {
         OperatorInterface.controlDriveTrain();
         OperatorInterface.controlShooter();
         OperatorInterface.controlFeeder();
-        OperatorInterface.controlAutoAlign();
+        //OperatorInterface.controlAutoAlign();
         OperatorInterface.controlCamera();
     }
 
