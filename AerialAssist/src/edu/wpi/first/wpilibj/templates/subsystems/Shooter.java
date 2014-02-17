@@ -23,11 +23,7 @@ public class Shooter {
 
     Shooter(int talonPort, int encAPort, int encBPort) {
         talon = new Talon(talonPort);
-<<<<<<< HEAD
-        encoder = new SpikeEncoder(encAPort, encBPort,SpikeEncoder.BLACK);
-=======
         encoder = new SpikeEncoder(encAPort, encBPort, SpikeEncoder.BLACK);
->>>>>>> 736a21356a1c7adf81d76cb2500da786b22ec1fc
         setpoint = 0;
         output = 0;
         rpm = 0;
