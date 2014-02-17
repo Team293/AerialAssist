@@ -21,9 +21,9 @@ public class Ports {
             //___gamepad
             toggleFeeder = 1,
             pass = 2,
-            stopShooter = 3,
             setToHighRPM = 5,
             setToLowRPM = 6,
+            toggleShooter= 8,
             //axes
             gamepadLeftXAxis = 1,
             gamepadLeftYAxis = 2,

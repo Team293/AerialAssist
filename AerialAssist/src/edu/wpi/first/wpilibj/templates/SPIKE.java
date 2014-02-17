@@ -34,17 +34,20 @@ public class SPIKE extends IterativeRobot {
 //        Test.addComponents();
         ShooterRack.init();
         Feeder.triggerEnabled();
+        ShooterRack.setToShootingRPM();
+        ShooterRack.run();
     }
 
     public void teleopInit() {
         Cage.release();
-        ShooterRack.setToShootingRPM();
+        ShooterRack.run();
     }
 
     public void autonomousInit() {
         DriveTrain.resetGyro();
         Feeder.feed();
         hasFired = false;
+        ShooterRack.run();
     }
 
     /**
@@ -81,7 +84,8 @@ public class SPIKE extends IterativeRobot {
     public void teleopPeriodic() {
         //LEDs.indicateSituation();
         OperatorInterface.controlDriveTrain();
-        OperatorInterface.manualControlShooter();
+        OperatorInterface.controlShooter();
+        OperatorInterface.controlFeeder();
         OperatorInterface.controlAutoAlign();
         OperatorInterface.controlCamera();
     }

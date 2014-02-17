@@ -27,21 +27,24 @@ public class OperatorInterface {
             autoDistance = new SpikeButton(leftJoystick, 1),
             toggleDriveDirection = new SpikeButton(rightJoystick, Ports.toggleDriveDirection),
             setToHighRPM = new SpikeButton(gamepad, Ports.setToHighRPM),
+            toggleShooters = new SpikeButton(gamepad, Ports.toggleShooter),
             setToLowRPM = new SpikeButton(gamepad, Ports.setToLowRPM);
 
     public static void controlDriveTrain() {
         if (autoDistance.get()) {
             DriveTrain.moveToDistance();
         } else {
-            if (toggleDriveDirection.getState()) {
-                DriveTrain.tankDrive(leftJoystick.getY(), rightJoystick.getY());
-            } else {
-                DriveTrain.tankDrive(-rightJoystick.getY(), -leftJoystick.getY());
+            if (ShooterRack.isShooting()) {
+                if (!toggleDriveDirection.getState()) {
+                    DriveTrain.tankDrive(leftJoystick.getY(), rightJoystick.getY());
+                } else {
+                    DriveTrain.tankDrive(-rightJoystick.getY(), -leftJoystick.getY());
+                }
             }
         }
     }
 
-    public static void manualControlShooter() {
+    public static void controlShooter() {
         //read in setpoint from smart dashboard
         if (setToHighRPM.get()) {
             ShooterRack.setToShootingRPM();
@@ -49,8 +52,12 @@ public class OperatorInterface {
             ShooterRack.setToLowGoalRPM();
         }
 
-        ShooterRack.run();
+        if (toggleShooters.getState()) {
+            ShooterRack.run();
+        }
+    }
 
+    public static void controlFeeder() {
         if (fire.getClick()) {
             ShooterRack.startShooting();
         }
