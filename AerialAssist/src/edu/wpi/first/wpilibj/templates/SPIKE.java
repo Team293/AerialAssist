@@ -9,6 +9,7 @@ package edu.wpi.first.wpilibj.templates;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.subsystems.Cage;
@@ -30,6 +31,7 @@ public class SPIKE extends IterativeRobot {
     DriverStationLCD LCD = DriverStationLCD.getInstance();
     final Gyro gyro = new Gyro(Ports.gyro);
     private static final double kStraight = 0.1;
+    Timer t = new Timer();
 
     /**
      * This function is run when the robot is first started up and should be
@@ -49,45 +51,62 @@ public class SPIKE extends IterativeRobot {
         Cage.release();
         gyro.reset();
         hasFired = false;
+        t.reset();
     }
 
     /**
      * This function is called periodically during autonomous
      */
+    boolean isTiming = false;
+    double stopTime = 2.5;
+
     public void autonomousPeriodic() {
         //make sure you have a ball
+        double blobCount = SmartDashboard.getNumber("blobCount", 0);
+        DriveTrain.rangeUltrasonics();
         ShooterRack.run();
         Vision.setServo(0.65);
         SmartDashboard.putBoolean("hasFired", hasFired);
         SmartDashboard.putBoolean("possessing", Feeder.possessing());
         if (!Feeder.possessing() && !hasFired) {
             SmartDashboard.putString("debugging", "looking for ball...");
-            driveStraight(0.4);
             Feeder.triggerEnabled();
             Feeder.feed();
         } else {
+            if (!isTiming) {
+                isTiming = true;
+                t.start();
+            }
             Feeder.stop();
-            double blobCount = SmartDashboard.getNumber("blobCount", 0);
             //shooting loop 
-            if (blobCount == 2 && !hasFired) {
+            SmartDashboard.putNumber("time", t.get());
+            if (blobCount == 2 && !hasFired && t.get() >= stopTime) {
                 SmartDashboard.putString("debugging", "starting to fire");
                 hasFired = true;
                 ShooterRack.startShooting();
-                DriveTrain.startTimer();
                 Feeder.triggerDisabled();
                 Feeder.feed();
             }
 //            //driving loop
-            if (DriveTrain.getTime() < 2 && !ShooterRack.isShooting()) {
+            if (t.get() < stopTime && !ShooterRack.isShooting()) {
                 SmartDashboard.putString("debugging", "moving forward");
-                driveStraight(-0.55);
+                driveStraight(0.80);
                 Feeder.triggerEnabled();
                 Feeder.stop();
-            } else {
+            } else if (ShooterRack.isShooting()) {
                 SmartDashboard.putString("debugging", "firing!!");
+                t.stop();
                 DriveTrain.stop();
                 Feeder.feed();
                 Feeder.triggerDisabled();
+                if (!Feeder.possessing()) {
+                    SmartDashboard.putString("debugging", "resuming");
+                    ShooterRack.finishedShooting();
+                    t.start();
+                }
+            } else {
+                SmartDashboard.putString("debugging", "stopped");
+                DriveTrain.stop();
             }
         }
     }
@@ -114,24 +133,24 @@ public class SPIKE extends IterativeRobot {
         LiveWindow.run();
     }
 
-    public static void driveStraight(double speed) {
+    public void driveStraight(double speed) {
         //read the gyro
-        //double angle = gyro.getAngle();
-        double angle = 0;
+        double angle = gyro.getAngle();
         //calculate motor output
-        double rightMotorOutput = speed + kStraight * angle;
-        double leftMotorOutput = speed - kStraight * angle;
-        if (rightMotorOutput > 1) {
-            rightMotorOutput = 1;
+        SmartDashboard.putNumber("gyro", angle);
+        double rightMotorOutput = speed - kStraight * angle;
+        double leftMotorOutput = speed + kStraight * angle;
+        if (rightMotorOutput > 0.5) {
+            rightMotorOutput = 0.5;
         }
-        if (leftMotorOutput > 1) {
-            leftMotorOutput = 1;
+        if (leftMotorOutput > 0.5) {
+            leftMotorOutput = 0.5;
         }
-        if (rightMotorOutput < -1) {
-            rightMotorOutput = - 1;
+        if (rightMotorOutput < -0.5) {
+            rightMotorOutput = -0.5;
         }
-        if (leftMotorOutput < -1) {
-            leftMotorOutput = -1;
+        if (leftMotorOutput < -0.5) {
+            leftMotorOutput = -0.5;
         }
         //set motor output
         DriveTrain.tankDrive(-leftMotorOutput, -rightMotorOutput);

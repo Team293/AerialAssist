@@ -21,12 +21,12 @@ public class Feeder {
     public static final DigitalInput ballLimit = new DigitalInput(Ports.ballLimit);
 
     public static void pass() {
-        feeder.set(Relay.Value.kForward);
+        feeder.set(Relay.Value.kReverse);
         feeder2.set(Relay.Value.kForward);
     }
 
     public static void feed() {
-        feeder.set(Relay.Value.kReverse);
+        feeder.set(Relay.Value.kForward);
         feeder2.set(Relay.Value.kReverse);
     }
 

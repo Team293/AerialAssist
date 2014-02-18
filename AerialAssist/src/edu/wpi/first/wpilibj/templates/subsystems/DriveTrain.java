@@ -25,7 +25,6 @@ public class DriveTrain {
     static final AnalogChannel rightUltrasonic = new AnalogChannel(Ports.rightUltrasonic);
     static final AnalogChannel leftUltrasonic = new AnalogChannel(Ports.leftUltrasonic);
     static final DigitalOutput ultrasonicSignal = new DigitalOutput(Ports.ultrasonicSignal);
-    private static final Timer autonomousTimer = new Timer();
     private static double rightDistance, leftDistance;
     private static int ping = 0;
 
@@ -48,6 +47,8 @@ public class DriveTrain {
         }
         leftDistance = convertToDistance(leftUltrasonic.getAverageVoltage());
         rightDistance = convertToDistance(rightUltrasonic.getAverageVoltage());
+        SmartDashboard.putNumber("leftD", leftDistance);
+        SmartDashboard.putNumber("rightD", rightDistance);
     }
 
     public static boolean isAligned() {
@@ -75,23 +76,4 @@ public class DriveTrain {
         return (rawVoltage + 0.0056) / 0.1141;
     }
 
-    /**
-     *
-     * @return time in seconds
-     */
-    public static double getTime() {
-        return autonomousTimer.get();
-    }
-
-    public static void startTimer() {
-        autonomousTimer.start();
-    }
-
-    public static void pauseTimer() {
-        autonomousTimer.stop();
-    }
-
-    public static void resetTimer() {
-        autonomousTimer.reset();
-    }
 }

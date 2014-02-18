@@ -41,7 +41,7 @@ public class ShooterRack {
 
     public static void setToShootingRPM() {
         shooterLow.setSetpoint(-900);
-        shooterMiddle.setSetpoint(2200);
+        shooterMiddle.setSetpoint(2300);
         shooterHigh.setSetpoint(2000);
     }
 
