@@ -118,16 +118,17 @@ public class SPIKE extends IterativeRobot {
     /**
      * This function is called periodically during operator control
      */
-    int i = 0;
-
     public void teleopPeriodic() {
-        i++;
         //LEDs.indicateSituation();
         OperatorInterface.controlDriveTrain();
         OperatorInterface.controlShooter();
         OperatorInterface.controlFeeder();
         OperatorInterface.controlAutoAlign();
         OperatorInterface.controlCamera();
+        LCD.println(DriverStationLCD.Line.kUser1, 1, "" + DriveTrain.getLeftDistance());
+        LCD.println(DriverStationLCD.Line.kUser2, 1, "" + DriveTrain.getRightDistance());
+
+        LCD.updateLCD();
     }
 
     /**

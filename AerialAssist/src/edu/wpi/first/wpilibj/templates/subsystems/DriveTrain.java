@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.Ports;
 
@@ -49,6 +48,14 @@ public class DriveTrain {
         rightDistance = convertToDistance(rightUltrasonic.getAverageVoltage());
         SmartDashboard.putNumber("leftD", leftDistance);
         SmartDashboard.putNumber("rightD", rightDistance);
+    }
+
+    public static double getLeftDistance() {
+        return leftDistance;
+    }
+
+    public static double getRightDistance() {
+        return rightDistance;
     }
 
     public static boolean isAligned() {

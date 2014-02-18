@@ -76,7 +76,7 @@ public class OperatorInterface {
                     //stop on posess
                     if (Feeder.overFed()) {
                         ShooterRack.disableLowWheel();
-                        Feeder.feeder.set(Relay.Value.kReverse);
+                        Feeder.feeder2.set(Relay.Value.kForward);
                     } else {
                         Feeder.stop();
                         ShooterRack.enableLowWheel();
