@@ -36,7 +36,7 @@ public class DriveTrain {
     }
 
     public static void stop() {
-        drive.tankDrive(0, 0);
+        drive.tankDrive(0.01, 0.01);
     }
 
     public static void rangeUltrasonics() {

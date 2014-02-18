@@ -30,7 +30,7 @@ public class SPIKE extends IterativeRobot {
     boolean hasFired;
     DriverStationLCD LCD = DriverStationLCD.getInstance();
     final Gyro gyro = new Gyro(Ports.gyro);
-    private static final double kStraight = 0.1;
+    private static final double kStraight = 0.09;
     Timer t = new Timer();
 
     /**
@@ -58,7 +58,7 @@ public class SPIKE extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     boolean isTiming = false;
-    double stopTime = 2.5;
+    double stopTime = 2.25;
 
     public void autonomousPeriodic() {
         //make sure you have a ball
@@ -90,7 +90,11 @@ public class SPIKE extends IterativeRobot {
 //            //driving loop
             if (t.get() < stopTime && !ShooterRack.isShooting()) {
                 SmartDashboard.putString("debugging", "moving forward");
-                driveStraight(0.80);
+                if (t.get() < stopTime - 1) {
+                    driveStraight(0.7);
+                } else {
+                    driveStraight(0.4);
+                }
                 Feeder.triggerEnabled();
                 Feeder.stop();
             } else if (ShooterRack.isShooting()) {
@@ -140,17 +144,17 @@ public class SPIKE extends IterativeRobot {
         SmartDashboard.putNumber("gyro", angle);
         double rightMotorOutput = speed - kStraight * angle;
         double leftMotorOutput = speed + kStraight * angle;
-        if (rightMotorOutput > 0.5) {
-            rightMotorOutput = 0.5;
+        if (rightMotorOutput > 1) {
+            rightMotorOutput = 1;
         }
-        if (leftMotorOutput > 0.5) {
-            leftMotorOutput = 0.5;
+        if (leftMotorOutput > 1) {
+            leftMotorOutput = 1;
         }
-        if (rightMotorOutput < -0.5) {
-            rightMotorOutput = -0.5;
+        if (rightMotorOutput < -1) {
+            rightMotorOutput = -1;
         }
-        if (leftMotorOutput < -0.5) {
-            leftMotorOutput = -0.5;
+        if (leftMotorOutput < -1) {
+            leftMotorOutput = -1;
         }
         //set motor output
         DriveTrain.tankDrive(-leftMotorOutput, -rightMotorOutput);
