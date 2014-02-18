@@ -47,7 +47,6 @@ public class SPIKE extends IterativeRobot {
 
     public void autonomousInit() {
         Cage.release();
-        //start pause
         gyro.reset();
         hasFired = false;
     }
