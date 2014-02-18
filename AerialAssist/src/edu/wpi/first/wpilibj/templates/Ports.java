@@ -23,7 +23,7 @@ public class Ports {
             pass = 2,
             setToHighRPM = 5,
             setToLowRPM = 6,
-            toggleShooter= 8,
+            toggleShooter = 8,
             //axes
             gamepadLeftXAxis = 1,
             gamepadLeftYAxis = 2,
@@ -59,5 +59,7 @@ public class Ports {
             led3 = 12,
             led4 = 13,
             //optical limtis
-            ballLimit = 1;
+            ballLimit = 1,
+            ballLimit2 = 9,
+            triggerLimit = 10;
 }

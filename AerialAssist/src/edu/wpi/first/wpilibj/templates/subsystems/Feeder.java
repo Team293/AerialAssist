@@ -7,6 +7,7 @@ package edu.wpi.first.wpilibj.templates.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.Ports;
 
 /**
@@ -19,6 +20,8 @@ public class Feeder {
     public static final Relay feeder2 = new Relay(Ports.feeder2);
     static final Relay trigger = new Relay(Ports.trigger);
     public static final DigitalInput ballLimit = new DigitalInput(Ports.ballLimit);
+    public static final DigitalInput ballLimit2 = new DigitalInput(Ports.ballLimit2);
+    public static final DigitalInput triggerLimit = new DigitalInput(Ports.triggerLimit);
 
     public static void pass() {
         feeder.set(Relay.Value.kReverse);
@@ -35,6 +38,11 @@ public class Feeder {
         feeder2.set(Relay.Value.kOff);
     }
 
+    public static boolean overFed() {
+        SmartDashboard.putBoolean("trigger limit", Feeder.triggerLimit.get());
+        return triggerLimit.get();
+    }
+
     public static void triggerDisabled() {
         trigger.set(Relay.Value.kOff);
     }
@@ -44,6 +52,6 @@ public class Feeder {
     }
 
     public static boolean possessing() {
-        return !ballLimit.get();
+        return !ballLimit.get() || !ballLimit2.get();
     }
 }

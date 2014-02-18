@@ -6,7 +6,9 @@
 package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.buttons.SpikeButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
@@ -62,21 +64,35 @@ public class OperatorInterface {
 
         if (!ShooterRack.isShooting()) {
             if (pass.get()) {
+                //pass
                 Feeder.pass();
             } else if (toggleFeeder.getState()) {
-                //ball limit is wired in reverse!~~~
+                //toggle off
                 if (!Feeder.possessing()) {
+                    //feed
                     Feeder.feed();
+                    ShooterRack.disableLowWheel();
                 } else {
-                    Feeder.stop();
+                    //stop on posess
+                    if (Feeder.overFed()) {
+                        ShooterRack.disableLowWheel();
+                        Feeder.feeder.set(Relay.Value.kReverse);
+                    } else {
+                        Feeder.stop();
+                        ShooterRack.enableLowWheel();
+                    }
                 }
             } else {
+                //toggle off
                 Feeder.stop();
             }
         } else {
+            //firing
             Feeder.triggerDisabled();
             Feeder.feed();
             if (!Feeder.possessing()) {
+                //stop firing
+                ShooterRack.disableLowWheel();
                 ShooterRack.finishedShooting();
                 toggleFeeder.setState(false);
                 Feeder.triggerEnabled();
