@@ -30,9 +30,9 @@ public class SPIKE extends IterativeRobot {
     boolean hasFired;
     DriverStationLCD LCD = DriverStationLCD.getInstance();
     final Gyro gyro = new Gyro(Ports.gyro);
-    private static final double kStraight = 0.09;
+    private static final double kStraight = 0.085;
     Timer t = new Timer();
-
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
