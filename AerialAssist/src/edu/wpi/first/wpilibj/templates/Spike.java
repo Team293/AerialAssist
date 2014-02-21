@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj.templates.subsystems.Vision;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class SPIKE extends IterativeRobot {
+public class Spike extends IterativeRobot {
 
     boolean hasFired;
     DriverStationLCD LCD = DriverStationLCD.getInstance();
@@ -65,7 +65,7 @@ public class SPIKE extends IterativeRobot {
         double blobCount = SmartDashboard.getNumber("blobCount", 0);
         DriveTrain.rangeUltrasonics();
         ShooterRack.run();
-        Vision.setServo(0.65);
+        Vision.setServo(0.6);
         SmartDashboard.putBoolean("hasFired", hasFired);
         SmartDashboard.putBoolean("possessing", Feeder.possessing());
         if (!Feeder.possessing() && !hasFired) {
@@ -87,10 +87,10 @@ public class SPIKE extends IterativeRobot {
                 Feeder.triggerDisabled();
                 Feeder.feed();
             }
-//            //driving loop
+            //driving loop
             if (t.get() < stopTime && !ShooterRack.isShooting()) {
                 SmartDashboard.putString("debugging", "moving forward");
-                if (t.get() < stopTime - 1) {
+                if (t.get() < stopTime - 0.75) {
                     driveStraight(0.7);
                 } else {
                     driveStraight(0.4);
