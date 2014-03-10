@@ -22,6 +22,7 @@ public class Feeder {
     public static final DigitalInput ballLimit = new DigitalInput(Ports.ballLimit);
     public static final DigitalInput ballLimit2 = new DigitalInput(Ports.ballLimit2);
     public static final DigitalInput triggerLimit = new DigitalInput(Ports.triggerLimit);
+    private static boolean lastPossessState = false;
 
     public static void pass() {
         feeder.set(Relay.Value.kReverse);
@@ -52,6 +53,15 @@ public class Feeder {
     }
 
     public static boolean possessing() {
-        return !ballLimit.get() || !ballLimit2.get();
+        boolean possessing = !ballLimit.get() || !ballLimit2.get();
+        lastPossessState = possessing;
+        return possessing;
+    }
+
+    public static boolean recieved() {
+        boolean recieved = lastPossessState && !possessing();
+        lastPossessState = possessing();
+        SmartDashboard.putBoolean("recieved ", recieved);
+        return recieved;
     }
 }

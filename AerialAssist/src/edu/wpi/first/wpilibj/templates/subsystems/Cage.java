@@ -14,10 +14,15 @@ import edu.wpi.first.wpilibj.templates.Ports;
  */
 public class Cage {
 
-    static final Servo release = new Servo(Ports.cageRelease);
+    private static final Servo release = new Servo(Ports.cageRelease);
+    private static final double released = 0.0, active = 0.8;
 
     public static void release() {
-        release.set(0);
+        release.set(released);
+    }
+
+    public static void reset() {
+        release.set(active);
     }
 
 }

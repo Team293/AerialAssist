@@ -26,6 +26,7 @@ public class OperatorInterface {
     private static final SpikeButton pass = new SpikeButton(gamepad, Ports.pass),
             toggleFeeder = new SpikeButton(gamepad, Ports.toggleFeeder),
             fire = new SpikeButton(rightJoystick, Ports.fire),
+            recieve = new SpikeButton(gamepad, Ports.recieve),
             toggleDriveDirection = new SpikeButton(rightJoystick, Ports.toggleDriveDirection),
             setToHighRPM = new SpikeButton(gamepad, Ports.setToHighRPM),
             toggleShooters = new SpikeButton(gamepad, Ports.toggleShooter),
@@ -42,7 +43,6 @@ public class OperatorInterface {
     }
 
     public static void controlShooter() {
-        //read in setpoint from smart dashboard
         if (setToHighRPM.get()) {
             ShooterRack.setToShootingRPM();
         } else if (setToLowRPM.get()) {
@@ -52,7 +52,6 @@ public class OperatorInterface {
         if (toggleShooters.getState()) {
             ShooterRack.run();
         } else {
-
             ShooterRack.stop();
         }
     }
@@ -66,6 +65,17 @@ public class OperatorInterface {
             if (pass.get()) {
                 //pass
                 Feeder.pass();
+            } else if (recieve.getState()) {
+                Feeder.triggerDisabled();
+                ShooterRack.setToRecieveRPM();
+                ShooterRack.run();
+                Feeder.pass();
+                if (Feeder.recieved()) {
+                    ShooterRack.setToShootingRPM();
+                    recieve.setState(false);
+                    Feeder.triggerEnabled();
+                    toggleFeeder.setState(true);
+                }
             } else if (toggleFeeder.getState()) {
                 //toggle off
                 if (!Feeder.possessing()) {
@@ -98,11 +108,6 @@ public class OperatorInterface {
                 Feeder.triggerEnabled();
             }
         }
-    }
-
-    public static void controlAutoAlign() {
-        DriveTrain.rangeUltrasonics();
-        DriveTrain.isAligned();
     }
 
     public static void controlCamera() {

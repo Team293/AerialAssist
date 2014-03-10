@@ -7,16 +7,23 @@
 package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.DriverStationLCD;
-import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.templates.Autonomous.Auto;
+import edu.wpi.first.wpilibj.templates.Autonomous.ColdOneBall;
+import edu.wpi.first.wpilibj.templates.Autonomous.ColdTwoBall;
+import edu.wpi.first.wpilibj.templates.Autonomous.CrossLine;
+import edu.wpi.first.wpilibj.templates.Autonomous.HotOneBall;
+import edu.wpi.first.wpilibj.templates.Autonomous.HotTwoBall;
+import edu.wpi.first.wpilibj.templates.Autonomous.UltrasonicColdOneBall;
+import edu.wpi.first.wpilibj.templates.Autonomous.UltrasonicColdTwoBall;
+import edu.wpi.first.wpilibj.templates.Autonomous.UltrasonicHotTwoBall;
 import edu.wpi.first.wpilibj.templates.subsystems.Cage;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
-import edu.wpi.first.wpilibj.templates.subsystems.Vision;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,17 +34,38 @@ import edu.wpi.first.wpilibj.templates.subsystems.Vision;
  */
 public class SPIKE extends IterativeRobot {
 
-    boolean hasFired;
     DriverStationLCD LCD = DriverStationLCD.getInstance();
-    final Gyro gyro = new Gyro(Ports.gyro);
-    private static final double kStraight = 0.085;
-    Timer t = new Timer();
-    
+    SendableChooser chooser = new SendableChooser();
+    String[] autonomiNames;
+    Auto[] autonomi;
+    Auto selectedAuto;
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
+        autonomiNames = new String[]{"cross line",
+            "one ball",
+            "two ball",
+            "one ball hot",
+            "two ball hot",
+            "US one ball",
+            "US two ball",
+            "US two ball hot"};
+        autonomi = new Auto[]{new CrossLine(),
+            new ColdOneBall(),
+            new ColdTwoBall(),
+            new HotOneBall(),
+            new HotTwoBall(),
+            new UltrasonicColdOneBall(),
+            new UltrasonicColdTwoBall(),
+            new UltrasonicHotTwoBall()};
+        for (int i = 0; i < autonomiNames.length; ++i) {
+            chooser.addObject(autonomiNames[i], autonomi[i]);
+        }
+        SmartDashboard.putData("Which Autonomouse?", chooser);
+
         ShooterRack.init();
         Feeder.triggerEnabled();
         ShooterRack.setToShootingRPM();
@@ -48,86 +76,28 @@ public class SPIKE extends IterativeRobot {
     }
 
     public void autonomousInit() {
-        Cage.release();
-        gyro.reset();
-        hasFired = false;
-        t.reset();
+        selectedAuto = (Auto) chooser.getSelected();
+        selectedAuto.init();
     }
 
     /**
      * This function is called periodically during autonomous
      */
-    boolean isTiming = false;
-    double stopTime = 2.25;
-
     public void autonomousPeriodic() {
-        //make sure you have a ball
-        double blobCount = SmartDashboard.getNumber("blobCount", 0);
-        DriveTrain.rangeUltrasonics();
-        ShooterRack.run();
-        Vision.setServo(0.65);
-        SmartDashboard.putBoolean("hasFired", hasFired);
-        SmartDashboard.putBoolean("possessing", Feeder.possessing());
-        if (!Feeder.possessing() && !hasFired) {
-            SmartDashboard.putString("debugging", "looking for ball...");
-            Feeder.triggerEnabled();
-            Feeder.feed();
-        } else {
-            if (!isTiming) {
-                isTiming = true;
-                t.start();
-            }
-            Feeder.stop();
-            //shooting loop 
-            SmartDashboard.putNumber("time", t.get());
-            if (blobCount == 2 && !hasFired && t.get() >= stopTime) {
-                SmartDashboard.putString("debugging", "starting to fire");
-                hasFired = true;
-                ShooterRack.startShooting();
-                Feeder.triggerDisabled();
-                Feeder.feed();
-            }
-//            //driving loop
-            if (t.get() < stopTime && !ShooterRack.isShooting()) {
-                SmartDashboard.putString("debugging", "moving forward");
-                if (t.get() < stopTime - 1) {
-                    driveStraight(0.7);
-                } else {
-                    driveStraight(0.4);
-                }
-                Feeder.triggerEnabled();
-                Feeder.stop();
-            } else if (ShooterRack.isShooting()) {
-                SmartDashboard.putString("debugging", "firing!!");
-                t.stop();
-                DriveTrain.stop();
-                Feeder.feed();
-                Feeder.triggerDisabled();
-                if (!Feeder.possessing()) {
-                    SmartDashboard.putString("debugging", "resuming");
-                    ShooterRack.finishedShooting();
-                    t.start();
-                }
-            } else {
-                SmartDashboard.putString("debugging", "stopped");
-                DriveTrain.stop();
-            }
-        }
+        selectedAuto.run();
     }
 
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        //LEDs.indicateSituation();
         OperatorInterface.controlDriveTrain();
         OperatorInterface.controlShooter();
         OperatorInterface.controlFeeder();
-        OperatorInterface.controlAutoAlign();
         OperatorInterface.controlCamera();
+        DriveTrain.rangeUltrasonics();
         LCD.println(DriverStationLCD.Line.kUser1, 1, "" + DriveTrain.getLeftDistance());
         LCD.println(DriverStationLCD.Line.kUser2, 1, "" + DriveTrain.getRightDistance());
-
         LCD.updateLCD();
     }
 
@@ -138,27 +108,18 @@ public class SPIKE extends IterativeRobot {
         LiveWindow.run();
     }
 
-    public void driveStraight(double speed) {
-        //read the gyro
-        double angle = gyro.getAngle();
-        //calculate motor output
-        SmartDashboard.putNumber("gyro", angle);
-        double rightMotorOutput = speed - kStraight * angle;
-        double leftMotorOutput = speed + kStraight * angle;
-        if (rightMotorOutput > 1) {
-            rightMotorOutput = 1;
-        }
-        if (leftMotorOutput > 1) {
-            leftMotorOutput = 1;
-        }
-        if (rightMotorOutput < -1) {
-            rightMotorOutput = -1;
-        }
-        if (leftMotorOutput < -1) {
-            leftMotorOutput = -1;
-        }
-        //set motor output
-        DriveTrain.tankDrive(-leftMotorOutput, -rightMotorOutput);
+    public void teleopDisabled() {
+        DriveTrain.stop();
+        Feeder.stop();
+        ShooterRack.stop();
+        Cage.reset();
+    }
+
+    public void autonomousDisabled() {
+        DriveTrain.stop();
+        Feeder.stop();
+        ShooterRack.stop();
+        Cage.reset();
     }
 
 }

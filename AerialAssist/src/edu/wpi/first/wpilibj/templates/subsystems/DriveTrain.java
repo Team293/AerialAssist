@@ -24,18 +24,17 @@ public class DriveTrain {
     static final AnalogChannel rightUltrasonic = new AnalogChannel(Ports.rightUltrasonic);
     static final AnalogChannel leftUltrasonic = new AnalogChannel(Ports.leftUltrasonic);
     static final DigitalOutput ultrasonicSignal = new DigitalOutput(Ports.ultrasonicSignal);
-    private static double rightDistance, leftDistance;
+    private static double rightDistance, leftDistance, average;
     private static int ping = 0;
+    private static final int sampleSize = 10;
+    private static final double[] val = new double[sampleSize];
 
     public static void tankDrive(double leftMotor, double rightMotor) {
         drive.tankDrive(-leftMotor, -rightMotor);
     }
 
-    public static void emptyFunction() {
-    }
-
     public static void stop() {
-        drive.tankDrive(0.01, 0.01);
+        drive.tankDrive(0.0, 0.0);
     }
 
     public static void rangeUltrasonics() {
@@ -48,6 +47,22 @@ public class DriveTrain {
         rightDistance = convertToDistance(rightUltrasonic.getAverageVoltage());
         SmartDashboard.putNumber("leftD", leftDistance);
         SmartDashboard.putNumber("rightD", rightDistance);
+
+        //sensor array stuff
+        for (int i = 0; i < val.length - 2; i++) {
+            val[i] = val[i + 2];
+        }
+        val[sampleSize - 2] = leftDistance;
+        val[sampleSize - 1] = rightDistance;
+        int sum = 0;
+        for (int i = 0; i < val.length; i++) {
+            sum += val[i];
+        }
+        average = sum / val.length;
+        SmartDashboard.putNumber("leftD", leftDistance);
+        SmartDashboard.putNumber("rightD", rightDistance);
+        SmartDashboard.putNumber("averag", average);
+        isAtShootingDistance();
     }
 
     public static double getLeftDistance() {
@@ -58,29 +73,37 @@ public class DriveTrain {
         return rightDistance;
     }
 
-    public static boolean isAligned() {
-        double difference = leftDistance - rightDistance;
-        double average = (leftDistance + rightDistance) / 2.0;
-        SmartDashboard.putNumber("aligned", difference);
-        SmartDashboard.putNumber("distanced", average);
-        SmartDashboard.putBoolean("aligned", difference < 0.4);
-        SmartDashboard.putBoolean("distanced", Math.abs(average - 12) < 1);
-        return Math.abs(average - 12) < 1 && difference < 0.4;
-    }
-
-    public static void moveToDistance() {
-        double difference = leftDistance - rightDistance;
-        double average = (leftDistance + rightDistance) / 2.0;
-        SmartDashboard.putNumber("average dstiance", average);
-        if (difference < 5) {
-            drive.tankDrive(0.4, 0.4);
-        } else {
-            drive.tankDrive(0, 0);
-        }
+    public static boolean isAtShootingDistance() {
+        //returns true if average Ultrasonic distance is between 6 && 8
+        boolean atDistance = Math.abs(average - 7) < 1;
+        SmartDashboard.putBoolean("FIRE", atDistance);
+        return atDistance;
     }
 
     public static double convertToDistance(double rawVoltage) {
         return (rawVoltage + 0.0056) / 0.1141;
+    }
+
+    private static void sort(double[] a) {
+        while (!inOrder(a)) {
+            for (int i = 0; i < a.length; i++) {
+                //if in wrong order, flip
+                if (a[i] > a[i + 1]) {
+                    double temp = a[i + 1];
+                    a[i + 1] = a[i];
+                    a[i] = temp;
+                }
+            }
+        }
+    }
+
+    private static boolean inOrder(double[] a) {
+        for (int i = 0; i < a.length; i++) {
+            if (a[i] > a[i + 1]) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
