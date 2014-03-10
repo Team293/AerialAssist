@@ -50,8 +50,7 @@ public class UltrasonicColdTwoBall extends Auto {
         while (Feeder.possessing()) {
             SmartDashboard.putString("debug..", "shooting");
             ShooterRack.run();
-            Feeder.triggerDisabled();
-            Feeder.feed();
+            ShooterRack.fire();
         }
         Feeder.triggerEnabled();
         ShooterRack.stop();
@@ -80,12 +79,8 @@ public class UltrasonicColdTwoBall extends Auto {
         }
         DriveTrain.stop();
         //shoot
-        while (Feeder.possessing()) {
-            ShooterRack.run();
-            SmartDashboard.putString("debug..", "shoot 2");
-            Feeder.triggerDisabled();
-            Feeder.feed();
-        }
+        ShooterRack.autonomousFire();
+        
         Feeder.triggerEnabled();
         ShooterRack.stop();
     }

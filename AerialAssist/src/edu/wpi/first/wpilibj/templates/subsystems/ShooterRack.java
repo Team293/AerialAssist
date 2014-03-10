@@ -25,6 +25,7 @@ public class ShooterRack {
 
     public static void finishedShooting() {
         shooting = false;
+        LEDs.killTheFun();
     }
 
     public static void enableLowWheel() {
@@ -39,6 +40,20 @@ public class ShooterRack {
         shooterLow.init();
         shooterMiddle.init();
         shooterHigh.init();
+    }
+
+    public static void fire() {
+        LEDs.XXsuperOMGAwesomeLEDSwowFIREEEEEEE();
+        Feeder.feed();
+        Feeder.triggerDisabled();
+    }
+
+    public static void autonomousFire() {
+        while (Feeder.possessing()) {
+            ShooterRack.run();
+            fire();
+        }
+        LEDs.killTheFun();
     }
 
     public static void setToShootingRPM() {

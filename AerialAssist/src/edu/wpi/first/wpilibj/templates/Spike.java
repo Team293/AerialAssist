@@ -11,20 +11,8 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.templates.Autonomous.Auto;
-import edu.wpi.first.wpilibj.templates.Autonomous.ColdOneBall;
-import edu.wpi.first.wpilibj.templates.Autonomous.ColdTwoBall;
-import edu.wpi.first.wpilibj.templates.Autonomous.CrossLine;
-import edu.wpi.first.wpilibj.templates.Autonomous.HotOneBall;
-import edu.wpi.first.wpilibj.templates.Autonomous.HotTwoBall;
-import edu.wpi.first.wpilibj.templates.Autonomous.UltrasonicColdOneBall;
-import edu.wpi.first.wpilibj.templates.Autonomous.UltrasonicColdTwoBall;
-import edu.wpi.first.wpilibj.templates.Autonomous.UltrasonicHotOneBall;
-import edu.wpi.first.wpilibj.templates.Autonomous.UltrasonicHotTwoBall;
-import edu.wpi.first.wpilibj.templates.subsystems.Cage;
-import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
-import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
-import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
+import edu.wpi.first.wpilibj.templates.Autonomous.*;
+import edu.wpi.first.wpilibj.templates.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -34,7 +22,7 @@ import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
  * directory.
  */
 public class Spike extends IterativeRobot {
-    
+
     DriverStationLCD LCD = DriverStationLCD.getInstance();
     SendableChooser chooser = new SendableChooser();
     String[] autonomiNames;
@@ -72,11 +60,11 @@ public class Spike extends IterativeRobot {
         Feeder.triggerEnabled();
         ShooterRack.setToShootingRPM();
     }
-    
+
     public void teleopInit() {
         Cage.release();
     }
-    
+
     public void autonomousInit() {
         selectedAuto = (Auto) chooser.getSelected();
         SmartDashboard.putString("selected auto: ", chooser.getSelected().toString());
@@ -110,19 +98,19 @@ public class Spike extends IterativeRobot {
     public void testPeriodic() {
         LiveWindow.run();
     }
-    
+
     public void teleopDisabled() {
         DriveTrain.stop();
         Feeder.stop();
         ShooterRack.stop();
         Cage.reset();
     }
-    
+
     public void autonomousDisabled() {
         DriveTrain.stop();
         Feeder.stop();
         ShooterRack.stop();
         Cage.reset();
     }
-    
+
 }

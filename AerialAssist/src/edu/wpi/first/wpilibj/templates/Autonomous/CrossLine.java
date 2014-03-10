@@ -11,6 +11,8 @@ package edu.wpi.first.wpilibj.templates.Autonomous;
  */
 public class CrossLine extends Auto {
 
+    private static final int driveTime = 2;
+
     public CrossLine() {
         super();
     }
@@ -20,7 +22,7 @@ public class CrossLine extends Auto {
     }
 
     public void run() {
-        while (autoTimer.get() < 4) {
+        while (autoTimer.get() < driveTime) {
             driveStraight(0.5);
         }
     }

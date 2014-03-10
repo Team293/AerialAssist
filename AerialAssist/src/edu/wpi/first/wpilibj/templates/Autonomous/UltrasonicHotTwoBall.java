@@ -8,6 +8,7 @@ package edu.wpi.first.wpilibj.templates.Autonomous;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
+import edu.wpi.first.wpilibj.templates.subsystems.LEDs;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
 
 /**
@@ -56,12 +57,13 @@ public class UltrasonicHotTwoBall extends Auto {
                 SmartDashboard.putString("debug..", "turning ");
                 turn(turnRight);
             } else {
+                DriveTrain.stop();
                 SmartDashboard.putString("debug..", "shooting");
-                Feeder.triggerDisabled();
-                Feeder.feed();
+                ShooterRack.fire();
             }
             markTime();
         }
+        LEDs.killTheFun();
         Feeder.triggerEnabled();
         ShooterRack.stop();
 
@@ -95,7 +97,7 @@ public class UltrasonicHotTwoBall extends Auto {
         DriveTrain.stop();
 
         //turn and shoot
-        while (!Feeder.possessing()) {
+        while (Feeder.possessing()) {
             //if left goal was not hot the first time, turn left this time
             if (blobCount == 1 && autoTimer.get() - commandStartTime < turnTime) {
                 SmartDashboard.putString("debug..", "turning ");
@@ -105,10 +107,11 @@ public class UltrasonicHotTwoBall extends Auto {
                 SmartDashboard.putString("debug..", "turning ");
                 turn(turnRight);
             } else {
-                Feeder.triggerDisabled();
-                Feeder.feed();
+                DriveTrain.stop();
                 ShooterRack.run();
+                ShooterRack.fire();
             }
         }
+        LEDs.killTheFun();
     }
 }

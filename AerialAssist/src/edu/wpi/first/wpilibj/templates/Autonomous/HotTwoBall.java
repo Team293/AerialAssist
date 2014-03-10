@@ -54,8 +54,7 @@ public class HotTwoBall extends Auto {
                 turn(turnRight);
             } else {
                 SmartDashboard.putString("debug..", "shooting");
-                Feeder.triggerDisabled();
-                Feeder.feed();
+                ShooterRack.fire();
             }
             markTime();
         }
@@ -93,9 +92,8 @@ public class HotTwoBall extends Auto {
             else if (blobCount == 2 && autoTimer.get() - commandStartTime < turnTime) {
                 turn(turnRight);
             } else {
-                Feeder.triggerDisabled();
-                Feeder.feed();
                 ShooterRack.run();
+                ShooterRack.fire();
             }
         }
 

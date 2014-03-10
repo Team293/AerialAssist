@@ -48,20 +48,25 @@ public class DriveTrain {
         SmartDashboard.putNumber("leftD", leftDistance);
         SmartDashboard.putNumber("rightD", rightDistance);
 
-        //sensor array stuff
+        //remove oldest two values
         for (int i = 0; i < val.length - 2; i++) {
             val[i] = val[i + 2];
         }
+        //add in the new values
         val[sampleSize - 2] = leftDistance;
         val[sampleSize - 1] = rightDistance;
+
+        //average all 10 values
         int sum = 0;
         for (int i = 0; i < val.length; i++) {
             sum += val[i];
         }
         average = sum / val.length;
+
+        //print stuff
         SmartDashboard.putNumber("leftD", leftDistance);
         SmartDashboard.putNumber("rightD", rightDistance);
-        SmartDashboard.putNumber("averag", average);
+        SmartDashboard.putNumber("average", average);
         isAtShootingDistance();
     }
 
@@ -73,6 +78,9 @@ public class DriveTrain {
         return rightDistance;
     }
 
+    /*
+     * Changing the implementation of 
+     */
     public static boolean isAtShootingDistance() {
         //returns true if average Ultrasonic distance is between 6 && 8
         boolean atDistance = Math.abs(average - 7) < 1;

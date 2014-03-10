@@ -63,11 +63,6 @@ public class HotOneBall extends Auto {
         }
 
         //FIRE!!!!
-        while (Feeder.possessing()) {
-            SmartDashboard.putString("debugging", "firing");
-            Feeder.feed();
-            ShooterRack.run();
-            Feeder.triggerDisabled();
-        }
+        ShooterRack.autonomousFire();
     }
 }

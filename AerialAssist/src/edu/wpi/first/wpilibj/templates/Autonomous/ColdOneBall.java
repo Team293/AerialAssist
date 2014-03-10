@@ -16,8 +16,6 @@ import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
  */
 public class ColdOneBall extends Auto {
 
-    
-    
     public ColdOneBall() {
         super();
     }
@@ -50,16 +48,11 @@ public class ColdOneBall extends Auto {
                 Feeder.stop();
             }
         }
-        Feeder.triggerEnabled();
 
         //shoot
-        while (Feeder.possessing()) {
-            SmartDashboard.putString("debug..", "shooting");
-            ShooterRack.run();
-            Feeder.triggerDisabled();
-            Feeder.feed();
-        }
+        ShooterRack.autonomousFire();
 
+        //setup for teleop
         Feeder.triggerEnabled();
         ShooterRack.stop();
         DriveTrain.stop();

@@ -8,7 +8,6 @@ package edu.wpi.first.wpilibj.templates;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.buttons.SpikeButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
@@ -98,8 +97,7 @@ public class OperatorInterface {
             }
         } else {
             //firing
-            Feeder.triggerDisabled();
-            Feeder.feed();
+            ShooterRack.fire();
             if (!Feeder.possessing()) {
                 //stop firing
                 ShooterRack.disableLowWheel();

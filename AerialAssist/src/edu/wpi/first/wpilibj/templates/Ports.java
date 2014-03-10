@@ -55,10 +55,9 @@ public class Ports {
             leftUltrasonic = 3,
             //Digital Outputs
             ultrasonicSignal = 8,
-            led1 = 10,
-            led2 = 11,
-            led3 = 12,
-            led4 = 13,
+            //LEDs
+            chasers = 10,
+            directionSignal = 11,
             //optical limtis
             ballLimit = 1,
             ballLimit2 = 9,
