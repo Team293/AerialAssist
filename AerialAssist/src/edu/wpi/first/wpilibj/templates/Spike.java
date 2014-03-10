@@ -32,7 +32,7 @@ import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class SPIKE extends IterativeRobot {
+public class Spike extends IterativeRobot {
 
     DriverStationLCD LCD = DriverStationLCD.getInstance();
     SendableChooser chooser = new SendableChooser();
