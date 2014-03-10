@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.templates.Autonomous.HotOneBall;
 import edu.wpi.first.wpilibj.templates.Autonomous.HotTwoBall;
 import edu.wpi.first.wpilibj.templates.Autonomous.UltrasonicColdOneBall;
 import edu.wpi.first.wpilibj.templates.Autonomous.UltrasonicColdTwoBall;
+import edu.wpi.first.wpilibj.templates.Autonomous.UltrasonicHotOneBall;
 import edu.wpi.first.wpilibj.templates.Autonomous.UltrasonicHotTwoBall;
 import edu.wpi.first.wpilibj.templates.subsystems.Cage;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
@@ -33,7 +34,7 @@ import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
  * directory.
  */
 public class Spike extends IterativeRobot {
-
+    
     DriverStationLCD LCD = DriverStationLCD.getInstance();
     SendableChooser chooser = new SendableChooser();
     String[] autonomiNames;
@@ -46,13 +47,14 @@ public class Spike extends IterativeRobot {
      */
     public void robotInit() {
         autonomiNames = new String[]{"cross line",
-            "one ball",
-            "two ball",
-            "one ball hot",
-            "two ball hot",
-            "US one ball",
-            "US two ball",
-            "US two ball hot"};
+            "cold one ball",
+            "cold two ball",
+            "hot one ball",
+            "hot two ball",
+            "US cold one ball",
+            "US cold two ball",
+            "US hot one ball",
+            "US hot two ball"};
         autonomi = new Auto[]{new CrossLine(),
             new ColdOneBall(),
             new ColdTwoBall(),
@@ -60,23 +62,24 @@ public class Spike extends IterativeRobot {
             new HotTwoBall(),
             new UltrasonicColdOneBall(),
             new UltrasonicColdTwoBall(),
+            new UltrasonicHotOneBall(),
             new UltrasonicHotTwoBall()};
         for (int i = 0; i < autonomiNames.length; ++i) {
             chooser.addObject(autonomiNames[i], autonomi[i]);
         }
         SmartDashboard.putData("Which Autonomouse?", chooser);
-
         ShooterRack.init();
         Feeder.triggerEnabled();
         ShooterRack.setToShootingRPM();
     }
-
+    
     public void teleopInit() {
         Cage.release();
     }
-
+    
     public void autonomousInit() {
         selectedAuto = (Auto) chooser.getSelected();
+        SmartDashboard.putString("selected auto: ", chooser.getSelected().toString());
         selectedAuto.init();
     }
 
@@ -107,19 +110,19 @@ public class Spike extends IterativeRobot {
     public void testPeriodic() {
         LiveWindow.run();
     }
-
+    
     public void teleopDisabled() {
         DriveTrain.stop();
         Feeder.stop();
         ShooterRack.stop();
         Cage.reset();
     }
-
+    
     public void autonomousDisabled() {
         DriveTrain.stop();
         Feeder.stop();
         ShooterRack.stop();
         Cage.reset();
     }
-
+    
 }

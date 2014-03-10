@@ -20,7 +20,8 @@ import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
  */
 public class Auto {
 
-    final Gyro gyro;
+    static final Gyro gyro = new Gyro(Ports.gyro);
+
     static final double kStraight = 0.082, kAlign = 0.089;
     double alignTime = 0.5,
             stopTime1 = 2.35,
@@ -34,11 +35,9 @@ public class Auto {
             turnTime = 0.75,
             turnRight = (-turnLeft);
     double commandStartTime = 0;
-    Timer autoTimer;
+    Timer autoTimer = new Timer();
 
     public Auto() {
-        gyro = new Gyro(Ports.gyro);
-        autoTimer = new Timer();
     }
 
     public void init() {

@@ -5,11 +5,7 @@
  */
 package edu.wpi.first.wpilibj.templates.Autonomous;
 
-import edu.wpi.first.wpilibj.Gyro;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.templates.Ports;
-import edu.wpi.first.wpilibj.templates.subsystems.Cage;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;

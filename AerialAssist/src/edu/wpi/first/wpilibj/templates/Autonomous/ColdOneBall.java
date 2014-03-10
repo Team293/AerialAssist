@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
  */
 public class ColdOneBall extends Auto {
 
+    
+    
     public ColdOneBall() {
         super();
     }
