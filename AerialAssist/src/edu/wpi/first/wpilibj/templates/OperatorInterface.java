@@ -80,15 +80,12 @@ public class OperatorInterface {
                 if (!Feeder.possessing()) {
                     //feed
                     Feeder.feed();
-                    ShooterRack.disableLowWheel();
                 } else {
                     //stop on posess
                     if (Feeder.overFed()) {
-                        ShooterRack.disableLowWheel();
                         Feeder.feeder2.set(Relay.Value.kForward);
                     } else {
                         Feeder.stop();
-                        ShooterRack.enableLowWheel();
                     }
                 }
             } else {
@@ -100,7 +97,6 @@ public class OperatorInterface {
             ShooterRack.fire();
             if (!Feeder.possessing()) {
                 //stop firing
-                ShooterRack.disableLowWheel();
                 ShooterRack.finishedShooting();
                 toggleFeeder.setState(false);
                 Feeder.triggerEnabled();
