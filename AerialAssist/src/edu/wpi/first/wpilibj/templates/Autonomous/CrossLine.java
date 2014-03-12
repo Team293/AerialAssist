@@ -23,7 +23,7 @@ public class CrossLine extends Auto {
 
     public void run() {
         while (autoTimer.get() < driveTime) {
-            driveStraight(0.5);
+            driveStraight(0.6);
         }
     }
 

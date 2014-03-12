@@ -25,7 +25,7 @@ public class ShooterRack {
 
     public static void finishedShooting() {
         shooting = false;
-        LEDs.killTheFun();
+        //LEDs.killTheFun();
     }
 
     public static void init() {
@@ -35,7 +35,7 @@ public class ShooterRack {
     }
 
     public static void fire() {
-        LEDs.XXsuperOMGAwesomeLEDSwowFIREEEEEEE();
+        //LEDs.XXsuperOMGAwesomeLEDSwowFIREEEEEEE();
         Feeder.feed();
         Feeder.triggerDisabled();
     }
@@ -45,7 +45,7 @@ public class ShooterRack {
             ShooterRack.run();
             fire();
         }
-        LEDs.killTheFun();
+        //LEDs.killTheFun();
     }
 
     public static void setToShootingRPM() {

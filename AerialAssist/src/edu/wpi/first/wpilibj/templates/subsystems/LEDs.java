@@ -18,19 +18,19 @@ public class LEDs {
     private static final DigitalOutput chasers = new DigitalOutput(Ports.chasers);
     private static final Relay directionSignal = new Relay(Ports.directionSignal);
 
-    public static void signalForward() {
+    private static void signalForward() {
         directionSignal.set(Relay.Value.kForward);
     }
 
-    public static void signalReverse() {
+    private static void signalReverse() {
         directionSignal.set(Relay.Value.kReverse);
     }
 
-    public static void XXsuperOMGAwesomeLEDSwowFIREEEEEEE() {
+    private static void XXsuperOMGAwesomeLEDSwowFIREEEEEEE() {
         chasers.set(true);
     }
 
-    public static void killTheFun() {
+    private static void killTheFun() {
         chasers.set(false);
     }
 

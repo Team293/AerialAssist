@@ -63,7 +63,7 @@ public class UltrasonicHotTwoBall extends Auto {
             }
             markTime();
         }
-        LEDs.killTheFun();
+        //LEDs.killTheFun();
         Feeder.triggerEnabled();
         ShooterRack.stop();
 
@@ -112,6 +112,6 @@ public class UltrasonicHotTwoBall extends Auto {
                 ShooterRack.fire();
             }
         }
-        LEDs.killTheFun();
+        //LEDs.killTheFun();
     }
 }

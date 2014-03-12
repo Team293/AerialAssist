@@ -5,9 +5,10 @@
  */
 package edu.wpi.first.wpilibj.templates;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.buttons.SpikeButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
@@ -42,6 +43,7 @@ public class OperatorInterface {
     }
 
     public static void controlShooter() {
+        SmartDashboard.putBoolean("shooters", toggleShooters.getState());
         if (setToHighRPM.get()) {
             ShooterRack.setToShootingRPM();
         } else if (setToLowRPM.get()) {
@@ -56,6 +58,9 @@ public class OperatorInterface {
     }
 
     public static void controlFeeder() {
+        SmartDashboard.putNumber("Voltage", DriverStation.getInstance().getBatteryVoltage());
+        SmartDashboard.putBoolean("feeding", toggleFeeder.getState());
+
         if (fire.getClick()) {
             ShooterRack.startShooting();
         }
@@ -76,17 +81,19 @@ public class OperatorInterface {
                     toggleFeeder.setState(true);
                 }
             } else if (toggleFeeder.getState()) {
+                toggleShooters.setState(false);
                 //toggle off
                 if (!Feeder.possessing()) {
-                    //feed
                     Feeder.feed();
                 } else {
-                    //stop on posess
-                    if (Feeder.overFed()) {
-                        Feeder.feeder2.set(Relay.Value.kForward);
-                    } else {
-                        Feeder.stop();
-                    }
+//                    SmartDashboard.putBoolean("overFed", Feeder.overFed());
+//                    if (Feeder.overFed()) {
+//                        Feeder.pass();
+//                    } else {
+//                        Feeder.stop();
+//                    }
+                    toggleFeeder.setState(false);
+
                 }
             } else {
                 //toggle off
