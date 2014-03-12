@@ -25,24 +25,20 @@ public class ColdOneBall extends Auto {
     }
 
     public void run() {
-        //fee
-        Feeder.triggerEnabled();
+        //feed
         while (!Feeder.possessing()) {
             Feeder.feed();
-            Feeder.triggerEnabled();
-            SmartDashboard.putString("debug..", "feeding");
+            SmartDashboard.putString("debugging", "feeding");
         }
         markTime();
         Feeder.stop();
-        Feeder.triggerEnabled();
 
         //move forward
         while (autoTimer.get() - commandStartTime < stopTime1) {
-            SmartDashboard.putString("debug..", "driving forward");
-            Feeder.triggerEnabled();
+            SmartDashboard.putString("debugging", "driving forward");
             driveStraight(driveSpeedForward);
             ShooterRack.run();
-            if (!Feeder.ballLimit2.get()) {
+            if (!Feeder.possessing()) {
                 Feeder.feed();
             } else {
                 Feeder.stop();

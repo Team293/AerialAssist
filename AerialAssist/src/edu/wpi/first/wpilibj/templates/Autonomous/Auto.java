@@ -35,7 +35,7 @@ public class Auto {
             turnTime = 0.75,
             turnRight = (-turnLeft);
     double commandStartTime = 0;
-    Timer autoTimer = new Timer();
+    public static Timer autoTimer = new Timer();
 
     public Auto() {
     }

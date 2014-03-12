@@ -107,6 +107,7 @@ public class Spike extends IterativeRobot {
     }
 
     public void autonomousDisabled() {
+        Auto.autoTimer.reset();
         DriveTrain.stop();
         Feeder.stop();
         ShooterRack.stop();

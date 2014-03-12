@@ -26,64 +26,51 @@ public class ColdTwoBall extends Auto {
 
     public void run() {
         //feed 1
-        Feeder.triggerEnabled();
         while (!Feeder.possessing()) {
             Feeder.feed();
-            Feeder.triggerEnabled();
-            SmartDashboard.putString("debug..", "feeding");
+            SmartDashboard.putString("debugging", "feeding");
         }
-        commandStartTime = autoTimer.get();
+        markTime();
         Feeder.stop();
-        Feeder.triggerEnabled();
 
         //move forward 1
         while (autoTimer.get() - commandStartTime < stopTime1) {
-            SmartDashboard.putString("debug..", "driving forward 1");
-            Feeder.triggerEnabled();
+            SmartDashboard.putString("debugging", "driving forward 1");
             driveStraight(driveSpeedForward);
             ShooterRack.run();
-            if (!Feeder.ballLimit2.get()) {
+            if (!Feeder.possessing()) {
                 Feeder.feed();
             } else {
                 Feeder.stop();
             }
         }
-        commandStartTime = autoTimer.get();
-        Feeder.triggerEnabled();
-
-        //align to straight
-        while (autoTimer.get() - commandStartTime < alignTime) {
-            SmartDashboard.putString("debug..", "aligning");
-            align();
-            ShooterRack.run();
-        }
-        commandStartTime = autoTimer.get();
+        markTime();
 
         //shoot
         while (Feeder.possessing()) {
-            SmartDashboard.putString("debug..", "shooting");
+            SmartDashboard.putString("debugging", "shooting");
             ShooterRack.run();
             ShooterRack.fire();
         }
-        commandStartTime = autoTimer.get();
+        markTime();
         Feeder.triggerEnabled();
         ShooterRack.stop();
 
         //back up && feed
         while (!Feeder.possessing()) {
-            SmartDashboard.putString("debug..", "back up till feed");
+            SmartDashboard.putString("debugging", "back up till feed");
             if (autoTimer.get() - commandStartTime < searchTime) {
                 driveStraight(driveSpeedReverse);
             }
         }
         DriveTrain.stop();
         Feeder.stop();
-        commandStartTime = autoTimer.get();
+        markTime();
 
         //move forward 2
         ShooterRack.setToShootingRPM();
         while (autoTimer.get() - commandStartTime < stopTime2) {
-            SmartDashboard.putString("debug..", "move forward 2");
+            SmartDashboard.putString("debugging", "move forward 2");
             driveStraight(driveSpeedForward);
             ShooterRack.run();
             if (!Feeder.ballLimit2.get()) {
@@ -92,8 +79,7 @@ public class ColdTwoBall extends Auto {
                 Feeder.stop();
             }
         }
-        commandStartTime = autoTimer.get();
-        DriveTrain.stop();
+        markTime();
 
         //shoot
         ShooterRack.autonomousFire();
