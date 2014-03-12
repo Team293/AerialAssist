@@ -63,23 +63,18 @@ public class ColdTwoBall extends Auto {
                 driveStraight(driveSpeedReverse);
             }
         }
-        DriveTrain.stop();
         Feeder.stop();
+        DriveTrain.stop();
         markTime();
 
         //move forward 2
-        ShooterRack.setToShootingRPM();
         while (autoTimer.get() - commandStartTime < stopTime2) {
             SmartDashboard.putString("debugging", "move forward 2");
             driveStraight(driveSpeedForward);
             ShooterRack.run();
-            if (!Feeder.ballLimit2.get()) {
-                Feeder.feed();
-            } else {
-                Feeder.stop();
-            }
         }
         markTime();
+        DriveTrain.stop();
 
         //shoot
         ShooterRack.autonomousFire();

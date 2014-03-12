@@ -53,7 +53,9 @@ public class Feeder {
     }
 
     public static boolean possessing() {
-        boolean possessing = !ballLimit.get() || !ballLimit2.get();
+        boolean possessing = !ballLimit.get() && !ballLimit2.get();
+        //boolean possessing = !ballLimit.get() || !ballLimit2.get();
+        //boolean possessing = !ballLimit2.get();
         lastPossessState = possessing;
         return possessing;
     }

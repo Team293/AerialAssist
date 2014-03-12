@@ -84,15 +84,11 @@ public class OperatorInterface {
                 if (!Feeder.possessing()) {
                     Feeder.feed();
                 } else {
-//                   SmartDashboard.putBoolean("overFed", Feeder.overFed());
-//                    if (Feeder.overFed()) {
-//                        Feeder.pass();
-//                    } else {
-//                        Feeder.stop();
-//                    }
                     toggleFeeder.setState(false);
                     Feeder.stop();
                 }
+            } else if (Feeder.overFed()) {
+                Feeder.pass();
             } else {
                 //toggle off
                 Feeder.stop();
