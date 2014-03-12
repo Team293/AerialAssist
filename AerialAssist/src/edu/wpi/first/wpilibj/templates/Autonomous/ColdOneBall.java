@@ -25,32 +25,9 @@ public class ColdOneBall extends Auto {
     }
 
     public void run() {
-        //feed
-        while (!Feeder.possessing()) {
-            Feeder.feed();
-            SmartDashboard.putString("debugging", "feeding");
-        }
-        markTime();
-        Feeder.stop();
-
-        //move forward
-        while (autoTimer.get() - commandStartTime < stopTime1) {
-            SmartDashboard.putString("debugging", "driving forward");
-            driveStraight(driveSpeedForward);
-            ShooterRack.run();
-            if (!Feeder.possessing()) {
-                Feeder.feed();
-            } else {
-                Feeder.stop();
-            }
-        }
-
-        //shoot
-        ShooterRack.autonomousFire();
-
-        //setup for teleop
-        Feeder.triggerEnabled();
-        ShooterRack.stop();
-        DriveTrain.stop();
+        autoFeed();
+        moveForward1();
+        autoFire();
+        setTeleop();
     }
 }

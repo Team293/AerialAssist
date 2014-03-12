@@ -103,8 +103,76 @@ public class Auto {
         DriveTrain.tankDrive(-leftMotorOutput, -rightMotorOutput);
     }
 
+    public void moveForward1() {
+        markTime();
+        while (autoTimer.get() - commandStartTime < stopTime1) {
+            SmartDashboard.putString("debugging", "driving forward 1");
+            driveStraight(driveSpeedForward);
+            ShooterRack.run();
+            if (!Feeder.ballLimit2.get()) {
+                Feeder.feed();
+            } else {
+                Feeder.stop();
+            }
+        }
+    }
+
+    public void autoFeed() {
+        markTime();
+        Feeder.triggerEnabled();
+        while (!Feeder.possessing()) {
+            Feeder.feed();
+            SmartDashboard.putString("debugging", "feeding");
+        }
+        Feeder.stop();
+    }
+
+    public void autoFire() {
+        markTime();
+        while (Feeder.possessing()) {
+            SmartDashboard.putString("debugging", "shooting");
+            ShooterRack.run();
+            ShooterRack.fire();
+        }
+        Feeder.triggerEnabled();
+        ShooterRack.stop();
+        //LEDs.killTheFun();
+    }
+
+    public void backFeed() {
+        markTime();
+        while (!Feeder.possessing()) {
+            SmartDashboard.putString("debugging", "back up till feed");
+            if (autoTimer.get() - commandStartTime < searchTime) {
+                driveStraight(driveSpeedReverse);
+            }
+        }
+        DriveTrain.stop();
+        Feeder.stop();
+    }
+
+    public void moveForward2() {
+        markTime();
+        ShooterRack.setToShootingRPM();
+        while (autoTimer.get() - commandStartTime < stopTime2) {
+            SmartDashboard.putString("debugging", "move forward 2");
+            driveStraight(driveSpeedForward);
+            ShooterRack.run();
+            if (!Feeder.ballLimit2.get()) {
+                Feeder.feed();
+            } else {
+                Feeder.stop();
+            }
+        }
+    }
+
+    public void setTeleop() {
+        Feeder.triggerEnabled();
+        ShooterRack.stop();
+        DriveTrain.stop();
+    }
+
     public void markTime() {
         commandStartTime = autoTimer.get();
     }
-
 }

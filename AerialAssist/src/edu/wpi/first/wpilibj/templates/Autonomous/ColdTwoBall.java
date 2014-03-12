@@ -25,68 +25,13 @@ public class ColdTwoBall extends Auto {
     }
 
     public void run() {
-        //feed 1
-        while (!Feeder.possessing()) {
-            Feeder.feed();
-            SmartDashboard.putString("debugging", "feeding");
-        }
-        markTime();
-        Feeder.stop();
-
-        //move forward 1
-        while (autoTimer.get() - commandStartTime < stopTime1) {
-            SmartDashboard.putString("debugging", "driving forward 1");
-            driveStraight(driveSpeedForward);
-            ShooterRack.run();
-            if (!Feeder.possessing()) {
-                Feeder.feed();
-            } else {
-                Feeder.stop();
-            }
-        }
-        markTime();
-
-        //shoot
-        while (Feeder.possessing()) {
-            SmartDashboard.putString("debugging", "shooting");
-            ShooterRack.run();
-            ShooterRack.fire();
-        }
-        markTime();
-        Feeder.triggerEnabled();
-        ShooterRack.stop();
-
-        //back up && feed
-        while (!Feeder.possessing()) {
-            SmartDashboard.putString("debugging", "back up till feed");
-            if (autoTimer.get() - commandStartTime < searchTime) {
-                driveStraight(driveSpeedReverse);
-            }
-        }
-        DriveTrain.stop();
-        Feeder.stop();
-        markTime();
-
-        //move forward 2
-        ShooterRack.setToShootingRPM();
-        while (autoTimer.get() - commandStartTime < stopTime2) {
-            SmartDashboard.putString("debugging", "move forward 2");
-            driveStraight(driveSpeedForward);
-            ShooterRack.run();
-            if (!Feeder.ballLimit2.get()) {
-                Feeder.feed();
-            } else {
-                Feeder.stop();
-            }
-        }
-        markTime();
-
-        //shoot
-        ShooterRack.autonomousFire();
-
-        //setup
-        Feeder.triggerEnabled();
-        ShooterRack.stop();
+        autoFeed();
+        moveForward1();
+        autoFire();
+        backFeed();
+        moveForward2();
+        autoFire();
+        setTeleop();
     }
 
 }
