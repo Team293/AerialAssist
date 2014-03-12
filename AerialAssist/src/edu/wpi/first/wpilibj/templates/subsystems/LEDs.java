@@ -5,7 +5,6 @@
  */
 package edu.wpi.first.wpilibj.templates.subsystems;
 
-import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.templates.Ports;
 
@@ -14,9 +13,13 @@ import edu.wpi.first.wpilibj.templates.Ports;
  * @author Peter
  */
 public class LEDs {
+        
+    /**
+    * not sure if any of this is right    
+    */
 
-    private static final DigitalOutput chasers = new DigitalOutput(Ports.chasers);
-    private static final Relay directionSignal = new Relay(Ports.directionSignal);
+    private static final Relay chasers = new Relay(Ports.chasers),
+            directionSignal = new Relay(Ports.directionSignal);
 
     private static void signalForward() {
         directionSignal.set(Relay.Value.kForward);
@@ -26,12 +29,12 @@ public class LEDs {
         directionSignal.set(Relay.Value.kReverse);
     }
 
-    private static void XXsuperOMGAwesomeLEDSwowFIREEEEEEE() {
-        chasers.set(true);
+    private static void chaseRed() {
+        chasers.set(Relay.Value.kForward);
     }
 
-    private static void killTheFun() {
-        chasers.set(false);
+    private static void chaseBlue() {
+        chasers.set(Relay.Value.kForward);
     }
 
 }
