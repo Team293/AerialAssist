@@ -27,29 +27,10 @@ public class HotOneBall extends Auto {
 
     public void run() {
         Vision.setServo(0.65);
-        Feeder.triggerEnabled();
+        autoFeed();
+        moveForward1();
 
-        //feed
-        while (!Feeder.possessing()) {
-            SmartDashboard.putString("debugging", "looking for ball");
-            Feeder.feed();
-        }
         markTime();
-
-        //drive forward
-        while (autoTimer.get() - commandStartTime < stopTime1) {
-            SmartDashboard.putString("debuggin", "driving forward");
-            Feeder.triggerEnabled();
-            driveStraight(driveSpeedForward);
-            ShooterRack.run();
-            if (!Feeder.possessing()) {
-                Feeder.feed();
-            } else {
-                Feeder.stop();
-            }
-        }
-        markTime();
-
         //wait for hot goal, or emergancy shoot at 7 seconds
         while (SmartDashboard.getNumber("blobCount") != 2 && autoTimer.get() < 7) {
             ShooterRack.run();
@@ -63,6 +44,7 @@ public class HotOneBall extends Auto {
         }
 
         //FIRE!!!!
-        ShooterRack.autonomousFire();
+        autoFire();
+        setTeleop();
     }
 }

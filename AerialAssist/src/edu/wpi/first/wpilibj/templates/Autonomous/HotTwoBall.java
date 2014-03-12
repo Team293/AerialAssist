@@ -27,22 +27,9 @@ public class HotTwoBall extends Auto {
         //check blob count
         blobCount = SmartDashboard.getNumber("blobCount", 0);
 
-        //enable trigger
-        Feeder.triggerEnabled();
-
-        //feed
-        while (!Feeder.possessing()) {
-            Feeder.feed();
-            SmartDashboard.putString("debug..", "feeding");
-        }
+        autoFeed();
+        moveForward1();
         markTime();
-
-        //drive foreward for stopTime1 at driveSpeed1
-        while (autoTimer.get() - commandStartTime < stopTime1) {
-            driveStraight(driveSpeedForward);
-        }
-        markTime();
-
         //turn and then shoot first ball
         while (Feeder.possessing()) {
             ShooterRack.run();
@@ -56,10 +43,10 @@ public class HotTwoBall extends Auto {
                 SmartDashboard.putString("debug..", "shooting");
                 ShooterRack.fire();
             }
-            markTime();
         }
-        ShooterRack.stop();
 
+        ShooterRack.stop();
+        markTime();
         //turn back to straight
         while (autoTimer.get() - commandStartTime < turnTime) {
             if (blobCount == 1) {
@@ -68,21 +55,9 @@ public class HotTwoBall extends Auto {
                 turn(turnRight);
             }
         }
+        backFeed();
+        moveForward2();
         markTime();
-
-        //feed second ball
-        while (!Feeder.possessing()) {
-            driveStraight(driveSpeedReverse);
-            Feeder.feed();
-        }
-        markTime();
-
-        //drive forward
-        while (autoTimer.get() - commandStartTime < stopTime2) {
-            ShooterRack.run();
-            driveStraight(driveSpeedReverse);
-        }
-
         //turn and shoot
         while (!Feeder.possessing()) {
             //if left goal was not hot the first time, turn left this time
@@ -96,6 +71,7 @@ public class HotTwoBall extends Auto {
                 ShooterRack.fire();
             }
         }
+        setTeleop();
 
     }
 }

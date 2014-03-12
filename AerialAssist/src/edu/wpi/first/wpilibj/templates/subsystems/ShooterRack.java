@@ -40,14 +40,6 @@ public class ShooterRack {
         Feeder.triggerDisabled();
     }
 
-    public static void autonomousFire() {
-        while (Feeder.possessing()) {
-            ShooterRack.run();
-            fire();
-        }
-        //LEDs.killTheFun();
-    }
-
     public static void setToShootingRPM() {
         shooterLow.setSetpoint(-900);
         shooterMiddle.setSetpoint(2300);
