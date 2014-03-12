@@ -27,7 +27,7 @@ public class ColdTwoBall extends Auto {
     public void run() {
         //feed 1
         Feeder.triggerEnabled();
-        while (!Feeder.ballLimit2.get()) {
+        while (!Feeder.possessing()) {
             Feeder.feed();
             Feeder.triggerEnabled();
             SmartDashboard.putString("debug..", "feeding");
@@ -94,10 +94,10 @@ public class ColdTwoBall extends Auto {
         }
         commandStartTime = autoTimer.get();
         DriveTrain.stop();
-        
+
         //shoot
         ShooterRack.autonomousFire();
-        
+
         //setup
         Feeder.triggerEnabled();
         ShooterRack.stop();

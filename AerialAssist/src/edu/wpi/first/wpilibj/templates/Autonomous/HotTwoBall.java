@@ -31,7 +31,7 @@ public class HotTwoBall extends Auto {
         Feeder.triggerEnabled();
 
         //feed
-        while (!Feeder.ballLimit2.get() && !Feeder.ballLimit.get()) {
+        while (!Feeder.possessing()) {
             Feeder.feed();
             SmartDashboard.putString("debug..", "feeding");
         }

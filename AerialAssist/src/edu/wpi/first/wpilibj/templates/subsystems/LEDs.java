@@ -13,11 +13,10 @@ import edu.wpi.first.wpilibj.templates.Ports;
  * @author Peter
  */
 public class LEDs {
-        
-    /**
-    * not sure if any of this is right    
-    */
 
+    /**
+     * not sure if any of this is right
+     */
     private static final Relay chasers = new Relay(Ports.chasers),
             directionSignal = new Relay(Ports.directionSignal);
 

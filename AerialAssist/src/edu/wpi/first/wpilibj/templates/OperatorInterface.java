@@ -66,10 +66,9 @@ public class OperatorInterface {
         }
 
         if (!ShooterRack.isShooting()) {
-            if (pass.get()) {
-                //pass
+            if (pass.get()) { //pass
                 Feeder.pass();
-            } else if (recieve.getState()) {
+            } else if (recieve.getState()) { //recieve
                 Feeder.triggerDisabled();
                 ShooterRack.setToRecieveRPM();
                 ShooterRack.run();
@@ -80,20 +79,19 @@ public class OperatorInterface {
                     Feeder.triggerEnabled();
                     toggleFeeder.setState(true);
                 }
-            } else if (toggleFeeder.getState()) {
+            } else if (toggleFeeder.getState()) { //feed
                 toggleShooters.setState(false);
-                //toggle off
                 if (!Feeder.possessing()) {
                     Feeder.feed();
                 } else {
-//                    SmartDashboard.putBoolean("overFed", Feeder.overFed());
+//                   SmartDashboard.putBoolean("overFed", Feeder.overFed());
 //                    if (Feeder.overFed()) {
 //                        Feeder.pass();
 //                    } else {
 //                        Feeder.stop();
 //                    }
                     toggleFeeder.setState(false);
-
+                    Feeder.stop();
                 }
             } else {
                 //toggle off

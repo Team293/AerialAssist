@@ -27,7 +27,7 @@ public class ColdOneBall extends Auto {
     public void run() {
         //fee
         Feeder.triggerEnabled();
-        while (!Feeder.ballLimit2.get()) {
+        while (!Feeder.possessing()) {
             Feeder.feed();
             Feeder.triggerEnabled();
             SmartDashboard.putString("debug..", "feeding");
