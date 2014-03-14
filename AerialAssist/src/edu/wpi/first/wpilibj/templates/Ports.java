@@ -34,7 +34,7 @@ public class Ports {
             leftDrive = 1,
             rightDrive = 2,
             feeder = 1,
-            feeder2 = 2,
+            roller = 2,
             trigger = 3,
             shooterLow = 3,
             shooterMiddle = 4,

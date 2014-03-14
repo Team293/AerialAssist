@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.templates.Ports;
 public class Feeder {
 
     public static final Relay feeder = new Relay(Ports.feeder);
-    public static final Relay feeder2 = new Relay(Ports.feeder2);
+    public static final Relay roller = new Relay(Ports.roller);
     static final Relay trigger = new Relay(Ports.trigger);
     public static final DigitalInput ballLimit = new DigitalInput(Ports.ballLimit);
     public static final DigitalInput ballLimit2 = new DigitalInput(Ports.ballLimit2);
@@ -26,17 +26,17 @@ public class Feeder {
 
     public static void pass() {
         feeder.set(Relay.Value.kReverse);
-        feeder2.set(Relay.Value.kForward);
+        roller.set(Relay.Value.kForward);
     }
 
     public static void feed() {
         feeder.set(Relay.Value.kForward);
-        feeder2.set(Relay.Value.kReverse);
+        roller.set(Relay.Value.kReverse);
     }
 
     public static void stop() {
         feeder.set(Relay.Value.kOff);
-        feeder2.set(Relay.Value.kOff);
+        roller.set(Relay.Value.kOff);
     }
 
     public static boolean overFed() {

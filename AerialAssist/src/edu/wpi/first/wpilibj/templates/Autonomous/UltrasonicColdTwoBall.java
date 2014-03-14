@@ -79,7 +79,7 @@ public class UltrasonicColdTwoBall extends Auto {
         }
         DriveTrain.stop();
         //shoot
-        ShooterRack.autonomousFire();
+        autoFire();
 
         Feeder.triggerEnabled();
         ShooterRack.stop();

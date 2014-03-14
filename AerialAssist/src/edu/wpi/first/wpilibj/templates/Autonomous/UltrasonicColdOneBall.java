@@ -47,7 +47,7 @@ public class UltrasonicColdOneBall extends Auto {
             ShooterRack.run();
         }
         //FIRE!!!
-        ShooterRack.autonomousFire();
+        autoFire();
 
         ShooterRack.stop();
         DriveTrain.stop();

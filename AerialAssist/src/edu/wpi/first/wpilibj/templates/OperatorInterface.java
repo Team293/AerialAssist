@@ -7,10 +7,12 @@ package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.buttons.SpikeButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
+import edu.wpi.first.wpilibj.templates.subsystems.LEDs;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
 import edu.wpi.first.wpilibj.templates.subsystems.Vision;
 
@@ -19,7 +21,7 @@ import edu.wpi.first.wpilibj.templates.subsystems.Vision;
  * @author Noam
  */
 public class OperatorInterface {
-
+    
     public static final Joystick leftJoystick = new Joystick(Ports.leftJoystick),
             rightJoystick = new Joystick(Ports.rightJoystick),
             gamepad = new Joystick(Ports.gamepad);
@@ -31,17 +33,19 @@ public class OperatorInterface {
             setToHighRPM = new SpikeButton(gamepad, Ports.setToHighRPM),
             toggleShooters = new SpikeButton(gamepad, Ports.toggleShooter),
             setToLowRPM = new SpikeButton(gamepad, Ports.setToLowRPM);
-
+    
     public static void controlDriveTrain() {
         double leftY = leftJoystick.getY();
         double rightY = rightJoystick.getY();
         if (toggleDriveDirection.getState()) {
+            LEDs.signalForward();
             DriveTrain.tankDrive(leftY, rightY);
         } else {
+            LEDs.signalReverse();
             DriveTrain.tankDrive(-rightY, -leftY);
         }
     }
-
+    
     public static void controlShooter() {
         SmartDashboard.putBoolean("shooters", toggleShooters.getState());
         if (setToHighRPM.get()) {
@@ -49,26 +53,27 @@ public class OperatorInterface {
         } else if (setToLowRPM.get()) {
             ShooterRack.setToLowGoalRPM();
         }
-
+        
         if (toggleShooters.getState()) {
             ShooterRack.run();
         } else {
             ShooterRack.stop();
         }
     }
-
+    
     public static void controlFeeder() {
         SmartDashboard.putNumber("Voltage", DriverStation.getInstance().getBatteryVoltage());
         SmartDashboard.putBoolean("feeding", toggleFeeder.getState());
-
+        
         if (fire.getClick()) {
             ShooterRack.startShooting();
         }
-
+        
         if (!ShooterRack.isShooting()) {
             if (pass.get()) { //pass
                 Feeder.pass();
             } else if (recieve.getState()) { //recieve
+                toggleShooters.setState(true);
                 Feeder.triggerDisabled();
                 ShooterRack.setToRecieveRPM();
                 ShooterRack.run();
@@ -80,15 +85,15 @@ public class OperatorInterface {
                     toggleFeeder.setState(true);
                 }
             } else if (toggleFeeder.getState()) { //feed
-                toggleShooters.setState(false);
                 if (!Feeder.possessing()) {
                     Feeder.feed();
                 } else {
+                    //remove the line below if power issue is fixed
                     toggleFeeder.setState(false);
                     Feeder.stop();
                 }
             } else if (Feeder.overFed()) {
-                Feeder.pass();
+                Feeder.roller.set(Relay.Value.kReverse);
             } else {
                 //toggle off
                 Feeder.stop();
@@ -104,7 +109,7 @@ public class OperatorInterface {
             }
         }
     }
-
+    
     public static void controlCamera() {
         //dividing by 4 decreases the range of the cameras motion
         //0.75 centers that motion around a slightly upward angle

@@ -62,6 +62,6 @@ public class UltrasonicHotOneBall extends Auto {
         }
 
         //FIRE!!!!
-        ShooterRack.autonomousFire();
+        autoFire();
     }
 }

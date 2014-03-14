@@ -25,7 +25,7 @@ public class ShooterRack {
 
     public static void finishedShooting() {
         shooting = false;
-        //LEDs.killTheFun();
+        LEDs.chasersOff();
     }
 
     public static void init() {
@@ -35,7 +35,11 @@ public class ShooterRack {
     }
 
     public static void fire() {
-        //LEDs.XXsuperOMGAwesomeLEDSwowFIREEEEEEE();
+        if (LEDs.RED) {
+            LEDs.chaseRed();
+        } else {
+            LEDs.chaseBlue();
+        }
         Feeder.feed();
         Feeder.triggerDisabled();
     }
