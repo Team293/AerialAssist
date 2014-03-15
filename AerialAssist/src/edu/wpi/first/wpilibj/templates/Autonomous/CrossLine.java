@@ -25,6 +25,7 @@ public class CrossLine extends Auto {
         while (autoTimer.get() < driveTime) {
             driveStraight(0.6);
         }
+        setTeleop();
     }
 
 }

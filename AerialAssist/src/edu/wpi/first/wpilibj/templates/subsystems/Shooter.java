@@ -17,7 +17,7 @@ public class Shooter {
 
     SpikeEncoder encoder;
     Talon talon;
-    static int ID, tolerance = 30;
+    static int ID, tolerance = 100;
     private double setpoint, output, rpm, error, kP;
     int id;
 
@@ -58,11 +58,9 @@ public class Shooter {
         output += error * kP;
 
         SmartDashboard.putNumber("rpm" + id, rpm);
-        SmartDashboard.putNumber("setpoint" + id, setpoint);
-        SmartDashboard.putString("debuggin", "running " + id + " !!!");
+        SmartDashboard.putBoolean("atRPM" + id, atRPM());
         //SmartDashboard.putNumber("error" + id, error);
         //SmartDashboard.putNumber("output" + id, output);
-
         talon.set(-output);
     }
 

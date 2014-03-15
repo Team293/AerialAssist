@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 package edu.wpi.first.wpilibj.templates;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -78,11 +79,7 @@ public class Spike extends IterativeRobot {
     }
 
     public void autonomousInit() {
-        if (((String) autonomousChooser.getSelected()).equals("RED")) {
-            LEDs.RED = true;
-        } else {
-            LEDs.RED = false;
-        }
+        LEDs.RED = ((String) colorChooser.getSelected()).equals("RED");
         selectedAuto = (Auto) autonomousChooser.getSelected();
         SmartDashboard.putString("selected auto: ", autonomousChooser.getSelected().toString());
         selectedAuto.init();
@@ -92,7 +89,10 @@ public class Spike extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-        selectedAuto.run();
+        if (!Auto.hasRunAuto) {
+            selectedAuto.run();
+            SmartDashboard.putNumber("Voltage", DriverStation.getInstance().getBatteryVoltage());
+        }
     }
 
     /**

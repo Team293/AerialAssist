@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.templates.subsystems.Vision;
  * @author Noam
  */
 public class OperatorInterface {
-    
+
     public static final Joystick leftJoystick = new Joystick(Ports.leftJoystick),
             rightJoystick = new Joystick(Ports.rightJoystick),
             gamepad = new Joystick(Ports.gamepad);
@@ -33,7 +33,7 @@ public class OperatorInterface {
             setToHighRPM = new SpikeButton(gamepad, Ports.setToHighRPM),
             toggleShooters = new SpikeButton(gamepad, Ports.toggleShooter),
             setToLowRPM = new SpikeButton(gamepad, Ports.setToLowRPM);
-    
+
     public static void controlDriveTrain() {
         double leftY = leftJoystick.getY();
         double rightY = rightJoystick.getY();
@@ -45,7 +45,7 @@ public class OperatorInterface {
             DriveTrain.tankDrive(-rightY, -leftY);
         }
     }
-    
+
     public static void controlShooter() {
         SmartDashboard.putBoolean("shooters", toggleShooters.getState());
         if (setToHighRPM.get()) {
@@ -53,36 +53,39 @@ public class OperatorInterface {
         } else if (setToLowRPM.get()) {
             ShooterRack.setToLowGoalRPM();
         }
-        
+
         if (toggleShooters.getState()) {
             ShooterRack.run();
         } else {
             ShooterRack.stop();
         }
     }
-    
+
     public static void controlFeeder() {
         SmartDashboard.putNumber("Voltage", DriverStation.getInstance().getBatteryVoltage());
         SmartDashboard.putBoolean("feeding", toggleFeeder.getState());
-        
+        SmartDashboard.putBoolean("recieving", recieve.getState());
+        SmartDashboard.putBoolean("posseessing", Feeder.possessing());
+        SmartDashboard.putBoolean("lastPossesingState", Feeder.lastPossessState);
+
         if (fire.getClick()) {
             ShooterRack.startShooting();
         }
-        
+
         if (!ShooterRack.isShooting()) {
             if (pass.get()) { //pass
                 Feeder.pass();
             } else if (recieve.getState()) { //recieve
-                toggleShooters.setState(true);
-                Feeder.triggerDisabled();
-                ShooterRack.setToRecieveRPM();
                 ShooterRack.run();
+                toggleShooters.setState(true);
+                ShooterRack.setToRecieveRPM();
+                Feeder.triggerDisabled();
                 Feeder.pass();
                 if (Feeder.recieved()) {
                     ShooterRack.setToShootingRPM();
-                    recieve.setState(false);
                     Feeder.triggerEnabled();
                     toggleFeeder.setState(true);
+                    recieve.setState(false);
                 }
             } else if (toggleFeeder.getState()) { //feed
                 if (!Feeder.possessing()) {
@@ -93,7 +96,7 @@ public class OperatorInterface {
                     Feeder.stop();
                 }
             } else if (Feeder.overFed()) {
-                Feeder.roller.set(Relay.Value.kReverse);
+                Feeder.roller.set(Relay.Value.kForward);
             } else {
                 //toggle off
                 Feeder.stop();
@@ -109,7 +112,7 @@ public class OperatorInterface {
             }
         }
     }
-    
+
     public static void controlCamera() {
         //dividing by 4 decreases the range of the cameras motion
         //0.75 centers that motion around a slightly upward angle

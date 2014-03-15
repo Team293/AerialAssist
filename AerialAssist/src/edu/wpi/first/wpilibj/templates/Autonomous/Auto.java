@@ -6,12 +6,14 @@
 package edu.wpi.first.wpilibj.templates.Autonomous;
 
 import edu.wpi.first.wpilibj.Gyro;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.Ports;
 import edu.wpi.first.wpilibj.templates.subsystems.Cage;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
+import edu.wpi.first.wpilibj.templates.subsystems.LEDs;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
 
 /**
@@ -21,10 +23,10 @@ import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
 public class Auto {
 
     static final Gyro gyro = new Gyro(Ports.gyro);
-
+    public static boolean hasRunAuto = false;
     static final double kStraight = 0.082, kAlign = 0.089;
     double alignTime = 0.5,
-            stopTime1 = 2.35,
+            stopTime1 = 2.1,
             stopTime2 = 2.70,
             searchTime = 2.90,
             quickBack1 = 0.85,
@@ -109,8 +111,10 @@ public class Auto {
             SmartDashboard.putString("debugging", "driving forward 1");
             driveStraight(driveSpeedForward);
             ShooterRack.run();
-            if (!Feeder.ballLimit2.get()) {
+            if (!Feeder.possessing()) {
                 Feeder.feed();
+            } else if (Feeder.overFed()) {
+                Feeder.roller.set(Relay.Value.kForward);
             } else {
                 Feeder.stop();
             }
@@ -129,6 +133,7 @@ public class Auto {
 
     public void autoFire() {
         markTime();
+        Feeder.triggerDisabled();
         while (Feeder.possessing()) {
             SmartDashboard.putString("debugging", "shooting");
             ShooterRack.run();
@@ -136,7 +141,7 @@ public class Auto {
         }
         Feeder.triggerEnabled();
         ShooterRack.stop();
-        //LEDs.killTheFun();
+        LEDs.chasersOff();
     }
 
     public void backFeed() {
@@ -170,6 +175,7 @@ public class Auto {
         Feeder.triggerEnabled();
         ShooterRack.stop();
         DriveTrain.stop();
+        Auto.hasRunAuto = true;
     }
 
     public void markTime() {
