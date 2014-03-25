@@ -27,10 +27,11 @@ public class Auto {
     static final double kStraight = 0.082, kAlign = 0.089;
     double alignTime = 0.5,
             stopTime1 = 2.1,
-            stopTime2 = 2.70,
+            stopTime2 = 1.9,
             searchTime = 2.90,
             quickBack1 = 0.85,
             driveSpeedForward = 0.79,
+            driveSpeedForward2 = 0.83,
             driveSpeedReverse = -0.67,
             turnLeft = 20,
             blobCount = 0,
@@ -161,10 +162,12 @@ public class Auto {
         ShooterRack.setToShootingRPM();
         while (autoTimer.get() - commandStartTime < stopTime2) {
             SmartDashboard.putString("debugging", "move forward 2");
-            driveStraight(driveSpeedForward);
+            driveStraight(driveSpeedForward2);
             ShooterRack.run();
-            if (!Feeder.ballLimit2.get()) {
+            if (!Feeder.possessing()) {
                 Feeder.feed();
+            } else if (Feeder.overFed()) {
+                Feeder.roller.set(Relay.Value.kForward);
             } else {
                 Feeder.stop();
             }
