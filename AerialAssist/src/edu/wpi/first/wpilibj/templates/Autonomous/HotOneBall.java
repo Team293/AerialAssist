@@ -7,7 +7,6 @@ package edu.wpi.first.wpilibj.templates.Autonomous;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
-import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
 import edu.wpi.first.wpilibj.templates.subsystems.Vision;
 
@@ -29,13 +28,14 @@ public class HotOneBall extends Auto {
         Vision.setServo(0.65);
         autoFeed();
         moveForward1();
-
+        stop();
         markTime();
+
         //wait for hot goal, or emergancy shoot at 7 seconds
         while (SmartDashboard.getNumber("blobCount") != 2 && autoTimer.get() < 7) {
             ShooterRack.run();
             if (autoTimer.get() - commandStartTime < alignTime) {
-                SmartDashboard.putString("debugging", "aligngin");
+                SmartDashboard.putString("debugging", "aligning");
                 align();
             } else {
                 SmartDashboard.putString("debugging", "waiting");

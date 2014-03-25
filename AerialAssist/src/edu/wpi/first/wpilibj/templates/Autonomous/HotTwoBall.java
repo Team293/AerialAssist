@@ -24,12 +24,12 @@ public class HotTwoBall extends Auto {
     }
 
     public void run() {
-        //check blob count
+        //check blob count at beginning
         blobCount = SmartDashboard.getNumber("blobCount", 0);
-
         autoFeed();
         moveForward1();
         markTime();
+        
         //turn and then shoot first ball
         while (Feeder.possessing()) {
             ShooterRack.run();

@@ -32,6 +32,8 @@ public class Auto {
             quickBack1 = 0.85,
             driveSpeedForward = 0.79,
             driveSpeedReverse = -0.67,
+            leftStopSpeed = -0.3,
+            rightStopSpeed = -0.3,
             turnLeft = 20,
             blobCount = 0,
             turnTime = 0.75,
@@ -168,6 +170,14 @@ public class Auto {
             } else {
                 Feeder.stop();
             }
+        }
+    }
+
+    public void stop() {
+        markTime();
+        SmartDashboard.putString("debugging", "stopping");
+        while (autoTimer.get() - commandStartTime < 0.5) {
+            DriveTrain.tankDrive(leftStopSpeed, rightStopSpeed);
         }
     }
 
