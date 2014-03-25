@@ -28,7 +28,7 @@ public class Shooter {
         output = 0;
         rpm = 0;
         error = 0;
-        kP = -0.000013;
+        kP = -0.000010;
         this.id = ++ID;
     }
 
@@ -57,10 +57,15 @@ public class Shooter {
 
         output += error * kP;
 
+        if (output > 1) {
+            output = 1;
+        } else if (output < -1) {
+            output = -1;
+        }
+
+        SmartDashboard.putNumber("output" + id, output);
         SmartDashboard.putNumber("rpm" + id, rpm);
         SmartDashboard.putBoolean("atRPM" + id, atRPM());
-        //SmartDashboard.putNumber("error" + id, error);
-        //SmartDashboard.putNumber("output" + id, output);
         talon.set(-output);
     }
 

@@ -16,7 +16,7 @@ public class ShooterRack {
     private static final Shooter shooterLow = new Shooter(Ports.shooterLow, Ports.shooterLowEncA, Ports.shooterLowEncB);
     private static final Shooter shooterMiddle = new Shooter(Ports.shooterMiddle, Ports.shooterMiddleEncA, Ports.shooterMiddleEncB);
     private static final Shooter shooterHigh = new Shooter(Ports.shooterHigh, Ports.shooterHighEncA, Ports.shooterHighEncB);
-    private static boolean shooting = false;
+    private static boolean shooting = false, flashingRed = false;
     public static final double shooterDistance = 10; //Random optimum distance from the wall
 
     public static void startShooting() {
@@ -25,7 +25,6 @@ public class ShooterRack {
 
     public static void finishedShooting() {
         shooting = false;
-        LEDs.chasersOff();
     }
 
     public static void init() {
@@ -35,11 +34,6 @@ public class ShooterRack {
     }
 
     public static void fire() {
-        if (LEDs.RED) {
-            LEDs.chaseRed();
-        } else {
-            LEDs.chaseBlue();
-        }
         Feeder.feed();
         Feeder.triggerDisabled();
     }
@@ -51,9 +45,9 @@ public class ShooterRack {
     }
 
     public static void setToRecieveRPM() {
-        shooterLow.setSetpoint(0);
-        shooterMiddle.setSetpoint(-250);
-        shooterHigh.setSetpoint(-300);
+        shooterLow.setSetpoint(300);
+        shooterMiddle.setSetpoint(-350);
+        shooterHigh.setSetpoint(-400);
     }
 
     public static void setToLowGoalRPM() {
@@ -63,9 +57,22 @@ public class ShooterRack {
     }
 
     public static void run() {
+        if (LEDs.RED) {
+            LEDs.chaseRed();
+        } else {
+            LEDs.chaseBlue();
+        }
         shooterLow.run();
         shooterMiddle.run();
         shooterHigh.run();
+        if (atRPM()) {
+            if (flashingRed) {
+                LEDs.signalForward();
+            } else {
+                LEDs.signalReverse();
+            }
+            flashingRed = !flashingRed;
+        }
     }
 
     public static void stop() {
