@@ -75,18 +75,12 @@ public class OperatorInterface {
         if (!ShooterRack.isShooting()) {
             if (pass.get()) { //pass
                 Feeder.pass();
-            } else if (recieve.getState()) { //recieve
+            } else if (recieve.getState()) { //recieve now passes straight through
                 ShooterRack.run();
                 toggleShooters.setState(true);
                 ShooterRack.setToRecieveRPM();
                 Feeder.triggerDisabled();
                 Feeder.pass();
-//                if (Feeder.recieved()) {
-//                    ShooterRack.setToShootingRPM();
-//                    Feeder.triggerEnabled();
-//                    toggleFeeder.setState(true);
-//                    recieve.setState(false);
-//                }
             } else if (toggleFeeder.getState()) { //feed
                 if (!Feeder.possessing()) {
                     Feeder.feed();

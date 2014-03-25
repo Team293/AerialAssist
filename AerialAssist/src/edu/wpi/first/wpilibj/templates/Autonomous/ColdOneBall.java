@@ -20,9 +20,11 @@ public class ColdOneBall extends Auto {
     }
 
     public void run() {
-        autoFeed();
-        moveForward1();
-        autoFire();
-        setTeleop();
+        if (!Auto.hasRunAuto) {
+            autoFeed();
+            moveForward1();
+            autoFire();
+            setTeleop();
+        }
     }
 }

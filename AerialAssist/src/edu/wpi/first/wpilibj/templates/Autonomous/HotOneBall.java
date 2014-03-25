@@ -6,8 +6,6 @@
 package edu.wpi.first.wpilibj.templates.Autonomous;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
-import edu.wpi.first.wpilibj.templates.subsystems.Feeder;
 import edu.wpi.first.wpilibj.templates.subsystems.ShooterRack;
 import edu.wpi.first.wpilibj.templates.subsystems.Vision;
 
@@ -26,25 +24,21 @@ public class HotOneBall extends Auto {
     }
 
     public void run() {
-        Vision.setServo(0.65);
-        autoFeed();
-        moveForward1();
+        if (!Auto.hasRunAuto) {
+            //while loop to wait for 2 vision targets or maybe increase in luminosity
+            Vision.setServo(0.60);
+            autoFeed();
+            while (SmartDashboard.getNumber("blobCount", 0) != 2 || Auto.autoTimer.get() < 6) {
+                ShooterRack.run();
 
-        markTime();
-        //wait for hot goal, or emergancy shoot at 7 seconds
-        while (SmartDashboard.getNumber("blobCount") != 2 && autoTimer.get() < 7) {
-            ShooterRack.run();
-            if (autoTimer.get() - commandStartTime < alignTime) {
-                SmartDashboard.putString("debugging", "aligngin");
-                align();
-            } else {
-                SmartDashboard.putString("debugging", "waiting");
-                DriveTrain.stop();
+                SmartDashboard.putString("debugging", "waiting for 2 targets");
             }
+            SmartDashboard.putString("debugging", "ready!");
+            moveForward1();
+            autoFire();
+            setTeleop();
+        } else {
+            SmartDashboard.putString("debugging", "done auto");
         }
-
-        //FIRE!!!!
-        autoFire();
-        setTeleop();
     }
 }
