@@ -29,6 +29,10 @@ public class LEDs {
     public static void signalReverse() {
         directionSignal.set(Relay.Value.kReverse);
     }
+    
+    public static void signalOff() {
+        directionSignal.set(Relay.Value.kOff);
+    }
 
     //gold both ground for off?
     public static void chasersOff() {

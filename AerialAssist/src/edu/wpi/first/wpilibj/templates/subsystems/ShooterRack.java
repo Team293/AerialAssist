@@ -5,6 +5,7 @@
  */
 package edu.wpi.first.wpilibj.templates.subsystems;
 
+import edu.wpi.first.wpilibj.templates.OperatorInterface;
 import edu.wpi.first.wpilibj.templates.Ports;
 
 /**
@@ -16,7 +17,7 @@ public class ShooterRack {
     private static final Shooter shooterLow = new Shooter(Ports.shooterLow, Ports.shooterLowEncA, Ports.shooterLowEncB);
     private static final Shooter shooterMiddle = new Shooter(Ports.shooterMiddle, Ports.shooterMiddleEncA, Ports.shooterMiddleEncB);
     private static final Shooter shooterHigh = new Shooter(Ports.shooterHigh, Ports.shooterHighEncA, Ports.shooterHighEncB);
-    private static boolean shooting = false, flashingRed = false;
+    private static boolean shooting = false, flash = false;
     public static final double shooterDistance = 10; //Random optimum distance from the wall
 
     public static void startShooting() {
@@ -66,12 +67,17 @@ public class ShooterRack {
         shooterMiddle.run();
         shooterHigh.run();
         if (atRPM()) {
-            if (flashingRed) {
-                LEDs.signalForward();
+            if (flash) {
+                if (OperatorInterface.toggleDriveDirection.getState()) {
+                    LEDs.signalForward();
+                } else {
+                    LEDs.signalReverse();
+                }
+
             } else {
-                LEDs.signalReverse();
+                LEDs.signalOff();
             }
-            flashingRed = !flashingRed;
+            flash = !flash;
         }
     }
 

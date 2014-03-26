@@ -29,10 +29,10 @@ public class OperatorInterface {
             toggleFeeder = new SpikeButton(gamepad, Ports.toggleFeeder),
             fire = new SpikeButton(rightJoystick, Ports.fire),
             recieve = new SpikeButton(gamepad, Ports.recieve),
-            toggleDriveDirection = new SpikeButton(rightJoystick, Ports.toggleDriveDirection),
             setToHighRPM = new SpikeButton(gamepad, Ports.setToHighRPM),
             toggleShooters = new SpikeButton(gamepad, Ports.toggleShooter),
             setToLowRPM = new SpikeButton(gamepad, Ports.setToLowRPM);
+    public static final SpikeButton toggleDriveDirection = new SpikeButton(rightJoystick, Ports.toggleDriveDirection);
 
     public static void controlDriveTrain() {
         double leftY = leftJoystick.getY();

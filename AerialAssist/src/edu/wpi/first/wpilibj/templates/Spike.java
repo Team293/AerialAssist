@@ -83,6 +83,7 @@ public class Spike extends IterativeRobot {
         selectedAuto = (Auto) autonomousChooser.getSelected();
         SmartDashboard.putString("selected auto: ", autonomousChooser.getSelected().toString());
         selectedAuto.init();
+        Auto.hasRunAuto=false;
     }
 
     /**
