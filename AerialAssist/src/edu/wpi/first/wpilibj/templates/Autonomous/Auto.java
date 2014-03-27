@@ -24,9 +24,9 @@ public class Auto {
 
     static final Gyro gyro = new Gyro(Ports.gyro);
     public static boolean hasRunAuto = false;
-    static final double kStraight = 0.082, kAlign = 0.089;
+    static final double kStraight = 0.081, kAlign = 0.089;
     double alignTime = 0.5,
-            stopTime1 = 2.2,
+            stopTime1 = 2.0,
             stopTime2 = 1.9,
             searchTime = 2.90,
             quickBack1 = 0.85,
