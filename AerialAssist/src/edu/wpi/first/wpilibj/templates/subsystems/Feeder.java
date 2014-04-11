@@ -24,7 +24,7 @@ public class Feeder {
     public static final DigitalInput triggerLimit = new DigitalInput(Ports.triggerLimit);
     public static boolean lastPossessState = false, lastOverFedState = false;
 
-    private static void pass() {
+    public static void pass() {
         feeder.set(Relay.Value.kReverse);
         roller.set(Relay.Value.kForward);
     }

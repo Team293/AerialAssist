@@ -81,8 +81,8 @@ public class OperatorInterface {
                 ShooterRack.run();
                 Feeder.triggerDisabled();
                 Feeder.pass();
-                SmartDashboard.putString("debugging", "ejecting");
-            } else if (recieve.getState()) { //recieve now passes straight through
+                SmartDashboard.putString("EJECTING", "EJECTING");
+            } else if (recieve.getState()) {
                 toggleShooters.setState(true);
                 ShooterRack.setToRecieveRPM();
                 ShooterRack.run();
