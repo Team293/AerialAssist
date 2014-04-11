@@ -24,15 +24,15 @@ public class Auto {
 
     static final Gyro gyro = new Gyro(Ports.gyro);
     public static boolean hasRunAuto = false;
-    static final double kStraight = 0.082, kAlign = 0.089;
+    static final double kStraight = 0.082, kAlign = 0.071;
     double alignTime = 0.5,
             stopTime1 = 2.2,
-            stopTime2 = 1.9,
-            searchTime = 2.90,
+            stopTime2 = 2.4,
+            searchTime = 3.3,
             quickBack1 = 0.85,
             driveSpeedForward = 0.79,
-            driveSpeedForward2 = 0.83,
-            driveSpeedReverse = -0.67,
+            driveSpeedForward2 = 0.79,
+            driveSpeedReverse = -0.7,
             leftStopSpeed = -0.3,
             rightStopSpeed = -0.3,
             turnLeft = 20,
@@ -149,7 +149,9 @@ public class Auto {
 
     public void backFeed() {
         markTime();
+        Feeder.triggerEnabled();
         while (!Feeder.possessing()) {
+            Feeder.feed();
             SmartDashboard.putString("debugging", "back up till feed");
             if (autoTimer.get() - commandStartTime < searchTime) {
                 driveStraight(driveSpeedReverse);
@@ -161,7 +163,6 @@ public class Auto {
 
     public void moveForward2() {
         markTime();
-        ShooterRack.setToShootingRPM();
         while (autoTimer.get() - commandStartTime < stopTime2) {
             SmartDashboard.putString("debugging", "move forward 2");
             driveStraight(driveSpeedForward2);

@@ -47,7 +47,6 @@ public class OperatorInterface {
     }
 
     public static void controlShooter() {
-        SmartDashboard.putBoolean("shooters", toggleShooters.getState());
         if (setToHighRPM.get()) {
             ShooterRack.setToShootingRPM();
         } else if (setToLowRPM.get()) {
@@ -62,12 +61,8 @@ public class OperatorInterface {
     }
 
     public static void controlFeeder() {
-        SmartDashboard.putNumber("Voltage", DriverStation.getInstance().getBatteryVoltage());
         SmartDashboard.putBoolean("feeding", toggleFeeder.getState());
         SmartDashboard.putBoolean("recieving", recieve.getState());
-        SmartDashboard.putBoolean("posseessing", Feeder.possessing());
-        SmartDashboard.putBoolean("lastPossesingState", Feeder.lastPossessState);
-
         if (fire.getClick()) {
             ShooterRack.startShooting();
         }
@@ -76,21 +71,26 @@ public class OperatorInterface {
             if (pass.get()) { //pass
                 Feeder.pass();
             } else if (recieve.getState()) { //recieve now passes straight through
-                ShooterRack.run();
                 toggleShooters.setState(true);
                 ShooterRack.setToRecieveRPM();
+                ShooterRack.run();
                 Feeder.triggerDisabled();
-                Feeder.pass();
+                Feeder.feed();
+                //Feeder.lastOverFedState && 
+                if (Feeder.possessing() && (!Feeder.overFed())) {
+                    recieve.setState(false);
+                    Feeder.stop();
+                    toggleFeeder.setState(true);
+                    ShooterRack.setToShootingRPM();
+                }
             } else if (toggleFeeder.getState()) { //feed
                 if (!Feeder.possessing()) {
                     Feeder.feed();
+                } else if (Feeder.overFed()) {
+                    Feeder.roller.set(Relay.Value.kForward);
                 } else {
-                    //remove the line below if power issue is fixed
-                    toggleFeeder.setState(false);
                     Feeder.stop();
                 }
-            } else if (Feeder.overFed()) {
-                Feeder.roller.set(Relay.Value.kForward);
             } else {
                 //toggle off
                 Feeder.stop();

@@ -22,7 +22,7 @@ public class Feeder {
     public static final DigitalInput ballLimit = new DigitalInput(Ports.ballLimit);
     public static final DigitalInput ballLimit2 = new DigitalInput(Ports.ballLimit2);
     public static final DigitalInput triggerLimit = new DigitalInput(Ports.triggerLimit);
-    public static boolean lastPossessState = false;
+    public static boolean lastPossessState = false, lastOverFedState = false;
 
     public static void pass() {
         feeder.set(Relay.Value.kReverse);
@@ -40,8 +40,9 @@ public class Feeder {
     }
 
     public static boolean overFed() {
-        SmartDashboard.putBoolean("trigger limit", Feeder.triggerLimit.get());
-        return triggerLimit.get();
+        boolean overFed = triggerLimit.get();
+        lastOverFedState = overFed;
+        return overFed;
     }
 
     public static void triggerDisabled() {
