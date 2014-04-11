@@ -5,7 +5,6 @@
  */
 package edu.wpi.first.wpilibj.templates;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.buttons.SpikeButton;
@@ -27,6 +26,7 @@ public class OperatorInterface {
             gamepad = new Joystick(Ports.gamepad);
     private static final SpikeButton pass = new SpikeButton(gamepad, Ports.pass),
             toggleFeeder = new SpikeButton(gamepad, Ports.toggleFeeder),
+            eject = new SpikeButton(gamepad, Ports.eject),
             fire = new SpikeButton(rightJoystick, Ports.fire),
             recieve = new SpikeButton(gamepad, Ports.recieve),
             setToHighRPM = new SpikeButton(gamepad, Ports.setToHighRPM),
@@ -38,16 +38,19 @@ public class OperatorInterface {
         double leftY = leftJoystick.getY();
         double rightY = rightJoystick.getY();
         if (toggleDriveDirection.getState()) {
+            //if (!LEDs.flashing) {
             LEDs.signalForward();
+            //}
             DriveTrain.tankDrive(leftY, rightY);
         } else {
+            //if (!LEDs.flashing) {
             LEDs.signalReverse();
+            //}
             DriveTrain.tankDrive(-rightY, -leftY);
         }
     }
 
     public static void controlShooter() {
-        SmartDashboard.putBoolean("shooters", toggleShooters.getState());
         if (setToHighRPM.get()) {
             ShooterRack.setToShootingRPM();
         } else if (setToLowRPM.get()) {
@@ -57,17 +60,12 @@ public class OperatorInterface {
         if (toggleShooters.getState()) {
             ShooterRack.run();
         } else {
+            LEDs.chasersOff();
             ShooterRack.stop();
         }
     }
 
     public static void controlFeeder() {
-        SmartDashboard.putNumber("Voltage", DriverStation.getInstance().getBatteryVoltage());
-        SmartDashboard.putBoolean("feeding", toggleFeeder.getState());
-        SmartDashboard.putBoolean("recieving", recieve.getState());
-        SmartDashboard.putBoolean("posseessing", Feeder.possessing());
-        SmartDashboard.putBoolean("lastPossesingState", Feeder.lastPossessState);
-
         if (fire.getClick()) {
             ShooterRack.startShooting();
         }
@@ -75,6 +73,13 @@ public class OperatorInterface {
         if (!ShooterRack.isShooting()) {
             if (pass.get()) { //pass
                 Feeder.pass();
+            } else if (eject.get()) {
+                ShooterRack.setToEjectRPM();
+                toggleShooters.setState(true);
+                ShooterRack.run();
+                Feeder.triggerDisabled();
+                Feeder.pass();
+                SmartDashboard.putString("debugging", "ejecting");
             } else if (recieve.getState()) { //recieve now passes straight through
                 ShooterRack.run();
                 toggleShooters.setState(true);
@@ -84,13 +89,11 @@ public class OperatorInterface {
             } else if (toggleFeeder.getState()) { //feed
                 if (!Feeder.possessing()) {
                     Feeder.feed();
+                } else if (Feeder.overFed()) {
+                    Feeder.roller.set(Relay.Value.kForward);
                 } else {
-                    //remove the line below if power issue is fixed
-                    toggleFeeder.setState(false);
                     Feeder.stop();
                 }
-            } else if (Feeder.overFed()) {
-                Feeder.roller.set(Relay.Value.kForward);
             } else {
                 //toggle off
                 Feeder.stop();

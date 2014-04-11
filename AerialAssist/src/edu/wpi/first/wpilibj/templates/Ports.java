@@ -10,7 +10,8 @@ package edu.wpi.first.wpilibj.templates;
  */
 public class Ports {
 
-    public static final int //joysticks
+    public static final int 
+            //joysticks
             leftJoystick = 1,
             rightJoystick = 2,
             gamepad = 3,
@@ -20,8 +21,9 @@ public class Ports {
             toggleDriveDirection = 3,
             //___gamepad
             toggleFeeder = 1,
-            pass = 2,
+            eject = 4,
             recieve = 3,
+            pass = 2,
             setToHighRPM = 5,
             setToLowRPM = 6,
             toggleShooter = 8,

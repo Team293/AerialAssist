@@ -51,6 +51,12 @@ public class ShooterRack {
         shooterHigh.setSetpoint(-400);
     }
 
+    public static void setToEjectRPM() {
+        shooterLow.setSetpoint(1000);
+        shooterMiddle.setSetpoint(-1000);
+        shooterHigh.setSetpoint(-1000);
+    }
+    
     public static void setToLowGoalRPM() {
         shooterLow.setSetpoint(-600);
         shooterMiddle.setSetpoint(900);
@@ -67,17 +73,21 @@ public class ShooterRack {
         shooterMiddle.run();
         shooterHigh.run();
         if (atRPM()) {
-            if (flash) {
-                if (OperatorInterface.toggleDriveDirection.getState()) {
+            //LEDs.flashSignalLights();
+            if (OperatorInterface.toggleDriveDirection.getState()) {
+                if (LEDs.flashing) {
                     LEDs.signalForward();
                 } else {
-                    LEDs.signalReverse();
+                    LEDs.signalOff();
                 }
-
             } else {
-                LEDs.signalOff();
+                if (LEDs.flashing) {
+                    LEDs.signalReverse();
+                } else {
+                    LEDs.signalOff();
+                }
             }
-            flash = !flash;
+            LEDs.flashing = !LEDs.flashing;
         }
     }
 
