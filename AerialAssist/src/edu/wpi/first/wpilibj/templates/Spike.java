@@ -76,12 +76,12 @@ public class Spike extends IterativeRobot {
 
     public void teleopInit() {
         Cage.release();
+        LEDs.RED = ((String) colorChooser.getSelected()).equals("RED");
     }
 
     public void autonomousInit() {
         LEDs.RED = ((String) colorChooser.getSelected()).equals("RED");
         selectedAuto = (Auto) autonomousChooser.getSelected();
-        SmartDashboard.putString("selected auto: ", autonomousChooser.getSelected().toString());
         selectedAuto.init();
         Auto.hasRunAuto=false;
     }
@@ -92,7 +92,6 @@ public class Spike extends IterativeRobot {
     public void autonomousPeriodic() {
         if (!Auto.hasRunAuto) {
             selectedAuto.run();
-            SmartDashboard.putNumber("Voltage", DriverStation.getInstance().getBatteryVoltage());
         }
     }
 
@@ -106,9 +105,6 @@ public class Spike extends IterativeRobot {
         OperatorInterface.controlFeeder();
         OperatorInterface.controlCamera();
         DriveTrain.rangeUltrasonics();
-        LCD.println(DriverStationLCD.Line.kUser1, 1, "" + DriveTrain.getLeftDistance());
-        LCD.println(DriverStationLCD.Line.kUser2, 1, "" + DriveTrain.getRightDistance());
-        LCD.updateLCD();
     }
 
     /**

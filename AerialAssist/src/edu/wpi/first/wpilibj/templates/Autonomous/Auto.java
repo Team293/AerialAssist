@@ -186,6 +186,7 @@ public class Auto {
     }
 
     public void setTeleop() {
+        Feeder.stop();
         Feeder.triggerEnabled();
         ShooterRack.stop();
         DriveTrain.stop();

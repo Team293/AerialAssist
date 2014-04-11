@@ -5,7 +5,6 @@
  */
 package edu.wpi.first.wpilibj.templates;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.buttons.SpikeButton;
@@ -27,6 +26,7 @@ public class OperatorInterface {
             gamepad = new Joystick(Ports.gamepad);
     private static final SpikeButton pass = new SpikeButton(gamepad, Ports.pass),
             toggleFeeder = new SpikeButton(gamepad, Ports.toggleFeeder),
+            eject = new SpikeButton(gamepad, Ports.eject),
             fire = new SpikeButton(rightJoystick, Ports.fire),
             recieve = new SpikeButton(gamepad, Ports.recieve),
             setToHighRPM = new SpikeButton(gamepad, Ports.setToHighRPM),
@@ -38,10 +38,14 @@ public class OperatorInterface {
         double leftY = leftJoystick.getY();
         double rightY = rightJoystick.getY();
         if (toggleDriveDirection.getState()) {
+            //if (!LEDs.flashing) {
             LEDs.signalForward();
+            //}
             DriveTrain.tankDrive(leftY, rightY);
         } else {
+            //if (!LEDs.flashing) {
             LEDs.signalReverse();
+            //}
             DriveTrain.tankDrive(-rightY, -leftY);
         }
     }
@@ -56,6 +60,7 @@ public class OperatorInterface {
         if (toggleShooters.getState()) {
             ShooterRack.run();
         } else {
+            LEDs.chasersOff();
             ShooterRack.stop();
         }
     }
@@ -70,6 +75,13 @@ public class OperatorInterface {
         if (!ShooterRack.isShooting()) {
             if (pass.get()) { //pass
                 Feeder.pass();
+            } else if (eject.get()) {
+                ShooterRack.setToEjectRPM();
+                toggleShooters.setState(true);
+                ShooterRack.run();
+                Feeder.triggerDisabled();
+                Feeder.pass();
+                SmartDashboard.putString("debugging", "ejecting");
             } else if (recieve.getState()) { //recieve now passes straight through
                 toggleShooters.setState(true);
                 ShooterRack.setToRecieveRPM();
