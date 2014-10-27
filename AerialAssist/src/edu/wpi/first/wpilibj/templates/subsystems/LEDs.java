@@ -59,13 +59,13 @@ public class LEDs {
     //hold white ground and red high for blue chasers
     public static void chaseRed() {
         chasers.set(Relay.Value.kForward);
-        SmartDashboard.putString("chasers", "chase red");
+        //SmartDashboard.putString("chasers", "chase red");
     }
 
     //hold both high for blue
     public static void chaseBlue() {
         chasers.set(Relay.Value.kReverse);
-        SmartDashboard.putString("casers", "chase blue");
+        //SmartDashboard.putString("chasers", "chase blue");
     }
 
 }

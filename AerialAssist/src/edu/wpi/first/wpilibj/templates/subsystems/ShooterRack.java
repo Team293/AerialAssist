@@ -5,6 +5,7 @@
  */
 package edu.wpi.first.wpilibj.templates.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.OperatorInterface;
 import edu.wpi.first.wpilibj.templates.Ports;
 
@@ -66,8 +67,10 @@ public class ShooterRack {
     public static void run() {
         if (LEDs.RED) {
             LEDs.chaseRed();
+            SmartDashboard.putString("chaser", "chase red");
         } else {
-            LEDs.chaseBlue();
+           LEDs.chaseBlue();
+           SmartDashboard.putString("chaser", "chase blue");
         }
         shooterLow.run();
         shooterMiddle.run();
