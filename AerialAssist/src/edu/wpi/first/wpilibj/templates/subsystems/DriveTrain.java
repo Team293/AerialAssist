@@ -7,7 +7,8 @@ package edu.wpi.first.wpilibj.templates.subsystems;
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.Talon;
+//import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.Ports;
 
@@ -17,8 +18,10 @@ import edu.wpi.first.wpilibj.templates.Ports;
  */
 public class DriveTrain {
 
-    public static final Talon leftMotor = new Talon(Ports.leftDrive);
-    public static final Talon rightMotor = new Talon(Ports.rightDrive);
+   // public static final Talon leftMotor = new Talon(Ports.leftDrive);
+    public static final Victor leftMotor = new Victor(Ports.leftDrive);
+   // public static final Talon rightMotor = new Talon(Ports.rightDrive);
+    public static final Victor rightMotor = new Victor(Ports.rightDrive);
     public static RobotDrive drive = new RobotDrive(leftMotor,
             rightMotor);
     static final AnalogChannel rightUltrasonic = new AnalogChannel(Ports.rightUltrasonic);

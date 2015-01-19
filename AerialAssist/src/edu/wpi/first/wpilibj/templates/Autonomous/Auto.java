@@ -24,15 +24,15 @@ public class Auto {
 
     static final Gyro gyro = new Gyro(Ports.gyro);
     public static boolean hasRunAuto = false;
-    static final double kStraight = 0.082, kAlign = 0.071;
+    static final double kStraight = 0.082, kAlign = 0.070;
     double alignTime = 0.5,
             stopTime1 = 2.2,
             stopTime2 = 2.4,
             searchTime = 3.3,
             quickBack1 = 0.85,
-            driveSpeedForward = 0.79,
-            driveSpeedForward2 = 0.79,
-            driveSpeedReverse = -0.7,
+            driveSpeedForward = 0.8,
+            driveSpeedForward2 = 0.81,
+            driveSpeedReverse = -0.72,
             leftStopSpeed = -0.3,
             rightStopSpeed = -0.3,
             turnLeft = 20,

@@ -59,7 +59,7 @@ public class OperatorInterface {
 
         if (toggleShooters.getState()) {
             ShooterRack.run();
-        } else {
+        } else { 
             LEDs.chasersOff();
             ShooterRack.stop();
         }
